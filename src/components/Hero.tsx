@@ -50,9 +50,9 @@ const Hero = () => {
             Hi, I'm Morgan.
           </h1>
         </div>
-        <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-lg mt-2">
+        <h1 className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-lg mt-2">
           This is just a small taste of what I've accomplished, and a few projects I'm proud of.
-        </p>
+        </h1>
         
         {/* Social Links - removed Github */}
         <div className="flex justify-center gap-4 mb-12">
