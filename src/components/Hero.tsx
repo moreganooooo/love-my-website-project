@@ -45,27 +45,27 @@ const Hero = () => {
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center z-10 max-w-4xl mx-auto animate-fade-up">
             <div className="flex flex-col justify-center items-center min-h-[80vh] space-y-6">
-              <h1 className="relative z-10 text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-1 font-playfair bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-[1.3] px-4 py-2 overflow-visible animate-fade-up delay-200">
+              <h1 className="relative z-10 text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-1 bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-[1.3] px-4 py-2 overflow-visible animate-fade-up delay-200">
                 Hi, I'm Morgan.
               </h1>
-              <h1 className="text-xl md:text-2xl text-white/90 mb-4 max-w-3xl mx-auto leading-snug drop-shadow-lg mt-0 font-source animate-fade-up delay-500">
+              <h1 className="text-xl md:text-2xl text-white/90 mb-4 max-w-3xl mx-auto leading-snug drop-shadow-lg mt-0 animate-fade-up delay-500">
                 This is just a small taste of what I've accomplished, and a few projects I'm proud of.
               </h1>
               <div className="flex justify-center gap-4 mb-6 animate-fade-up delay-700">
-                <Button variant="outline" size="icon" className="transition-all duration-300 border-white/30 bg-transparent hover:bg-transparent text-white hover:text-purple-900">
+                <Button variant="outline" size="icon" className="hover:scale-110 transition-all duration-300 border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm">
                   <Linkedin className="h-5 w-5" />
                 </Button>
-                <Button variant="outline" size="icon" className="transition-all duration-300 border-white/30 bg-transparent hover:bg-transparent text-white hover:text-purple-900">
+                <Button variant="outline" size="icon" className="hover:scale-110 transition-all duration-300 border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm">
                   <Mail className="h-5 w-5" />
                 </Button>
               </div>
               <Button
                 onClick={scrollToProjects}
                 size="lg"
-                className="bg-white/20 hover:bg-white/30 text-white hover:text-purple-900 px-8 py-6 text-lg rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 backdrop-blur-md border border-white/30 hover:border-white/50 mt-2 animate-fade-up delay-1000"
+                className="bg-white/20 hover:bg-white/30 text-white px-8 py-6 text-lg rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 backdrop-blur-md border border-white/30 hover:border-white/50 mt-2 animate-fade-up delay-1000"
               >
                 CONTACT ME
-                <ArrowDown className="ml-2 h-5 w-5" />
+                <ArrowDown className="ml-2 h-5 w-5 animate-bounce" />
               </Button>
             </div>
           </div>
