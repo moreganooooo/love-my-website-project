@@ -49,10 +49,12 @@ const Hero = () => {
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-2 bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-[1.15] px-4">
             Hi, I'm Morgan.
           </h1>
-        </div>
+          <h2 className="text-lg md:text-xl text-white/80 mb-4 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+            A passionate software engineer with a love for crafting elegant solutions and building impactful projects.
         <h1 className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-lg mt-2">
           This is just a small taste of what I've accomplished, and a few projects I'm proud of.
         </h1>
+        </div>
         
         {/* Social Links - removed Github */}
         <div className="flex justify-center gap-4 mb-12">
