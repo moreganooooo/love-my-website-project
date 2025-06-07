@@ -46,11 +46,11 @@ const Hero = () => {
       
       <div className="text-center z-10 max-w-4xl mx-auto animate-fade-in">
         <div className="flex flex-col justify-center items-center min-h-[40vh]">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-tight px-4">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-2 bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-[1.15] px-4">
             Hi, I'm Morgan.
           </h1>
         </div>
-        <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+        <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-lg mt-2">
           This is just a small taste of what I've accomplished, and a few projects I'm proud of.
         </p>
         
