@@ -7,7 +7,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700">
+    <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-20 md:pt-28 lg:pt-36 pb-16 md:pb-24 lg:pb-32 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700">
       {/* Animated texture background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 opacity-40">
@@ -43,7 +43,7 @@ const Hero = () => {
 
         {/* Content Centered */}
         <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center z-10 max-w-4xl mx-auto animate-fade-up">
+          <div className="text-center z-10 max-w-4xl mx-auto animate-fade-up px-4 sm:px-6 md:px-10">
             <div className="flex flex-col justify-center items-center min-h-[80vh] space-y-6">
               <h1 className="relative z-10 text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-1 font-playfair bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-[1.3] px-4 py-2 overflow-visible animate-fade-up delay-200">
                 Hi, I'm Morgan.
@@ -51,7 +51,7 @@ const Hero = () => {
               <p className="text-xl md:text-2xl text-white/90 mb-4 max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto leading-snug drop-shadow-lg mt-0 font-source animate-fade-up delay-500">
                 This is just a small taste of what I've accomplished, and a few projects I'm proud of.
               </p>
-              <div className="flex justify-center gap-12 mb-6 animate-fade-up delay-700">
+              <div className="flex justify-center gap-4 mb-6 animate-fade-up delay-700">
                 <Button variant="outline" size="icon" className="transition-all duration-300 border-white/30 bg-transparent hover:bg-transparent text-white hover:text-purple-900">
                   <Linkedin className="h-5 w-5" />
                 </Button>
@@ -81,4 +81,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
