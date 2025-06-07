@@ -10,8 +10,8 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      details: "alex.johnson@email.com",
-      action: "mailto:alex.johnson@email.com"
+      details: "morgan@portfolio.com",
+      action: "mailto:morgan@portfolio.com"
     },
     {
       icon: Phone,
@@ -22,37 +22,43 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Location",
-      details: "San Francisco, CA",
+      details: "Creative Studio, CA",
       action: "#"
     }
   ];
 
   return (
-    <section className="py-20 px-6 bg-gradient-to-br from-slate-900 to-blue-900 text-white">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-20 px-6 bg-gradient-to-br from-purple-800 via-purple-700 to-orange-600 text-white relative overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-tl from-orange-300/20 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Let's Work Together
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">
+            Contact
           </h2>
-          <p className="text-lg text-blue-100 max-w-2xl mx-auto">
-            Have a project in mind? I'd love to hear about it. Let's create something amazing together.
+          <p className="text-lg text-white/90 max-w-2xl mx-auto drop-shadow">
+            Reach out today — I'd love to hear from you!
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Information */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-bold mb-8">Get In Touch</h3>
+            <h3 className="text-2xl font-bold mb-8 text-white">Get In Touch</h3>
             {contactInfo.map((info) => (
-              <Card key={info.title} className="bg-white/10 border-white/20 backdrop-blur-sm hover:bg-white/20 transition-colors duration-300">
+              <Card key={info.title} className="bg-white/10 border-white/20 backdrop-blur-md hover:bg-white/20 transition-all duration-500 hover:scale-105">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full">
+                    <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-orange-400 to-purple-500 rounded-full shadow-lg">
                       <info.icon className="h-6 w-6 text-white" />
                     </div>
                     <div>
                       <h4 className="font-semibold text-white">{info.title}</h4>
-                      <p className="text-blue-100">{info.details}</p>
+                      <p className="text-white/80">{info.details}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -61,36 +67,36 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <Card className="bg-white/10 border-white/20 backdrop-blur-sm">
+          <Card className="bg-white/10 border-white/20 backdrop-blur-md shadow-2xl">
             <CardContent className="p-8">
               <h3 className="text-2xl font-bold mb-6 text-white">Send a Message</h3>
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <Input 
                     placeholder="Your Name" 
-                    className="bg-white/10 border-white/20 text-white placeholder:text-blue-200"
+                    className="bg-white/10 border-white/30 text-white placeholder:text-white/60 focus:border-orange-300 focus:ring-orange-300/20"
                   />
                   <Input 
                     type="email" 
                     placeholder="Your Email" 
-                    className="bg-white/10 border-white/20 text-white placeholder:text-blue-200"
+                    className="bg-white/10 border-white/30 text-white placeholder:text-white/60 focus:border-orange-300 focus:ring-orange-300/20"
                   />
                 </div>
                 <Input 
                   placeholder="Subject" 
-                  className="bg-white/10 border-white/20 text-white placeholder:text-blue-200"
+                  className="bg-white/10 border-white/30 text-white placeholder:text-white/60 focus:border-orange-300 focus:ring-orange-300/20"
                 />
                 <Textarea 
                   placeholder="Your Message" 
                   rows={5}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-blue-200"
+                  className="bg-white/10 border-white/30 text-white placeholder:text-white/60 focus:border-orange-300 focus:ring-orange-300/20"
                 />
                 <Button 
                   type="submit" 
                   size="lg" 
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-6 text-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white py-6 text-lg rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105"
                 >
-                  Send Message
+                  Submit
                 </Button>
               </form>
             </CardContent>
@@ -99,8 +105,8 @@ const Contact = () => {
 
         {/* Footer */}
         <div className="text-center mt-16 pt-8 border-t border-white/20">
-          <p className="text-blue-100">
-            © 2024 Alex Johnson. Crafted with ❤️ using React & Tailwind CSS
+          <p className="text-white/80">
+            © 2024 Morgan. Crafted with ❤️ using modern web technologies
           </p>
         </div>
       </div>
