@@ -45,7 +45,7 @@ const Hero = () => {
           </div>
           <div className="text-center z-10 max-w-4xl mx-auto animate-fade-in">
             <div className="flex flex-col justify-center items-center min-h-[65vh] space-y-6 pb-4 pt-16">
-              <h1 className="relative z-10 text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-1 bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-[1.15] px-4 overflow-visible">
+              <h1 className="relative z-10 text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-1 bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-[1.3] px-4 overflow-visible">
                 Hi, I'm Morgan.
               </h1>
               <h1 className="text-xl md:text-2xl text-white/90 mb-4 max-w-3xl mx-auto leading-snug drop-shadow-lg mt-0">
