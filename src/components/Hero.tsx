@@ -1,7 +1,16 @@
 import { ArrowDown, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
+  const [offsetY, setOffsetY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setOffsetY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const scrollToProjects = () => {
     const target = document.getElementById('projects');
     if (target) {
@@ -15,7 +24,10 @@ const Hero = () => {
     <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-20 md:pt-28 lg:pt-36 pb-16 md:pb-24 lg:pb-32 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700">
       {/* Animated texture background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 opacity-40">
+        <div
+          className="absolute inset-0 opacity-40"
+          style={{ transform: `translateY(${offsetY * 0.15}px)` }}
+        >
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-300/30 via-purple-400/20 to-orange-500/30 animate-pulse"></div>
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-gradient-to-tl from-white/15 to-transparent rounded-full blur-2xl animate-pulse delay-1000"></div>
