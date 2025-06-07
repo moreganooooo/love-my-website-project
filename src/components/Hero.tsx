@@ -45,7 +45,7 @@ const Hero = () => {
         </div>
       
       <div className="text-center z-10 max-w-4xl mx-auto animate-fade-in">
-        <div className="flex flex-col justify-center items-center min-h-[50vh]">
+        <div className="flex flex-col justify-center items-center min-h-[50vh] space-y-2">
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-1 bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-tight px-4">
             Hi, I'm Morgan.
           </h1>
@@ -55,7 +55,7 @@ const Hero = () => {
         </div>
 
         {/* Social Links - removed Github */}
-        <div className="flex justify-center gap-4 mb-12">
+        <div className="flex justify-center gap-5 mb-14">
           <Button variant="outline" size="icon" className="hover:scale-110 transition-all duration-300 border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm">
             <Linkedin className="h-5 w-5" />
           </Button>
@@ -68,7 +68,7 @@ const Hero = () => {
         <Button 
           onClick={scrollToProjects}
           size="lg" 
-          className="bg-white/20 hover:bg-white/30 text-white px-8 py-6 text-lg rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 backdrop-blur-md border border-white/30 hover:border-white/50"
+          className="bg-white/20 hover:bg-white/30 text-white px-8 py-6 text-lg rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 backdrop-blur-md border border-white/30 hover:border-white/50 mt-2"
         >
           CONTACT ME
           <ArrowDown className="ml-2 h-5 w-5 animate-bounce" />
