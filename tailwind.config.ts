@@ -38,6 +38,9 @@ const config: Config = {
         xl: "1280px",
         "2xl": "1536px"
       },
+      maxWidth: {
+        prose: "65ch"
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -108,4 +111,3 @@ const config: Config = {
 };
 
 export default config;
-
