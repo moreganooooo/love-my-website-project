@@ -62,7 +62,7 @@ const Hero = () => {
               <Button
                 onClick={scrollToProjects}
                 size="lg"
-                className="bg-white/20 hover:bg-white/30 text-white hover:text-purple-900 px-8 py-6 text-lg rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 backdrop-blur-md border border-white/30 hover:border-white/50 mt-2 animate-fade-up delay-1000"
+                className="bg-white/20 hover:bg-white/30 text-white hover:text-purple-900 px-8 py-18 text-lg rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 backdrop-blur-md border border-white/30 hover:border-white/50 mt-2 animate-fade-up delay-1000"
               >
                 CONTACT ME
                 <ArrowDown className="ml-2 h-5 w-5" />
