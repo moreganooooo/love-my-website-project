@@ -46,16 +46,14 @@ const Hero = () => {
       
       <div className="text-center z-10 max-w-4xl mx-auto animate-fade-in">
         <div className="flex flex-col justify-center items-center min-h-[40vh]">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-2 bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-[1.15] px-4">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-1 bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-tight px-4">
             Hi, I'm Morgan.
           </h1>
-          <h2 className="text-lg md:text-xl text-white/80 mb-4 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
-            A passionate software engineer with a love for crafting elegant solutions and building impactful projects.
-        <h1 className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-lg mt-2">
-          This is just a small taste of what I've accomplished, and a few projects I'm proud of.
-        </h1>
+          <h1 className="text-xl md:text-2xl text-white/90 mb-4 max-w-3xl mx-auto leading-snug drop-shadow-lg mt-0">
+            This is just a small taste of what I've accomplished, and a few projects I'm proud of.
+          </h1>
         </div>
-        
+
         {/* Social Links - removed Github */}
         <div className="flex justify-center gap-4 mb-12">
           <Button variant="outline" size="icon" className="hover:scale-110 transition-all duration-300 border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm">
