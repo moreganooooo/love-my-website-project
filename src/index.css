@@ -93,7 +93,7 @@
 }
 
 @layer base {
-  * {
+  hr, input, textarea, select, button, .with-border {
     border-color: hsl(var(--border));
     border-width: 1px;
     border-style: solid;
