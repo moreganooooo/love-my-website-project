@@ -3,7 +3,12 @@ import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+    const target = document.getElementById('projects');
+    if (target) {
+      const yOffset = -80;
+      const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -51,7 +56,7 @@ const Hero = () => {
               <p className="text-lg sm:text-xl md:text-2xl text-white/90 w-full max-w-3xl leading-relaxed sm:leading-normal md:leading-snug drop-shadow-lg font-source animate-fade-up delay-500 text-balance">
                 This is just a small taste of what I've accomplished, and a few projects I'm proud of.
               </p>
-              <div className="flex justify-center gap-4 animate-fade-up delay-700">
+              <div className="flex justify-center gap-4 animate-fade-up delay-700 opacity-0 animate-fade-in">
                 <Button variant="outline" size="icon" className="transition-all duration-300 border-white/30 bg-transparent hover:bg-transparent text-white hover:text-purple-900">
                   <Linkedin className="h-5 w-5" />
                 </Button>
