@@ -52,20 +52,20 @@ const Hero = () => {
                 This is just a small taste of what I've accomplished, and a few projects I'm proud of.
               </h1>
               <div className="flex justify-center gap-4 mb-6 animate-fade-up delay-700">
-                <Button variant="outline" size="icon" className="hover:scale-110 transition-all duration-300 border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm">
+                <Button variant="outline" size="icon" className="hover:scale-110 transition-all duration-300 border-white/30 bg-white/10 hover:bg-purple-800 text-white backdrop-blur-sm">
                   <Linkedin className="h-5 w-5" />
                 </Button>
-                <Button variant="outline" size="icon" className="hover:scale-110 transition-all duration-300 border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm">
+                <Button variant="outline" size="icon" className="hover:scale-110 transition-all duration-300 border-white/30 bg-white/10 hover:bg-purple-800 text-white backdrop-blur-sm">
                   <Mail className="h-5 w-5" />
                 </Button>
               </div>
               <Button
                 onClick={scrollToProjects}
                 size="lg"
-                className="bg-white/20 hover:bg-white/30 text-white px-8 py-6 text-lg rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 backdrop-blur-md border border-white/30 hover:border-white/50 mt-2 animate-fade-up delay-1000"
+                className="bg-white/20 hover:bg-purple-800 text-white px-8 py-6 text-lg rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 backdrop-blur-md border border-white/30 hover:border-white/50 mt-2 animate-fade-up delay-1000"
               >
                 CONTACT ME
-                <ArrowDown className="ml-2 h-5 w-5 animate-bounce" />
+                <ArrowDown className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </div>
