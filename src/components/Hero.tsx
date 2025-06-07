@@ -51,7 +51,7 @@ const Hero = () => {
               <p className="text-xl md:text-2xl text-white/90 mb-4 max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto leading-snug drop-shadow-lg mt-0 font-source animate-fade-up delay-500">
                 This is just a small taste of what I've accomplished, and a few projects I'm proud of.
               </p>
-              <div className="flex justify-center gap-4 mb-6 animate-fade-up delay-700">
+              <div className="flex justify-center gap-12 mb-6 animate-fade-up delay-700">
                 <Button variant="outline" size="icon" className="transition-all duration-300 border-white/30 bg-transparent hover:bg-transparent text-white hover:text-purple-900">
                   <Linkedin className="h-5 w-5" />
                 </Button>
@@ -62,7 +62,7 @@ const Hero = () => {
               <Button
                 onClick={scrollToProjects}
                 size="lg"
-                className="bg-white/20 hover:bg-white/30 text-white hover:text-purple-900 px-8 py-18 text-lg rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 backdrop-blur-md border border-white/30 hover:border-white/50 mt-2 animate-fade-up delay-1000"
+                className="bg-white/20 hover:bg-white/30 text-white hover:text-purple-900 px-8 py-6 text-lg rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 backdrop-blur-md border border-white/30 hover:border-white/50 mt-2 animate-fade-up delay-1000"
               >
                 CONTACT ME
                 <ArrowDown className="ml-2 h-5 w-5" />
