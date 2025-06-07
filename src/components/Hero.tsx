@@ -56,10 +56,10 @@ const Hero = () => {
             {/* Social Links - removed Github */}
             <div className="flex justify-center gap-5 mb-14">
               <Button variant="outline" size="icon" className="hover:scale-110 transition-all duration-300 border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm">
-                <Linkedin className="h-5 w-5" />
+              <Linkedin className="h-5 w-5" />
               </Button>
               <Button variant="outline" size="icon" className="hover:scale-110 transition-all duration-300 border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm">
-                <Mail className="h-5 w-5" />
+              <Mail className="h-5 w-5" />
               </Button>
             </div>
 
