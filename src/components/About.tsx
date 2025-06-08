@@ -25,7 +25,7 @@ const About = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[60vh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-clip">
+    <section className="relative min-h-[60vh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 [overflow:clip] will-change-transform">
       {/* Parallax Decorative background */}
       <div
         ref={bgRefAbout}
