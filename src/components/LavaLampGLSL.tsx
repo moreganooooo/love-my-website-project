@@ -1,3 +1,5 @@
+// src/components/LavaLampGLSL.tsx
+
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
@@ -17,10 +19,28 @@ export default function LavaLampGLSL() {
 
     const scene = new THREE.Scene();
 
-    const camera = new THREE.OrthographicCamera(
-      -1, 1, 1, -1, 0.1, 10
-    );
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
+
+    const BLOB_COUNT = Math.floor(Math.random() * 4) + 3; // 3 to 6 blobs
+    const blobParams = Array.from({ length: BLOB_COUNT }, (_, i) => {
+      return {
+        ampX: Math.random() * 0.6 + 0.3,
+        ampY: Math.random() * 0.6 + 0.3,
+        speedX: Math.random() * 1.5 + 0.5,
+        speedY: Math.random() * 1.5 + 0.5,
+        radius: Math.random() * 0.15 + 0.15,
+      };
+    });
+
+    const blobCode = blobParams
+      .map((b, i) => {
+        return `field += blob(uv, vec2(
+          sin(t * ${b.speedX.toFixed(2)}) * ${b.ampX.toFixed(2)},
+          mod(cos(t * ${b.speedY.toFixed(2)}) * ${b.ampY.toFixed(2)} + t * 0.1 * ${i + 1}.0, 2.0) - 1.0),
+          ${b.radius.toFixed(2)});`;
+      })
+      .join("\n");
 
     const uniforms = {
       u_time: { value: 0.0 },
@@ -35,7 +55,8 @@ export default function LavaLampGLSL() {
         uniform float u_time;
 
         float blob(vec2 uv, vec2 pos, float radius) {
-          return radius * radius / distance(uv, pos);
+          float d = length(uv - pos);
+          return radius * radius / (d * d + 0.0001);
         }
 
         void main() {
@@ -45,16 +66,21 @@ export default function LavaLampGLSL() {
           float t = u_time * 0.5;
           float field = 0.0;
 
-          field += blob(uv, vec2(sin(t * 0.9) * 0.5, cos(t * 0.7) * 0.4), 0.25);
-          field += blob(uv, vec2(cos(t * 1.3) * 0.4, sin(t * 0.8) * 0.5), 0.2);
-          field += blob(uv, vec2(sin(t * 1.1) * 0.6, cos(t * 1.2) * 0.3), 0.23);
+          ${blobCode}
 
-          float threshold = 0.3;
-          float alpha = smoothstep(threshold - 0.02, threshold + 0.02, field);
+          float threshold = 1.0;
+          float edge = 0.05;
+          float mask = smoothstep(threshold - edge, threshold + edge, field);
 
-          vec3 color = mix(vec3(1.0, 0.36, 0.0), vec3(1.0, 0.0, 0.66), uv.y * 0.5 + 0.5);
+          vec3 baseColor = vec3(0.07, 0.0, 0.15);
+          vec3 glow = vec3(1.0, 0.36, 0.0);
+          float glowFactor = smoothstep(0.5, 0.0, length(uv - vec2(0.0, -0.7)));
+          vec3 background = mix(baseColor, glow, glowFactor * 0.7);
 
-          gl_FragColor = vec4(color, alpha);
+          vec3 blobColor = mix(vec3(1.0, 0.36, 0.0), vec3(1.0, 0.0, 0.66), uv.y * 0.5 + 0.5);
+          vec3 finalColor = mix(background, blobColor, mask);
+
+          gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
     });
