@@ -1,25 +1,25 @@
-import { Code, Palette, Rocket, Users } from "lucide-react";
+import { Code, Palette, Rocket, Users, GitCompareArrows, Send, LayoutDashboard } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const About = () => {
   const skills = [
     {
-      icon: git-compare-arrows,
+      icon: GitCompareArrows,
       title: "Lifecycle Marketing",
       description: "Building customer journeys that convert and retain"
     },
     {
-      icon: send,
+      icon: Send,
       title: "Email Marketing",
       description: "Messaging that resonates with every audience"
     },
     {
-      icon: layout-dashboard,
+      icon: LayoutDashboard,
       title: "CRM Optimization",
       description: "Turning data into actionable insights and strategies"
     },
     {
-      icon: spline-pointer,
+      icon: Palette,
       title: "Copywriting  & Design",
       description: "Crafting compelling narratives and visuals"
     }
@@ -74,4 +74,3 @@ const About = () => {
 };
 
 export default About;
-
