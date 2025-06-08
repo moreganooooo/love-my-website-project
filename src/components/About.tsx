@@ -98,9 +98,9 @@ const About = () => {
                          hover:bg-[position:100%_100%]"
             >
               <Card 
-                className="hover:shadow-2xl shadow-xl transition-all duration-500 hover:-translate-y-3 border-0
+                className="shadow-xl transition-all duration-500 border-0
                            bg-gradient-to-br from-white via-orange-50/50 to-purple-50/50 backdrop-blur-sm
-                           hover:from-orange-50 hover:to-purple-50 rounded-2xl"
+                           rounded-2xl group-hover:-translate-y-3 group-hover:shadow-2xl"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <CardContent className="p-6 text-center">
