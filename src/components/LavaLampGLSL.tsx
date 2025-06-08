@@ -22,22 +22,23 @@ export default function LavaLampGLSL() {
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
-    const BLOB_COUNT = Math.floor(Math.random() * 4) + 3; // 3 to 6 blobs
+    const BLOB_COUNT = Math.floor(Math.random() * 4) + 3;
     const blobParams = Array.from({ length: BLOB_COUNT }, (_, i) => {
       return {
-        ampX: Math.random() * 0.6 + 0.3,
-        ampY: Math.random() * 0.6 + 0.3,
-        speedX: Math.random() * 1.5 + 0.5,
-        speedY: Math.random() * 1.5 + 0.5,
-        radius: Math.random() * 0.15 + 0.15,
+        ampX: Math.random() * 0.5 + 0.8, // less center
+        ampY: Math.random() * 0.2 + 0.5, // mostly upward
+        speedX: Math.random() * 0.5 + 0.2,
+        speedY: Math.random() * 0.3 + 0.15,
+        radius: Math.random() * 0.12 + 0.13,
+        phase: Math.random() * Math.PI * 2,
       };
     });
 
     const blobCode = blobParams
       .map((b, i) => {
         return `field += blob(uv, vec2(
-          sin(t * ${b.speedX.toFixed(2)}) * ${b.ampX.toFixed(2)},
-          mod(cos(t * ${b.speedY.toFixed(2)}) * ${b.ampY.toFixed(2)} + t * 0.1 * ${i + 1}.0, 2.0) - 1.0),
+          sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
+          mod(${b.ampY.toFixed(2)} * t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}, 2.0) - 1.0),
           ${b.radius.toFixed(2)});`;
       })
       .join("\n");
@@ -63,7 +64,7 @@ export default function LavaLampGLSL() {
           vec2 uv = gl_FragCoord.xy / u_resolution.xy;
           uv = uv * 2.0 - 1.0;
 
-          float t = u_time * 0.5;
+          float t = u_time * 0.3;
           float field = 0.0;
 
           ${blobCode}
@@ -72,12 +73,12 @@ export default function LavaLampGLSL() {
           float edge = 0.05;
           float mask = smoothstep(threshold - edge, threshold + edge, field);
 
-          vec3 baseColor = vec3(0.07, 0.0, 0.15);
-          vec3 glow = vec3(1.0, 0.36, 0.0);
-          float glowFactor = smoothstep(0.5, 0.0, length(uv - vec2(0.0, -0.7)));
-          vec3 background = mix(baseColor, glow, glowFactor * 0.7);
+          vec3 baseColor = vec3(0.15, 0.0, 0.25); // brighter purple
+          vec3 glow = vec3(1.0, 0.4, 0.1); // softer orange
+          float glowFactor = smoothstep(0.9, 0.0, length(uv - vec2(0.0, -0.9)));
+          vec3 background = mix(baseColor, glow, glowFactor * 0.8);
 
-          vec3 blobColor = mix(vec3(1.0, 0.36, 0.0), vec3(1.0, 0.0, 0.66), uv.y * 0.5 + 0.5);
+          vec3 blobColor = mix(vec3(1.0, 0.5, 0.2), vec3(0.95, 0.4, 0.6), uv.y * 0.5 + 0.5);
           vec3 finalColor = mix(background, blobColor, mask);
 
           gl_FragColor = vec4(finalColor, 1.0);
