@@ -9,7 +9,7 @@ export const useInView = (threshold = 0.2) => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect(); // Remove if you want to keep triggering
+// observer.disconnect();
         }
       },
       { threshold }
