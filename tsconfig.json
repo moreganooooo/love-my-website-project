@@ -1,6 +1,4 @@
 {
-  "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -19,4 +17,5 @@
   },
   "include": ["src/**/*", "types/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
+  // Make sure there is NO "extends" property here referencing this file or itself.
 }

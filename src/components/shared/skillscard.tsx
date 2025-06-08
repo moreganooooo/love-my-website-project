@@ -1,5 +1,11 @@
 import { Card, CardContent } from '@/components/ui/card';
-import type { Skill } from '@/types'; // adjust this path to the actual location of your Skill type
+// Update the path below to the actual location of your Skill type definition
+// Define Skill type here if not available elsewhere
+export type Skill = {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+};
 
 type SkillCardProps = {
   skill: Skill;
