@@ -1,12 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
-
-type Skill = {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-};
+import type { Skill } from "@/types";
 
 type SkillCardProps = {
   skill: Skill;
@@ -40,15 +35,4 @@ const SkillCard = ({ skill, index }: SkillCardProps) => {
   );
 };
 
-export default SkillCard;
-// This component is used to display individual skill cards in the Skills section.
-// It takes a skill object and an index for animation delay.
-// The skill object contains an icon, title, and description.
-// The card has a gradient background and hover effects for interactivity.
-// The animation delay is calculated based on the index to create a staggered effect when rendering multiple cards.
-// The component uses Tailwind CSS for styling and Lucide icons for the skill icons.
-// The SkillCard component is designed to be reusable and can be used in any section where skills need to be displayed.
-// It can be imported and used in the Skills section of a portfolio or personal website.
-// This code defines a SkillCard component that displays individual skill cards in a skills section.
-// It takes a skill object and an index for animation delay.
-// The skill object contains an icon, title, and description.
+export { SkillCard };
