@@ -50,7 +50,7 @@ const About = () => {
 
   return (
     <section
-      className="relative py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden"
+      className="relative min-h-[60vh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden"
       style={{ overflow: "hidden" }}
     >
       {/* Parallax Decorative background */}
