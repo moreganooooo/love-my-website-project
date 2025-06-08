@@ -1,7 +1,7 @@
-import { useRef, useEffect } from "react";
-import { SkillCard } from "@/components/SkillCard";
-import { skills } from "@/data/skills";
-import { FadeInSection } from "@/components/shared/FadeInSection";
+import { useRef, useEffect } from 'react';
+import { SkillCard } from '@/components/SkillCard';
+import { skills } from '@/data/skills';
+import { FadeInSection } from '@/components/shared/FadeInSection';
 
 const About = () => {
   const bgRefAbout = useRef<HTMLDivElement>(null);
@@ -20,8 +20,8 @@ const About = () => {
         ticking = true;
       }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
@@ -32,11 +32,7 @@ const About = () => {
         className="pointer-events-none select-none absolute inset-0 w-full h-full z-0 will-change-transform transition-transform"
         aria-hidden="true"
       >
-        <img
-          src="/5594016.jpg"
-          alt=""
-          className="w-full h-full object-cover opacity-10"
-        />
+        <img src="/5594016.jpg" alt="" className="w-full h-full object-cover opacity-10" />
       </div>
 
       {/* Background Blobs */}
@@ -54,16 +50,19 @@ const About = () => {
           </FadeInSection>
           <FadeInSection delay={200} repeat>
             <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
-              I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing.
+              I'm a creative strategist and CRM whisperer with a deep love for systems that make
+              stories sing.
               <br />
-              I’ve spent the last 10+ years blending structure with soul: building lifecycle campaigns in Salesforce,
+              I’ve spent the last 10+ years blending structure with soul: building lifecycle
+              campaigns in Salesforce,
               <br />
               writing content that connects, and designing visual experiences that feel thoughtful
               <br />
               from the first touchpoint to the last.
               <br />
               <br />
-              My work lives at the intersection of strategy, storytelling, and quietly joyful execution.
+              My work lives at the intersection of strategy, storytelling, and quietly joyful
+              execution.
               <br />
               If that sounds like your vibe — let’s talk.
             </p>

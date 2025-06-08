@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 export const useInView = (threshold = 0.2) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -9,7 +9,7 @@ export const useInView = (threshold = 0.2) => {
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
-      { threshold }
+      { threshold },
     );
 
     if (ref.current) observer.observe(ref.current);

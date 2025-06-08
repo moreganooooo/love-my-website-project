@@ -1,7 +1,5 @@
 @import 'tailwindcss';
 
-
-
 /* Removed invalid @theme block. If you need these variables, define them inside :root or a valid selector. */
 
 .container {
@@ -206,7 +204,12 @@
 }
 
 @layer base {
-  hr, input, textarea, select, button, .with-border {
+  hr,
+  input,
+  textarea,
+  select,
+  button,
+  .with-border {
     border-color: hsl(var(--border));
     border-width: 1px;
     border-style: solid;
@@ -221,7 +224,9 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-family: 'Playfair Display', serif;
     font-weight: bold;
   }

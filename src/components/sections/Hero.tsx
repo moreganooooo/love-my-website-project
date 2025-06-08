@@ -1,6 +1,6 @@
-import { ArrowDown, Linkedin, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useEffect, useRef, useState } from "react";
+import { ArrowDown, Linkedin, Mail } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useEffect, useRef, useState } from 'react';
 
 const Hero = () => {
   const bgRef1 = useRef<HTMLDivElement>(null);
@@ -27,8 +27,8 @@ const Hero = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToProjects = () => {
@@ -44,12 +44,13 @@ const Hero = () => {
     <section className="min-h-[90vh] flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-16 md:pt-20 lg:pt-24 pb-12 md:pb-16 lg:pb-20 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700 overflow-hidden">
       {/* Parallax SVG Swirl Layer */}
       <div className="absolute inset-0 pointer-events-none">
-        <div
-          ref={bgRef1}
-          className="absolute inset-0 opacity-100 z-0 will-change-transform"
-        >
+        <div ref={bgRef1} className="absolute inset-0 opacity-100 z-0 will-change-transform">
           {/* SVG Swirling Texture Layer */}
-          <svg className="absolute inset-0 w-full h-full opacity-60" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+          <svg
+            className="absolute inset-0 w-full h-full opacity-60"
+            viewBox="0 0 1000 1000"
+            preserveAspectRatio="none"
+          >
             <defs>
               <linearGradient id="swirl1" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="rgba(255,255,255,0.3)" />
@@ -63,11 +64,31 @@ const Hero = () => {
               </linearGradient>
             </defs>
             {/* Swooshy wave paths only */}
-            <path d="M-200,300 Q50,100 300,300 T800,300 T1200,300 L1200,1000 L-200,1000 Z" fill="url(#swirl1)" className="animate-pulse">
-              <animateTransform attributeName="transform" type="translate" values="-100,0; 100,20; -100,0" dur="12s" repeatCount="indefinite"/>
+            <path
+              d="M-200,300 Q50,100 300,300 T800,300 T1200,300 L1200,1000 L-200,1000 Z"
+              fill="url(#swirl1)"
+              className="animate-pulse"
+            >
+              <animateTransform
+                attributeName="transform"
+                type="translate"
+                values="-100,0; 100,20; -100,0"
+                dur="12s"
+                repeatCount="indefinite"
+              />
             </path>
-            <path d="M-200,600 Q100,400 400,600 T800,600 T1200,600 L1200,1000 L-200,1000 Z" fill="url(#swirl2)" className="animate-pulse delay-500">
-              <animateTransform attributeName="transform" type="translate" values="100,0; -100,15; 100,0" dur="15s" repeatCount="indefinite"/>
+            <path
+              d="M-200,600 Q100,400 400,600 T800,600 T1200,600 L1200,1000 L-200,1000 Z"
+              fill="url(#swirl2)"
+              className="animate-pulse delay-500"
+            >
+              <animateTransform
+                attributeName="transform"
+                type="translate"
+                values="100,0; -100,15; 100,0"
+                dur="15s"
+                repeatCount="indefinite"
+              />
             </path>
           </svg>
         </div>
@@ -87,10 +108,18 @@ const Hero = () => {
               This is just a small taste of what I've accomplished, and a few projects I'm proud of.
             </p>
             <div className="flex justify-center gap-4 animate-fade-in delay-700">
-              <Button variant="outline" size="icon" className="transition-all duration-300 border-white/30 bg-transparent hover:bg-transparent text-white hover:text-purple-900">
+              <Button
+                variant="outline"
+                size="icon"
+                className="transition-all duration-300 border-white/30 bg-transparent hover:bg-transparent text-white hover:text-purple-900"
+              >
                 <Linkedin className="h-5 w-5" />
               </Button>
-              <Button variant="outline" size="icon" className="transition-all duration-300 border-white/30 bg-transparent hover:bg-transparent text-white hover:text-purple-900">
+              <Button
+                variant="outline"
+                size="icon"
+                className="transition-all duration-300 border-white/30 bg-transparent hover:bg-transparent text-white hover:text-purple-900"
+              >
                 <Mail className="h-5 w-5" />
               </Button>
             </div>
