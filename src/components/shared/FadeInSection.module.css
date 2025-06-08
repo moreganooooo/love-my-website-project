@@ -1,15 +1,24 @@
+
 .fadeInSection {
   opacity: 0;
   transform: translateY(40px);
   transition:
-    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: opacity, transform;
 }
 
 .fadeInSectionVisible {
   opacity: 1;
-  transform: none;
+  transform: translateY(0);
 }
 
+.fadeInSectionHidden {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fadeInDelay200 { transition-delay: 200ms; }
 .fadeInDelay400 { transition-delay: 400ms; }
+.fadeInDelay600 { transition-delay: 600ms; }
+.fadeInDelay800 { transition-delay: 800ms; }

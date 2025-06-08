@@ -1,6 +1,7 @@
+
 import { useEffect, useRef, useState } from 'react';
 
-export const useInView = (threshold = 0.2) => {
+export const useInView = (threshold = 0.2, rootMargin = '0px') => {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -9,12 +10,15 @@ export const useInView = (threshold = 0.2) => {
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
-      { threshold },
+      { 
+        threshold,
+        rootMargin
+      },
     );
 
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [threshold]);
+  }, [threshold, rootMargin]);
 
   return { ref, isVisible };
 };

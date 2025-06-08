@@ -1,6 +1,5 @@
+
 import { useRef, useEffect } from 'react';
-// import { SkillCard } from '@/components/SkillCard';
-// import { SkillCard } from '@/components/shared/SkillCard';
 import { SkillCard } from '@/components/shared/skillscard';
 import { skills } from '@/data/skills';
 import { FadeInSection } from '@/components/shared/FadeInSection';
@@ -45,17 +44,17 @@ const About = () => {
 
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <FadeInSection>
+          <FadeInSection threshold={0.3} rootMargin="100px">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent">
               About Me
             </h2>
           </FadeInSection>
-          <FadeInSection delay={200}>
+          <FadeInSection delay={200} threshold={0.3} rootMargin="100px">
             <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
               I'm a creative strategist and CRM whisperer with a deep love for systems that make
               stories sing.
               <br />
-              I’ve spent the last 10+ years blending structure with soul: building lifecycle
+              I've spent the last 10+ years blending structure with soul: building lifecycle
               campaigns in Salesforce,
               <br />
               writing content that connects, and designing visual experiences that feel thoughtful
@@ -66,18 +65,24 @@ const About = () => {
               My work lives at the intersection of strategy, storytelling, and quietly joyful
               execution.
               <br />
-              If that sounds like your vibe — let’s talk.
+              If that sounds like your vibe — let's talk.
             </p>
           </FadeInSection>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skills.map((skill) => (
-            <FadeInSection key={skill.title} delay={400}>
+        <FadeInSection threshold={0.2} rootMargin="80px" className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {skills.map((skill, index) => (
+            <div
+              key={skill.title}
+              className="transition-all duration-1000 ease-out"
+              style={{
+                transitionDelay: `${index * 150}ms`
+              }}
+            >
               <SkillCard skill={skill} />
-            </FadeInSection>
+            </div>
           ))}
-        </div>
+        </FadeInSection>
       </div>
     </section>
   );
