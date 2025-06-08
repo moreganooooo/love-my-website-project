@@ -71,28 +71,40 @@ const Contact = () => {
               <h3 className="text-2xl font-bold mb-6 text-white">Send a Message</h3>
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
-                  <Input 
-                    placeholder="Your Name" 
+                  <Input
+                    name="name"
+                    id="contact-name"
+                    placeholder="Your Name"
+                    autoComplete="name"
                     className="bg-white/10 border-white/30 text-white placeholder:text-white/60 focus:border-orange-300 focus:ring-orange-300/20"
                   />
-                  <Input 
-                    type="email" 
-                    placeholder="Your Email" 
+                  <Input
+                    type="email"
+                    name="email"
+                    id="contact-email"
+                    placeholder="Your Email"
+                    autoComplete="email"
                     className="bg-white/10 border-white/30 text-white placeholder:text-white/60 focus:border-orange-300 focus:ring-orange-300/20"
                   />
                 </div>
-                <Input 
-                  placeholder="Subject" 
+                <Input
+                  name="subject"
+                  id="contact-subject"
+                  placeholder="Subject"
+                  autoComplete="off"
                   className="bg-white/10 border-white/30 text-white placeholder:text-white/60 focus:border-orange-300 focus:ring-orange-300/20"
                 />
-                <Textarea 
-                  placeholder="Your Message" 
+                <Textarea
+                  name="message"
+                  id="contact-message"
+                  placeholder="Your Message"
                   rows={5}
+                  autoComplete="off"
                   className="bg-white/10 border-white/30 text-white placeholder:text-white/60 focus:border-orange-300 focus:ring-orange-300/20"
                 />
-                <Button 
-                  type="submit" 
-                  size="lg" 
+                <Button
+                  type="submit"
+                  size="lg"
                   className="w-full bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white py-6 text-lg rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105"
                 >
                   Submit
