@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { SkillCard } from "@/components/SkillCard";
 import { skills } from "@/data/skills";
-import { FadeInSection } from "@/components/FadeInSection";
+import { FadeInSection } from "@/components/shared/FadeInSection";
 
 const About = () => {
   const bgRefAbout = useRef<HTMLDivElement>(null);
