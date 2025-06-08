@@ -109,7 +109,7 @@ const Hero = () => {
       {/* Scroll indicator with fade toggle */}
       {!hasScrolled && (
         <div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer animate-bounce transition-opacity duration-500"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer animate-bounce transition-opacity duration-250"
           onClick={scrollToProjects}
           title="Scroll down"
         >
