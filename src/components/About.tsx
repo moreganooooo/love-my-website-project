@@ -32,7 +32,7 @@ const About = () => {
         src="/5594015.eps"
         alt=""
         aria-hidden="true"
-        className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover opacity-10 z-0"
+        className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover opacity-30 z-0"
         style={{ objectFit: "cover" }}
       />
       {/* Existing background blobs */}
