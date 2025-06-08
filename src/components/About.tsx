@@ -46,10 +46,10 @@ const About = () => {
 
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent animate-fade-up">
             About Me
           </h2>
-          <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed animate-fade-up delay-200">
             I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing.
             <br />
             I’ve spent the last 10+ years blending structure with soul: building lifecycle campaigns in Salesforce,
