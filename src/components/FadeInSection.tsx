@@ -15,11 +15,14 @@ const FadeInSection = ({ children, className, delay = 0 }: FadeInSectionProps) =
     <div
       ref={ref}
       className={cn(
-        "opacity-0 animate-fill-forwards",
-        isVisible && "animate-fade-up",
+        "transition-all duration-700 ease-out transform",
+        !isVisible && "opacity-0 translate-y-10",
+        isVisible && "opacity-100 translate-y-0",
         className
       )}
-      style={{ animationDelay: `${delay}ms` }}
+      style={{
+        transitionDelay: `${delay}ms`,
+      }}
     >
       {children}
     </div>
