@@ -1,5 +1,7 @@
 import { useRef, useEffect } from 'react';
-import { SkillCard } from '@/components/SkillCard';
+// import { SkillCard } from '@/components/SkillCard';
+// import { SkillCard } from '@/components/shared/SkillCard';
+import { SkillCard } from '@/components/shared/skillscard';
 import { skills } from '@/data/skills';
 import { FadeInSection } from '@/components/shared/FadeInSection';
 

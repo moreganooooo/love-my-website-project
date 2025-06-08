@@ -7,10 +7,9 @@ type FadeInSectionProps = {
   children: ReactNode;
   className?: string;
   delay?: number;
-  repeat?: boolean;
 };
 
-const FadeInSection = ({ children, className, delay = 0, repeat = false }: FadeInSectionProps) => {
+const FadeInSection = ({ children, className, delay = 0 }: FadeInSectionProps) => {
   const { ref, isVisible } = useInView(0.25);
 
   // Generate a delay class name based on the delay prop
