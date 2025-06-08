@@ -48,11 +48,13 @@ const Hero = () => {
           ref={bgRef1}
           className="absolute inset-0 opacity-100 z-0 will-change-transform"
         >
-          <div className="absolute top-0 left-0 w-full h-full bg-red-500"></div>
+          {/* Remove or comment out the next line: */}
+          {/* <div className="absolute top-0 left-0 w-full h-full bg-red-500"></div> */}
+          {/* Optionally, add a subtle gradient or shape here if you want */}
         </div>
         <div
           ref={bgRef2}
-          className="absolute inset-0 opacity-40 will-change-transform"
+          className="absolute inset-0 opacity-80 will-change-transform"
         >
           {/* Layer 2: faster */}
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
