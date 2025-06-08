@@ -48,18 +48,17 @@ const Hero = () => {
           ref={bgRef1}
           className="absolute inset-0 opacity-100 z-0 will-change-transform"
         >
-          {/* Remove or comment out the next line: */}
-          {/* <div className="absolute top-0 left-0 w-full h-full bg-red-500"></div> */}
-          {/* Optionally, add a subtle gradient or shape here if you want */}
+          {/* Layer 1: slower */}
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-300/30 via-purple-400/20 to-orange-500/30 blur-2xl"></div>
         </div>
         <div
           ref={bgRef2}
-          className="absolute inset-0 opacity-80 will-change-transform"
+          className="absolute inset-0 opacity-100 will-change-transform"
         >
           {/* Layer 2: faster */}
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-gradient-to-tl from-white/15 to-transparent rounded-full blur-2xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-r from-purple-300/20 to-orange-300/20 rounded-full blur-3xl animate-bounce"></div>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white/60 to-transparent rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-gradient-to-tl from-white/50 to-transparent rounded-full blur-2xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-r from-purple-300/60 to-orange-300/60 rounded-full blur-3xl animate-bounce"></div>
         </div>
       </div>
 
