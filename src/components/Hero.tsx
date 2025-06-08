@@ -58,21 +58,13 @@ const Hero = () => {
                 <stop offset="100%" stopColor="rgba(255,150,100,0.1)" />
               </linearGradient>
             </defs>
+            {/* Swooshy wave paths only */}
             <path d="M-200,300 Q50,100 300,300 T800,300 T1200,300 L1200,1000 L-200,1000 Z" fill="url(#swirl1)" className="animate-pulse">
               <animateTransform attributeName="transform" type="translate" values="-100,0; 100,20; -100,0" dur="12s" repeatCount="indefinite"/>
             </path>
             <path d="M-200,600 Q100,400 400,600 T800,600 T1200,600 L1200,1000 L-200,1000 Z" fill="url(#swirl2)" className="animate-pulse delay-500">
               <animateTransform attributeName="transform" type="translate" values="100,0; -100,15; 100,0" dur="15s" repeatCount="indefinite"/>
             </path>
-            <circle cx="200" cy="200" r="100" fill="rgba(255,255,255,0.1)" className="animate-pulse">
-              <animateTransform attributeName="transform" type="translate" values="-50,0; 150,50; -50,0" dur="18s" repeatCount="indefinite"/>
-            </circle>
-            <circle cx="800" cy="700" r="80" fill="rgba(255,200,150,0.15)" className="animate-pulse delay-700">
-              <animateTransform attributeName="transform" type="translate" values="50,0; -150,30; 50,0" dur="14s" repeatCount="indefinite"/>
-            </circle>
-            <ellipse cx="500" cy="150" rx="60" ry="30" fill="rgba(255,255,255,0.08)" className="animate-pulse delay-300">
-              <animateTransform attributeName="transform" type="translate" values="0,0; 200,40; 0,0" dur="20s" repeatCount="indefinite"/>
-            </ellipse>
           </svg>
         </div>
       </div>
