@@ -12,8 +12,7 @@ type FadeInSectionProps = {
 const FadeInSection = ({ children, className, delay = 0 }: FadeInSectionProps) => {
   const { ref, isVisible } = useInView(0.25);
 
-  // Generate a delay class name based on the delay prop
-  const delayClass = styles[`fadeInDelay${delay}`] || '';
+  const delayClass = styles[`fadeInDelay${delay}`];
 
   return (
     <div

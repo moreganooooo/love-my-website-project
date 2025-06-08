@@ -21,5 +21,8 @@
 .fadeInDelay400 { transition-delay: 400ms; }
 .fadeInDelay500 { transition-delay: 500ms; }
 .fadeInDelay600 { transition-delay: 600ms; }
+.fadeInDelay650 { transition-delay: 650ms; }
 .fadeInDelay800 { transition-delay: 800ms; }
+.fadeInDelay900 { transition-delay: 900ms; }
 .fadeInDelay1000 { transition-delay: 1000ms; }
+.fadeInDelay1150 { transition-delay: 1150ms; }
