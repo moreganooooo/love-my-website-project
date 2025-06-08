@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 import type { Skill } from "@/types";
-import { FadeInSection } from "@/components/shared/FadeInSection";
+import { FadeInSection } from "@/components/FadeInSection";
 
 type SkillCardProps = {
   skill: Skill;
