@@ -1,6 +1,7 @@
 import { useInView } from "@/hooks/useInView";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
+import styles from "./FadeInSection.module.css";
 
 type FadeInSectionProps = {
   children: ReactNode;
@@ -15,20 +16,20 @@ const FadeInSection = ({
   delay = 0,
   repeat = false,
 }: FadeInSectionProps) => {
-  const { ref, isVisible } = useInView({ threshold: 0.25, triggerOnce: !repeat });
+  const { ref, isVisible } = useInView(0.25);
+
+  // Generate a delay class name based on the delay prop
+  const delayClass = styles[`fadeInDelay${delay}`] || "";
 
   return (
     <div
       ref={ref}
       className={cn(
-        "opacity-0",
-        isVisible && "animate-fade-up",
+        styles.fadeInSection,
+        isVisible && styles.fadeInSectionVisible,
+        delayClass,
         className
       )}
-      style={{
-        animationDelay: `${delay}ms`,
-        animationFillMode: "forwards",
-      }}
     >
       {children}
     </div>
