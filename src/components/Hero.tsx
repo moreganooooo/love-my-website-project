@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 
 const Hero = () => {
-  const bgRef = useRef<HTMLDivElement>(null);
+  const bgRef1 = useRef<HTMLDivElement>(null);
+  const bgRef2 = useRef<HTMLDivElement>(null);
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
@@ -13,8 +14,11 @@ const Hero = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const offsetY = window.scrollY;
-          if (bgRef.current) {
-            bgRef.current.style.transform = `translateY(${window.scrollY * 0.4}px)`;
+          if (bgRef1.current) {
+            bgRef1.current.style.transform = `translateY(${offsetY * 0.2}px)`;
+          }
+          if (bgRef2.current) {
+            bgRef2.current.style.transform = `translateY(${offsetY * 0.4}px)`;
           }
           setHasScrolled(offsetY > window.innerHeight * 0.6);
           ticking = false;
@@ -37,21 +41,25 @@ const Hero = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-20 md:pt-28 lg:pt-36 pb-16 md:pb-24 lg:pb-32 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700">
-      {/* Animated texture background */}
-      <div className="absolute inset-0 overflow-hidden">
+    <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-20 md:pt-28 lg:pt-36 pb-16 md:pb-24 lg:pb-32 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700 overflow-hidden">
+      {/* Parallax Background Layers */}
+      <div className="absolute inset-0 pointer-events-none">
         <div
-          ref={bgRef}
+          ref={bgRef1}
+          className="absolute inset-0 opacity-30 will-change-transform"
+        >
+          {/* Layer 1: slower */}
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-300/30 via-purple-400/20 to-orange-500/30 animate-pulse"></div>
+        </div>
+        <div
+          ref={bgRef2}
           className="absolute inset-0 opacity-40 will-change-transform"
         >
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-300/30 via-purple-400/20 to-orange-500/30 animate-pulse"></div>
+          {/* Layer 2: faster */}
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-gradient-to-tl from-white/15 to-transparent rounded-full blur-2xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-r from-purple-300/20 to-orange-300/20 rounded-full blur-3xl animate-bounce"></div>
         </div>
-
-        {/* SVG swirls moved to component */}
-        {/* <HeroBackground /> */}
       </div>
 
       {/* Content Centered */}
