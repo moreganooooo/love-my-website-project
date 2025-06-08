@@ -1,7 +1,7 @@
 import { ExternalLink, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import BackgroundWrapper from '@/components/backgroundwrapper';
+import BackgroundWrapper from '@/components/BackgroundWrapper';
 
 const Projects = () => {
   const projects = [
