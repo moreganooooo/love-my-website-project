@@ -90,10 +90,14 @@ const About = () => {
           {skills.map((skill, index) => (
             <div
               key={skill.title}
-              className="p-[2px] rounded-2xl bg-gradient-to-br from-orange-400 via-purple-400 to-orange-200"
+              className="group p-[2px] rounded-2xl bg-gradient-to-br from-orange-400 via-purple-400 to-orange-200
+                         bg-[length:200%_200%] bg-[position:0%_0%] transition-all duration-500
+                         hover:bg-[position:100%_100%]"
             >
               <Card 
-                className="group hover:shadow-2xl shadow-xl transition-all duration-500 hover:-translate-y-3 border-0 bg-gradient-to-br from-white via-orange-50/50 to-purple-50/50 backdrop-blur-sm hover:from-orange-50 hover:to-purple-50 rounded-2xl"
+                className="hover:shadow-2xl shadow-xl transition-all duration-500 hover:-translate-y-3 border-0
+                           bg-gradient-to-br from-white via-orange-50/50 to-purple-50/50 backdrop-blur-sm
+                           hover:from-orange-50 hover:to-purple-50 rounded-2xl"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <CardContent className="p-6 text-center">
