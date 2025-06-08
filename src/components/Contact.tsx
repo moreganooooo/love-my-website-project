@@ -1,4 +1,4 @@
-
+cot
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,19 +10,19 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      details: "morgan@portfolio.com",
-      action: "mailto:morgan@portfolio.com"
+      details: "escott.morgan@gmail.com",
+      action: "mailto:escott.morgan@gmail.com"
     },
     {
       icon: Phone,
       title: "Phone",
-      details: "+1 (555) 123-4567",
-      action: "tel:+15551234567"
+      details: "+1 (716) 352-9050",
+      action: "tel:+17163529050"
     },
     {
       icon: MapPin,
       title: "Location",
-      details: "Creative Studio, CA",
+      details: "Williamsville, NY",
       action: "#"
     }
   ];
