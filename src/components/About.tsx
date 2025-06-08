@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import { SkillCard } from "@/components/SkillCard";
 import { skills } from "@/data/skills";
+import { FadeInSection } from "@/components/shared/FadeInSection";
 
 const About = () => {
   const bgRefAbout = useRef<HTMLDivElement>(null);
@@ -46,28 +47,34 @@ const About = () => {
 
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent animate-fade-up">
-            About Me
-          </h2>
-          <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed animate-fade-up delay-200">
-            I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing.
-            <br />
-            I’ve spent the last 10+ years blending structure with soul: building lifecycle campaigns in Salesforce,
-            <br />
-            writing content that connects, and designing visual experiences that feel thoughtful
-            <br />
-            from the first touchpoint to the last.
-            <br />
-            <br />
-            My work lives at the intersection of strategy, storytelling, and quietly joyful execution.
-            <br />
-            If that sounds like your vibe — let’s talk.
-          </p>
+          <FadeInSection>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent">
+              About Me
+            </h2>
+          </FadeInSection>
+          <FadeInSection delay={200}>
+            <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
+              I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing.
+              <br />
+              I’ve spent the last 10+ years blending structure with soul: building lifecycle campaigns in Salesforce,
+              <br />
+              writing content that connects, and designing visual experiences that feel thoughtful
+              <br />
+              from the first touchpoint to the last.
+              <br />
+              <br />
+              My work lives at the intersection of strategy, storytelling, and quietly joyful execution.
+              <br />
+              If that sounds like your vibe — let’s talk.
+            </p>
+          </FadeInSection>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {skills.map((skill, index) => (
-            <SkillCard key={skill.title} skill={skill} index={index} />
+            <FadeInSection key={skill.title} delay={index * 100}>
+              <SkillCard skill={skill} index={index} />
+            </FadeInSection>
           ))}
         </div>
       </div>
