@@ -53,12 +53,19 @@ const Hero = () => {
         </div>
         <div
           ref={bgRef2}
-          className="absolute inset-0 opacity-100 will-change-transform"
+          className="absolute inset-0 will-change-transform pointer-events-none"
         >
           {/* Layer 2: faster */}
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white/60 to-transparent rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-gradient-to-tl from-white/50 to-transparent rounded-full blur-2xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-r from-purple-300/60 to-orange-300/60 rounded-full blur-3xl animate-bounce"></div>
+
+          <svg className="absolute top-20 left-1/3 w-80 h-80" viewBox="0 0 200 200">
+            <ellipse cx="100" cy="100" rx="80" ry="60" fill="#a78bfa" fillOpacity="0.2" />
+          </svg>
+          <svg className="absolute bottom-10 right-1/4 w-64 h-64" viewBox="0 0 200 200">
+            <rect x="40" y="40" width="120" height="120" rx="40" fill="#fbbf24" fillOpacity="0.15" />
+          </svg>
         </div>
       </div>
 
