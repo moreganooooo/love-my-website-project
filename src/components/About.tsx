@@ -29,7 +29,7 @@ const About = () => {
       {/* Parallax Decorative background */}
       <div
         ref={bgRefAbout}
-        className="pointer-events-none select-none absolute inset-0 w-full h-full z-0 will-change-transform transition-transform"
+        className="pointer-events-none select-none absolute inset-0 w-full h-full z-0 will-change-transform transition-transform motion-reduce:transform-none"
         aria-hidden="true"
       >
         <img
@@ -72,7 +72,11 @@ const About = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {skills.map((skill, index) => (
-            <FadeInSection key={skill.title} delay={index * 100}>
+            <FadeInSection
+              key={skill.title}
+              delay={index * 100}
+              className="will-change-transform motion-reduce:transform-none"
+            >
               <SkillCard skill={skill} index={index} />
             </FadeInSection>
           ))}
