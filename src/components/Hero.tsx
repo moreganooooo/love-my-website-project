@@ -14,7 +14,7 @@ const Hero = () => {
         window.requestAnimationFrame(() => {
           const offsetY = window.scrollY;
           if (bgRef.current) {
-            bgRef.current.style.transform = `translateY(${offsetY * 0.15}px)`;
+            bgRef.current.style.transform = `translateY(${window.scrollY * 0.4}px)`;
           }
           setHasScrolled(offsetY > window.innerHeight * 0.6);
           ticking = false;
