@@ -29,7 +29,7 @@ const About = () => {
     <section className="py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 relative overflow-hidden">
       {/* Decorative background */}
       <img
-        src="5594016.jpg"
+        src="/5594016.jpg"
         alt=""
         aria-hidden="true"
         className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover opacity-10 z-0"
@@ -47,12 +47,12 @@ const About = () => {
             About Me
           </h2>
           <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
-            I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing.<br />
-            I’ve spent the last 10+ years blending structure with soul: building lifecycle campaigns in Salesforce,<br />
-            writing content that connects, and designing visual experiences that feel thoughtful<br /> 
+            I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing. 
+            I’ve spent the last 10+ years blending structure with soul: building lifecycle campaigns in Salesforce, 
+            writing content that connects, and designing visual experiences that feel thoughtful 
             from the first touchpoint to the last.
             <br /><br />
-            My work lives at the intersection of strategy, storytelling, and quietly joyful execution.<br /> 
+            My work lives at the intersection of strategy, storytelling, and quietly joyful execution. 
             If that sounds like your vibe — let’s talk.
           </p>
         </div>
@@ -84,4 +84,3 @@ const About = () => {
 };
 
 export default About;
-
