@@ -1,38 +1,13 @@
 
-import { useRef, useEffect } from 'react';
 import { SkillCard } from '@/components/shared/skillscard';
 import { skills } from '@/data/skills';
 import { FadeInSection } from '@/components/shared/FadeInSection';
 
 const About = () => {
-  const bgRefAbout = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const offsetY = window.scrollY;
-          if (bgRefAbout.current) {
-            bgRefAbout.current.style.transform = `translateY(${offsetY * 0.12}px)`;
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <section className="relative min-h-[60vh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 [overflow:clip] will-change-transform">
-      {/* Parallax Decorative background */}
-      <div
-        ref={bgRefAbout}
-        className="pointer-events-none select-none absolute inset-0 w-full h-full z-0 will-change-transform transition-transform"
-        aria-hidden="true"
-      >
+    <section className="relative min-h-[60vh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden">
+      {/* Static Decorative background */}
+      <div className="pointer-events-none select-none absolute inset-0 w-full h-full z-0" aria-hidden="true">
         <img src="/5594016.jpg" alt="" className="w-full h-full object-cover opacity-10" />
       </div>
 

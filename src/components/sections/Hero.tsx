@@ -1,30 +1,14 @@
+
 import { ArrowDown, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Hero = () => {
-  const bgRef1 = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
-    let ticking = false;
-
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const offsetY = window.scrollY;
-          if (bgRef1.current) {
-            bgRef1.current.style.transform = `translateY(${offsetY * 0.2}px)`;
-          }
-          if (contentRef.current) {
-            contentRef.current.style.transform = `translateY(${offsetY * 0.08}px)`; // subtle parallax
-          }
-          setHasScrolled(offsetY > window.innerHeight * 0.6);
-          ticking = false;
-        });
-        ticking = true;
-      }
+      setHasScrolled(window.scrollY > window.innerHeight * 0.6);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -42,9 +26,9 @@ const Hero = () => {
 
   return (
     <section className="min-h-[90vh] flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-16 md:pt-20 lg:pt-24 pb-12 md:pb-16 lg:pb-20 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700 overflow-hidden">
-      {/* Parallax SVG Swirl Layer */}
+      {/* Static SVG Background Layer */}
       <div className="absolute inset-0 pointer-events-none">
-        <div ref={bgRef1} className="absolute inset-0 opacity-100 z-0 will-change-transform">
+        <div className="absolute inset-0 opacity-100 z-0">
           {/* SVG Swirling Texture Layer */}
           <svg
             className="absolute inset-0 w-full h-full opacity-60"
@@ -94,12 +78,9 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Content Centered & Sticky */}
+      {/* Content Centered */}
       <div className="flex items-center justify-center min-h-[50vh] w-full">
-        <div
-          ref={contentRef}
-          className="sticky top-24 text-center z-10 w-full max-w-screen-md sm:max-w-screen-lg md:max-w-screen-xl mx-auto animate-fade-up px-4 sm:px-6 md:px-10 transition-transform duration-300"
-        >
+        <div className="text-center z-10 w-full max-w-screen-md sm:max-w-screen-lg md:max-w-screen-xl mx-auto animate-fade-up px-4 sm:px-6 md:px-10">
           <div className="flex flex-col justify-center items-center min-h-[50vh] space-y-8 md:space-y-10">
             <h1 className="relative z-10 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-playfair bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-[1.3] px-4 py-2 overflow-visible animate-fade-up delay-200">
               Hi, I'm Morgan.
