@@ -1,5 +1,3 @@
-// src/components/LavaLampControls.tsx
-
 import { useState, useEffect } from "react";
 import LavaLampGLSL from "./LavaLampGLSL";
 
@@ -47,7 +45,7 @@ export default function LavaLampControls() {
 
       <div className="absolute bottom-4 left-4 p-4 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg space-y-3 w-64">
         <label className="block">
-          <span className="text-sm font-medium">Glow Intensity</span>
+          <span className="text-sm font-medium">Glow Intensity: {glowIntensity}</span>
           <input
             type="range"
             min="0"
@@ -60,7 +58,7 @@ export default function LavaLampControls() {
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium">Blob Count</span>
+          <span className="text-sm font-medium">Blob Count: {blobCount}</span>
           <input
             type="range"
             min="3"
@@ -72,7 +70,7 @@ export default function LavaLampControls() {
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium">Blob Speed</span>
+          <span className="text-sm font-medium">Blob Speed: {blobSpeed}</span>
           <input
             type="range"
             min="0.05"
@@ -85,7 +83,7 @@ export default function LavaLampControls() {
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium">Opacity</span>
+          <span className="text-sm font-medium">Opacity: {opacity}</span>
           <input
             type="range"
             min="0.1"
