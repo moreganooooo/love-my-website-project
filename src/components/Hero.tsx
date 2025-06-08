@@ -41,7 +41,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="min-h-[75vh] flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-16 md:pt-20 lg:pt-24 pb-12 md:pb-16 lg:pb-20 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700 overflow-hidden">
+    <section className="min-h-[80vh] flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-16 md:pt-20 lg:pt-24 pb-12 md:pb-16 lg:pb-20 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700 overflow-hidden">
       {/* Parallax SVG Swirl Layer */}
       <div className="absolute inset-0 pointer-events-none">
         <div
