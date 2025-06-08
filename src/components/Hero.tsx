@@ -49,7 +49,7 @@ const Hero = () => {
           className="absolute inset-0 opacity-100 z-0 will-change-transform"
         >
           {/* SVG Swirling Texture Layer */}
-          <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+          <svg className="absolute inset-0 w-full h-full opacity-40" viewBox="0 0 1000 1000" preserveAspectRatio="none">
             <defs>
               <linearGradient id="swirl1" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="rgba(255,255,255,0.3)" />
