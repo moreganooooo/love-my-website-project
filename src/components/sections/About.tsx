@@ -1,7 +1,7 @@
-
 import { SkillCard } from '@/components/shared/skillscard';
 import { skills } from '@/data/skills';
 import { FadeInSection } from '@/components/shared/FadeInSection';
+import styles from './About.module.css';
 
 const About = () => {
   return (
@@ -49,10 +49,7 @@ const About = () => {
           {skills.map((skill, index) => (
             <div
               key={skill.title}
-              className="transition-all duration-1000 ease-out"
-              style={{
-                transitionDelay: `${index * 150}ms`
-              }}
+              className={`transition-all duration-1000 ease-out ${styles.skillCard} ${styles[`delay-${index}`]}`}
             >
               <SkillCard skill={skill} />
             </div>
