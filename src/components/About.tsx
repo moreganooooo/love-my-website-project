@@ -1,126 +1,126 @@
 import { useRef, useEffect } from "react";
-import { Code, Palette, Rocket, Users, GitCompareArrows, Send, LayoutDashboard } from "lucide-react";
+import { Palette, GitCompareArrows, Send, LayoutDashboard } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
+const skills = [
+	{
+		icon: GitCompareArrows,
+		title: "Lifecycle Marketing",
+		description: "Building customer journeys that convert and retain",
+	},
+	{
+		icon: Send,
+		title: "Email Marketing",
+		description: "Messaging that resonates with every audience",
+	},
+	{
+		icon: LayoutDashboard,
+		title: "CRM Optimization",
+		description: "Turning data into actionable insights and strategies",
+	},
+	{
+		icon: Palette,
+		title: "Copywriting  & Design",
+		description: "Crafting compelling narratives and visuals",
+	},
+];
+
 const About = () => {
-  const bgRefAbout = useRef<HTMLDivElement>(null);
+	const bgRefAbout = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    let ticking = false;
+	useEffect(() => {
+		let ticking = false;
+		const handleScroll = () => {
+			if (!ticking) {
+				window.requestAnimationFrame(() => {
+					const offsetY = window.scrollY;
+					if (bgRefAbout.current) {
+						bgRefAbout.current.style.transform = `translateY(${offsetY * 0.12}px)`;
+					}
+					ticking = false;
+				});
+				ticking = true;
+			}
+		};
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const offsetY = window.scrollY;
-          if (bgRefAbout.current) {
-            bgRefAbout.current.style.transform = `translateY(${offsetY * 0.12}px)`; // adjust multiplier for effect strength
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const skills = [
-    {
-      icon: GitCompareArrows,
-      title: "Lifecycle Marketing",
-      description: "Building customer journeys that convert and retain"
-    },
-    {
-      icon: Send,
-      title: "Email Marketing",
-      description: "Messaging that resonates with every audience"
-    },
-    {
-      icon: LayoutDashboard,
-      title: "CRM Optimization",
-      description: "Turning data into actionable insights and strategies"
-    },
-    {
-      icon: Palette,
-      title: "Copywriting  & Design",
-      description: "Crafting compelling narratives and visuals"
-    }
-  ];
-
-  return (
-    <section
-      className="relative min-h-[60vh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden"
-      style={{ overflow: "hidden" }}
-    >
-      {/* Parallax Decorative background */}
-      <div
-        ref={bgRefAbout}
-        className="pointer-events-none select-none absolute inset-0 w-full h-full z-0 will-change-transform"
-        style={{ transition: "transform 0.2s linear" }}
-        aria-hidden="true"
-      >
-        <img
-          src="/5594016.jpg"
-          alt=""
-          className="w-full h-full object-cover opacity-10"
-          style={{ objectFit: "cover" }}
-        />
-      </div>
-      {/* Existing background blobs */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 right-0 w-64 h-64 bg-gradient-to-l from-orange-200/30 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-0 w-64 h-64 bg-gradient-to-r from-purple-200/30 to-transparent rounded-full blur-3xl"></div>
-      </div>
-      
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent">
-            About Me
-          </h2>
-          <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
-            I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing.<br /> 
-            I’ve spent the last 10+ years blending structure with soul: building lifecycle campaigns in Salesforce,<br /> 
-            writing content that connects, and designing visual experiences that feel thoughtful<br /> 
-            from the first touchpoint to the last.
-            <br /><br />
-            My work lives at the intersection of strategy, storytelling, and quietly joyful execution.<br /> 
-            If that sounds like your vibe — let’s talk.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skills.map((skill, index) => (
-            <div
-              key={skill.title}
-              className="group p-[2px] rounded-2xl bg-gradient-to-br from-orange-400 via-purple-400 to-orange-200
-                         bg-[length:200%_200%] bg-[position:0%_0%] transition-all duration-500
-                         hover:bg-[position:100%_100%]"
-            >
-              <Card 
-                className="shadow-xl transition-all duration-500 border-0
-                           bg-gradient-to-br from-white via-orange-50/50 to-purple-50/50 backdrop-blur-sm
-                           rounded-2xl group-hover:-translate-y-3 group-hover:shadow-2xl"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <CardContent className="p-6 text-center">
-                  <div className="mb-4 inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-purple-600 rounded-full shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-                    <skill.icon className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 bg-gradient-to-r from-orange-700 to-purple-700 bg-clip-text text-transparent">
-                    {skill.title}
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed">
-                    {skill.description}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+	return (
+		<section className="relative min-h-[60vh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden">
+			{/* Parallax Decorative background */}
+			<div
+				ref={bgRefAbout}
+				className="pointer-events-none select-none absolute inset-0 w-full h-full z-0 will-change-transform transition-transform"
+				aria-hidden="true"
+			>
+				<img
+					src="/5594016.jpg"
+					alt=""
+					className="w-full h-full object-cover opacity-10"
+				/>
+			</div>
+			{/* Existing background blobs */}
+			<div className="absolute inset-0">
+				<div className="absolute top-1/4 right-0 w-64 h-64 bg-gradient-to-l from-orange-200/30 to-transparent rounded-full blur-3xl"></div>
+				<div className="absolute bottom-1/4 left-0 w-64 h-64 bg-gradient-to-r from-purple-200/30 to-transparent rounded-full blur-3xl"></div>
+			</div>
+			<div className="max-w-6xl mx-auto relative z-10">
+				<div className="text-center mb-16">
+					<h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent">
+						About Me
+					</h2>
+					<p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
+						I'm a creative strategist and CRM whisperer with a deep love for
+						systems that make stories sing.
+						<br />
+						I’ve spent the last 10+ years blending structure with soul: building
+						lifecycle campaigns in Salesforce,
+						<br />
+						writing content that connects, and designing visual experiences that
+						feel thoughtful
+						<br />
+						from the first touchpoint to the last.
+						<br />
+						<br />
+						My work lives at the intersection of strategy, storytelling, and
+						quietly joyful execution.
+						<br />
+						If that sounds like your vibe — let’s talk.
+					</p>
+				</div>
+				<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+					{skills.map((skill, index) => (
+						<div
+							key={skill.title}
+							className="group p-[2px] rounded-2xl bg-gradient-to-br from-orange-400 via-purple-400 to-orange-200
+                bg-[length:200%_200%] bg-[position:0%_0%] transition-all duration-500
+                hover:bg-[position:100%_100%]"
+						>
+							<Card
+								className="shadow-xl transition-all duration-500 border-0
+                  bg-gradient-to-br from-white via-orange-50/50 to-purple-50/50 backdrop-blur-sm
+                  rounded-2xl group-hover:-translate-y-3 group-hover:shadow-2xl"
+								style={{ animationDelay: `${index * 100}ms` }}
+							>
+								<CardContent className="p-6 text-center">
+									<div className="mb-4 inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-purple-600 rounded-full shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+										<skill.icon className="h-8 w-8 text-white" />
+									</div>
+									<h3 className="text-xl font-semibold mb-3 bg-gradient-to-r from-orange-700 to-purple-700 bg-clip-text text-transparent">
+										{skill.title}
+									</h3>
+									<p className="text-slate-600 leading-relaxed">
+										{skill.description}
+									</p>
+								</CardContent>
+							</Card>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+	);
 };
 
 export default About;
