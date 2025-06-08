@@ -72,9 +72,9 @@ const About = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skills.map((skill, index) => (
-            <FadeInSection key={skill.title} delay={400 + index * 250}>
-              <SkillCard skill={skill} index={index} />
+          {skills.map((skill) => (
+            <FadeInSection key={skill.title} delay={400}>
+              <SkillCard skill={skill} />
             </FadeInSection>
           ))}
         </div>

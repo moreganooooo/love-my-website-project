@@ -4,13 +4,19 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/types": ["./types/types"]
     },
     "noImplicitAny": false,
     "noUnusedParameters": false,
     "skipLibCheck": true,
     "allowJs": true,
     "noUnusedLocals": false,
-    "strictNullChecks": false
-  }
+    "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "composite": true
+  },
+  "include": ["src/**/*", "types/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

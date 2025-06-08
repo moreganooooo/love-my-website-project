@@ -1,5 +1,10 @@
 import { Palette, GitCompareArrows, Send, LayoutDashboard } from 'lucide-react';
-import type { Skill } from '@/types';
+
+export interface Skill {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}
 
 export const skills: Skill[] = [
   {
