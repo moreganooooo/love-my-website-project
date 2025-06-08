@@ -15,17 +15,20 @@ const FadeInSection = ({
   delay = 0,
   repeat = false,
 }: FadeInSectionProps) => {
-  const { ref, isVisible } = useInView();
+  const { ref, isVisible } = useInView({ threshold: 0.25, triggerOnce: !repeat });
 
   return (
     <div
       ref={ref}
       className={cn(
-        "opacity-0 transition-opacity duration-700 ease-out transform-gpu translate-y-10",
-        isVisible && "opacity-100 translate-y-0",
+        "opacity-0",
+        isVisible && "animate-fade-up",
         className
       )}
-      style={{ transitionDelay: `${delay}ms` }}
+      style={{
+        animationDelay: `${delay}ms`,
+        animationFillMode: "forwards",
+      }}
     >
       {children}
     </div>
