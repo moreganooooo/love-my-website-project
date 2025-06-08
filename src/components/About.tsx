@@ -27,7 +27,15 @@ const About = () => {
 
   return (
     <section className="py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 relative overflow-hidden">
-      {/* Background decoration */}
+      {/* Decorative EPS background */}
+      <img
+        src="/5594015.eps"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover opacity-10 z-0"
+        style={{ objectFit: "cover" }}
+      />
+      {/* Existing background blobs */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 right-0 w-64 h-64 bg-gradient-to-l from-orange-200/30 to-transparent rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 left-0 w-64 h-64 bg-gradient-to-r from-purple-200/30 to-transparent rounded-full blur-3xl"></div>
@@ -39,11 +47,13 @@ const About = () => {
             About Me
           </h2>
           <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
-            I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing. I’ve spent the last 10+ years blending structure with soul: building lifecycle campaigns in Salesforce, writing content that actually connects, and designing visual experiences that feel thoughtful from the first touchpoint to the last.
+            I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing. 
+            I’ve spent the last 10+ years blending structure with soul: building lifecycle campaigns in Salesforce, 
+            writing content that connects, and designing visual experiences that feel thoughtful 
+            from the first touchpoint to the last.
             <br /><br />
-            I’ve worked with scrappy startups, mission-driven orgs, and growing SaaS platforms — always bringing a human-first lens to marketing, messaging, and collaboration. Whether I’m crafting an email journey, optimizing a CRM workflow, or designing a pitch deck that doesn’t make people’s eyes glaze over, I care about two things: clarity and resonance.
-            <br /><br />
-            My work lives at the intersection of strategy, storytelling, and quietly joyful execution. If that sounds like your vibe — let’s talk.
+            My work lives at the intersection of strategy, storytelling, and quietly joyful execution. 
+            If that sounds like your vibe — let’s talk.
           </p>
         </div>
 
