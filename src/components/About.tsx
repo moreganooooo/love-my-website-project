@@ -1,28 +1,27 @@
-
 import { Code, Palette, Rocket, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const About = () => {
   const skills = [
     {
-      icon: Code,
-      title: "Frontend Development",
-      description: "React, TypeScript, Tailwind CSS, and modern web technologies"
+      icon: git-compare-arrows,
+      title: "Lifecycle Marketing",
+      description: "Building customer journeys that convert and retain"
     },
     {
-      icon: Palette,
-      title: "UI/UX Design",
-      description: "Creating intuitive and beautiful user experiences"
+      icon: send,
+      title: "Email Marketing",
+      description: "Messaging that resonates with every audience"
     },
     {
-      icon: Rocket,
-      title: "Performance",
-      description: "Optimizing applications for speed and scalability"
+      icon: layout-dashboard,
+      title: "CRM Optimization",
+      description: "Turning data into actionable insights and strategies"
     },
     {
-      icon: Users,
-      title: "Collaboration",
-      description: "Working effectively with teams and stakeholders"
+      icon: spline-pointer,
+      title: "Copywriting  & Design",
+      description: "Crafting compelling narratives and visuals"
     }
   ];
 
@@ -40,9 +39,11 @@ const About = () => {
             About Me
           </h2>
           <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
-            I'm a passionate developer with 5+ years of experience creating digital solutions 
-            that combine beautiful design with robust functionality. I love turning complex 
-            problems into simple, elegant designs.
+            I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing. I’ve spent the last 10+ years blending structure with soul: building lifecycle campaigns in Salesforce, writing content that actually connects, and designing visual experiences that feel thoughtful from the first touchpoint to the last.
+            <br /><br />
+            I’ve worked with scrappy startups, mission-driven orgs, and growing SaaS platforms — always bringing a human-first lens to marketing, messaging, and collaboration. Whether I’m crafting an email journey, optimizing a CRM workflow, or designing a pitch deck that doesn’t make people’s eyes glaze over, I care about two things: clarity and resonance.
+            <br /><br />
+            My work lives at the intersection of strategy, storytelling, and quietly joyful execution. If that sounds like your vibe — let’s talk.
           </p>
         </div>
 
@@ -73,3 +74,4 @@ const About = () => {
 };
 
 export default About;
+
