@@ -82,8 +82,11 @@ export default function LavaLampGLSL({
           float dist = length(diff);
           float softness = smoothstep(0.0, 0.25, dist);
           float centerGlow = 1.0 - softness;
+          float innerLight = exp(-dist * 15.0);
+          float outerShadow = smoothstep(0.4, 0.1, dist);
+          float depthShading = mix(innerLight, outerShadow, 0.5);
           field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist * dist + 0.00015);
-          blobShade += ${shade.toFixed(2)} * mix(0.7, 1.0, centerGlow) / (dist * dist + 0.001);
+          blobShade += ${shade.toFixed(2)} * depthShading / (dist * dist + 0.001);
         }
       `);
     }
