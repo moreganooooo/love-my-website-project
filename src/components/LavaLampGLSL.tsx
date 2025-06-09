@@ -69,7 +69,7 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution.xy;
           uv = uv * 2.0 - 1.0;
-          float t = u_time * (${blobSpeed.toFixed(2)} * 0.5);
+          float t = u_time * (${blobSpeed.toFixed(2)} * 0.25);
 
           float field = 0.0;
 
@@ -78,7 +78,7 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
           float threshold = 1.0;
           float edge = 0.05;
           float maskBase = smoothstep(threshold - edge, threshold + edge, field);
-          float fadeY = smoothstep(1.0, 0.6, uv.y);
+          float fadeY = smoothstep(1.0, 0.3, uv.y); // More gradual fade at the top
           float mask = maskBase * fadeY;
 
           vec3 baseColor = vec3(0.06, 0.015, 0.18);
