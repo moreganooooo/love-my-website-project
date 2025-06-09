@@ -17,10 +17,11 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
   const [blobSpeed, setBlobSpeed] = useState(0.08);
   const [blobSize, setBlobSize] = useState(0.18);
 
-  const [blobColorStart, setBlobColorStart] = useState('#ff6600');  // Lava orange
-  const [blobColorEnd, setBlobColorEnd] = useState('#a442ec');      // Warm purple
-  const [backgroundStart, setBackgroundStart] = useState('#a442ec'); // Background purple
-  const [backgroundEnd, setBackgroundEnd] = useState('#ff8147');     // Softer orange glow
+  const [blobColorStart, setBlobColorStart] = useState('#ff7a45');
+  const [blobColorEnd, setBlobColorEnd] = useState('#9b4dcb');
+  const [backgroundStart, setBackgroundStart] = useState('#110224');
+  const [backgroundEnd, setBackgroundEnd] = useState('#fc8b51');
+
 
   return (
     <section id={id} className="relative overflow-hidden py-20 px-6">
