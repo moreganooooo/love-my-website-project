@@ -15,10 +15,8 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
     <section id={id} className="relative overflow-hidden py-20 px-6">
       {enabled && (
         <LavaLampGLSL
-          glowIntensity={1.0}
           blobCount={5}
           blobSpeed={1.0}
-          opacity={0.7}
         />
       )}
 

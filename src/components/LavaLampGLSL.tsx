@@ -5,10 +5,8 @@ import * as THREE from "three";
 
 // NOTE: Blob count and visual consistency must not be changed per user request.
 export interface LavaLampGLSLProps {
-  glowIntensity: number;
   blobCount: number;
   blobSpeed: number;
-  opacity: number;
 }
 
 export default function LavaLampGLSL(props: LavaLampGLSLProps) {
