@@ -45,16 +45,16 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
 
       <div className="max-w-6xl mx-auto relative z-10">
         {toggleable && (
-          <div className="flex flex-col items-end gap-4 mb-6">
-            <label className="flex items-center gap-2 text-white text-sm">
-              Lava On/Off
-              <Switch checked={enabled} onCheckedChange={setEnabled} />
-            </label>
-
             <details className="w-full text-white">
               <summary className="cursor-pointer select-none py-1 px-2 rounded bg-white/10 hover:bg-white/20 transition w-max">
-                Customize Lava
+                Customize ♥︎
               </summary>
+
+            <div className="flex flex-col items-end gap-4 mb-6">
+              <label className="flex items-center gap-2 text-white text-sm">
+                Lava On/Off
+                <Switch checked={enabled} onCheckedChange={setEnabled} />
+              </label>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 bg-white/10 backdrop-blur rounded-lg">
                 <label>
@@ -92,8 +92,8 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
                   Reset to Gorgeous
                 </button>
               </div>
+            </div>
             </details>
-          </div>
         )}
 
         {children}
