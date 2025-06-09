@@ -100,7 +100,7 @@ export default function LavaLampGLSL({
 
           ${blobCode}
 
-          float mask = smoothstep(1.02, 1.18, field);
+          float mask = smoothstep(0.7, 1.4, field);
 
           vec3 purple = vec3(0.12, 0.03, 0.25);
           vec3 orange = vec3(1.0, 0.4, 0.15);
@@ -109,9 +109,9 @@ export default function LavaLampGLSL({
           vec3 background = mix(purple, orange, glowFactor * 0.8);
 
           vec3 blobColor = mix(orange, purple, (uv.y + 1.0) * 0.5);
-          blobColor *= 0.7 + 0.3 * clamp(blobShade, 0.0, 1.0);
+          blobColor *= 0.7 + 0.5 * clamp(blobShade, 0.0, 1.0);
 
-          vec3 finalColor = mix(background, blobColor, mask * 0.5);
+          vec3 finalColor = mix(background, blobColor, mask);
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
