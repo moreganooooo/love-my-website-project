@@ -1,3 +1,4 @@
+
 // src/components/LavaLampGLSL.tsx
 
 import { useLayoutEffect, useRef } from 'react';
@@ -66,7 +67,7 @@ export default function LavaLampGLSL({
       const stretch = 0.85 + Math.random() * 0.3;
       const wobbleFreq = 1.0 + Math.random();
       const wobbleAmp = 0.02 + Math.random() * 0.03;
-      const shade = 0.2 + Math.random() * 0.8;
+      const shade = 0.3 + Math.random() * 0.7;
 
       blobSnippets.push(`
         {
@@ -80,13 +81,19 @@ export default function LavaLampGLSL({
           diff = rot * diff;
           diff.y *= ${stretch.toFixed(2)};
           float dist = length(diff);
-          float softness = smoothstep(0.0, 0.25, dist);
-          float centerGlow = 1.0 - softness;
-          float innerLight = exp(-dist * 15.0);
-          float outerShadow = smoothstep(0.4, 0.1, dist);
-          float depthShading = mix(innerLight, outerShadow, 0.5);
-          field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist * dist + 0.00015);
-          blobShade += ${shade.toFixed(2)} * depthShading / (dist * dist + 0.001);
+          
+          // More realistic 3D shading
+          float lightAngle = atan(diff.y, diff.x) + t * 0.1;
+          float lightIntensity = 0.5 + 0.5 * sin(lightAngle);
+          float highlight = exp(-dist * 25.0) * lightIntensity;
+          float midtone = exp(-dist * 8.0);
+          float shadow = smoothstep(0.15, 0.05, dist) * (1.0 - lightIntensity * 0.3);
+          
+          // Combine lighting for 3D effect
+          float lighting = highlight * 0.8 + midtone * 0.6 + shadow * 0.4;
+          
+          field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist * dist + 0.0002);
+          blobShade += ${shade.toFixed(2)} * lighting / (dist * dist + 0.002);
         }
       `);
     }
@@ -109,19 +116,31 @@ export default function LavaLampGLSL({
 
           ${blobSnippets.join('\n')}
 
-          float mask = smoothstep(0.7, 1.4, field);
+          // More defined edges with less blur
+          float mask = smoothstep(0.8, 1.2, field);
 
-          vec3 purple = vec3(0.12, 0.03, 0.25);
-          vec3 orange = vec3(1.0, 0.4, 0.15);
-          float radial = length(uv - vec2(0.0, -1.2));
-          float glowFactor = smoothstep(2.4, 0.0, radial);
-          vec3 background = mix(purple, orange, glowFactor * 0.8);
+          // Enhanced sunset colors
+          vec3 deepPurple = vec3(0.08, 0.02, 0.20);
+          vec3 warmOrange = vec3(1.0, 0.5, 0.2);
+          vec3 softPink = vec3(0.9, 0.4, 0.5);
+          
+          // Create a more sophisticated background gradient
+          float radial = length(uv - vec2(0.0, -1.0));
+          float verticalGrad = (uv.y + 1.0) * 0.5;
+          float glowFactor = smoothstep(2.2, 0.0, radial);
+          
+          vec3 background = mix(deepPurple, warmOrange, glowFactor * 0.7);
+          background = mix(background, softPink, verticalGrad * 0.3 * glowFactor);
 
-          vec3 blobColor = mix(orange, purple, (uv.y + 1.0) * 0.5);
-          blobColor *= 0.7 + 0.5 * clamp(blobShade, 0.0, 1.0);
+          // Enhanced blob colors with better 3D appearance
+          vec3 blobBase = mix(warmOrange, softPink, (uv.y + 1.0) * 0.4);
+          vec3 blobHighlight = mix(blobBase, vec3(1.0, 0.8, 0.6), 0.3);
+          vec3 blobColor = mix(blobBase, blobHighlight, clamp(blobShade * 0.8, 0.0, 1.0));
 
           vec3 finalColor = mix(background, blobColor, mask);
-          gl_FragColor = vec4(finalColor, 1.0);
+          
+          // Reduced opacity for better blending (0.75 instead of 1.0)
+          gl_FragColor = vec4(finalColor, 0.75);
         }
       `,
     });
