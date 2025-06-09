@@ -70,7 +70,11 @@ export default function LavaLampGLSL({
 
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution;
-          vec2 centeredUv = uv * 2.0 - 1.0;
+          vec2 offset = vec2(
+            0.5 * sin(u_time),
+            0.3 * cos(u_time * 0.8)
+          );
+          vec2 centeredUv = uv * 2.0 - 1.0 - offset;
 
           float dist = length(centeredUv);
           float pulse = 0.1 + 0.05 * sin(u_time * 2.0);
