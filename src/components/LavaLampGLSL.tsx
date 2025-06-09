@@ -84,11 +84,11 @@ export default function LavaLampGLSL({
 
             vec2 delta = uv - pos;
             float dist = length(delta);
-            float radius = 0.055;
-            field += radius / (dist * 10.0 + 0.005);
+            float radius = 0.06;
+            field += radius / (dist * 8.0 + 0.005);
           }
 
-          float mask = smoothstep(0.96, 1.0, field);
+          float mask = smoothstep(0.93, 1.0, field);
 
           vec3 blobColor = mix(vec3(0.43, 0.15, 0.38), vec3(0.69, 0.36, 0.41), uv.y);
           vec3 finalColor = mix(bgColor, blobColor, mask);
