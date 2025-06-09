@@ -218,7 +218,7 @@
   }
 
   body {
-    background-color: hsl(var(--background));
+    background-color: #100438 !important;
     color: hsl(var(--foreground));
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 400;

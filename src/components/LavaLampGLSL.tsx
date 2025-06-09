@@ -68,8 +68,25 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
       transparent: false,
       fragmentShader: `
         precision mediump float;
+        uniform float u_time;
+        uniform vec2 u_resolution;
+        
         void main() {
-          gl_FragColor = vec4(0.06, 0.015, 0.18, 1.0); // Force baseColor always
+          // Lava lamp effect restored
+          vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
+          float t = u_time * 0.2;
+          float field = 0.0;
+          // Blobs
+          ${blobCode}
+          float mask = smoothstep(1.0, 2.0, field);
+          vec3 baseColor = vec3(0.06, 0.015, 0.18);
+          vec3 lavaColor = mix(vec3(1.0, 0.5, 0.2), vec3(0.7, 0.2, 0.8), uv.y * 0.5 + 0.5);
+          vec3 color = mix(baseColor, lavaColor, mask);
+          // Fallback: always output baseColor if mask is invalid
+          if (!(mask >= 0.0 && mask <= 1.0)) {
+            color = baseColor;
+          }
+          gl_FragColor = vec4(color, 1.0);
         }
       `,
     });
@@ -95,5 +112,5 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
     };
   }, [blobCount, blobSpeed]);
 
-  return <div ref={mountRef} className="absolute inset-0 -z-10 bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700" />;
+  return <div ref={mountRef} className="absolute inset-0 -z-10 bg-[#100438] bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700" />;
 }
