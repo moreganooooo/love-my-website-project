@@ -63,6 +63,11 @@ export default function LavaLampGLSL({
           return fract(sin(x) * 43758.5453);
         }
 
+        float metaball(vec2 p, vec2 pos, float r) {
+          float d = length(p - pos);
+          return r * r / (d * d + 0.01);
+        }
+
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution;
 
@@ -76,19 +81,16 @@ export default function LavaLampGLSL({
 
           for (int i = 0; i < 24; i++) {
             float fi = float(i);
-            float phase = fi * 1.2;
+            float phase = fi * 1.5;
             float side = mod(fi, 2.0) * 2.0 - 1.0;
-            float baseX = mix(0.05, 0.25, random(fi)) + 0.7 * step(0.0, side);
-            float y = mod(u_time * 0.05 * (0.8 + 0.2 * sin(phase)), 1.2);
-            vec2 pos = vec2(baseX, y);
-
-            vec2 delta = uv - pos;
-            float dist = length(delta);
-            float radius = 0.065; // midpoint radius
-            field += radius / (dist * 10.0 + 0.0075); // balance softness vs merge
+            float randOffset = mix(0.1, 0.3, random(fi));
+            float x = randOffset + 0.6 * step(0.0, side);
+            float y = mod(u_time * 0.07 + random(fi * 10.0), 1.2);
+            vec2 pos = vec2(x, y);
+            field += metaball(uv, pos, 0.06);
           }
 
-          float mask = smoothstep(0.96, 1.0, field);
+          float mask = smoothstep(0.85, 1.0, field);
 
           vec3 blobColor = mix(vec3(0.43, 0.15, 0.38), vec3(0.69, 0.36, 0.41), uv.y);
           vec3 finalColor = mix(bgColor, blobColor, mask);
