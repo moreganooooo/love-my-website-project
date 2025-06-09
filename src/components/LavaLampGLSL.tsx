@@ -130,8 +130,7 @@ export default function LavaLampGLSL({
     <div
       ref={mountRef}
       style={{
-        position: 'absolute',
-        inset: 0,
+        position: 'relative',
         width: '100%',
         height: '100%',
         overflow: 'hidden',
