@@ -1,9 +1,9 @@
 // src/components/LavaLampGLSL.tsx
 
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
-export interface LavaLampGLSLProps {
+interface LavaLampGLSLProps {
   blobCount: number;
   blobSpeed: number;
   blobSize: number;
@@ -30,6 +30,7 @@ export default function LavaLampGLSL({
 
     const width = mount.clientWidth;
     const height = mount.clientHeight;
+
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     mount.appendChild(renderer.domElement);
@@ -38,73 +39,65 @@ export default function LavaLampGLSL({
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
-    const safeBlobSpeed = Math.max(blobSpeed, 0.05);
-    const safeBlobSize = Math.max(blobSize, 0.01);
+    const toVec3 = (hex: string) => {
+      const c = new THREE.Color(hex);
+      return `vec3(${c.r.toFixed(3)}, ${c.g.toFixed(3)}, ${c.b.toFixed(3)})`;
+    };
 
     const blobParams = Array.from({ length: blobCount }, (_, i) => {
-      const margin = 0.8;
       const side = i % 2 === 0 ? 1 : -1;
-      const baseX = side * margin;
-      const ampX = 0.18;
-      const ampY = 0.8;
-      const speedX = 0.22;
-      const speedY = 0.55;
-      const phase = Math.PI * 2 * (i / blobCount);
-      const radius = safeBlobSize;
-      return { baseX, ampX, ampY, speedX, speedY, phase, radius };
+      return {
+        baseX: side * (0.7 + Math.random() * 0.2),
+        ampX: 0.15 + Math.random() * 0.05,
+        ampY: 0.6 + Math.random() * 0.2,
+        speedX: 0.2 + Math.random() * 0.1,
+        speedY: 0.3 + Math.random() * 0.1,
+        phase: Math.random() * Math.PI * 2,
+        radius: blobSize,
+      };
     });
 
-    const blobCode = blobCount > 0
-      ? blobParams.map((b, i) => `
-          vec2 pos${i} = vec2(
-            ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-            cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
-          );
-          float dist${i} = length(uv - pos${i});
-          field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
-        `).join("\n") : "// no blobs";
+    const blobCode = blobParams.map((b, i) => `
+      vec2 pos${i} = vec2(
+        ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
+        fract(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * 2.0 - 1.0
+      );
+      float dist${i} = length(uv - pos${i});
+      field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+    `).join("\n");
 
     const uniforms = {
       u_time: { value: 0.0 },
       u_resolution: { value: new THREE.Vector2(width, height) },
-      u_blobColorStart: { value: new THREE.Color(blobColorStart) },
-      u_blobColorEnd: { value: new THREE.Color(blobColorEnd) },
-      u_bgStart: { value: new THREE.Color(backgroundStart) },
-      u_bgEnd: { value: new THREE.Color(backgroundEnd) },
     };
 
     const material = new THREE.ShaderMaterial({
       uniforms,
-      transparent: true,
       fragmentShader: `
         precision mediump float;
         uniform float u_time;
         uniform vec2 u_resolution;
-        uniform vec3 u_blobColorStart;
-        uniform vec3 u_blobColorEnd;
-        uniform vec3 u_bgStart;
-        uniform vec3 u_bgEnd;
 
         void main() {
           vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
-          float t = u_time * ${safeBlobSpeed};
+          float t = u_time * ${blobSpeed.toFixed(2)};
           float field = 0.0;
 
           ${blobCode}
 
           float mask = smoothstep(1.0, 2.0, field);
 
-          // 💡 Radial gradient from bottom center
-          float grad = distance(uv, vec2(0.0, -1.0));
-          grad = clamp(1.0 - grad, 0.0, 1.0);
-          vec3 background = mix(u_bgStart, u_bgEnd, grad);
+          vec3 start = ${toVec3(backgroundStart)};
+          vec3 end = ${toVec3(backgroundEnd)};
+          vec2 center = vec2(0.0, -1.0);
+          float radial = 1.0 - smoothstep(0.0, 1.5, distance(uv, center));
+          vec3 bg = mix(start, end, radial);
 
-          // 🟠 Blob gradient vertical blend
-          float yGrad = (uv.y + 1.0) / 2.0;
-          vec3 blobColor = mix(u_blobColorStart, u_blobColorEnd, yGrad);
+          vec3 blobStart = ${toVec3(blobColorStart)};
+          vec3 blobEnd = ${toVec3(blobColorEnd)};
+          vec3 blobColor = mix(blobStart, blobEnd, (uv.y + 1.0) / 2.0);
 
-          // Final composition
-          vec3 finalColor = mix(background, blobColor, mask * 0.5);
+          vec3 finalColor = mix(bg, blobColor, mask * 0.5);
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
@@ -129,15 +122,7 @@ export default function LavaLampGLSL({
       renderer.dispose();
       mount.removeChild(renderer.domElement);
     };
-  }, [
-    blobCount,
-    blobSpeed,
-    blobSize,
-    blobColorStart,
-    blobColorEnd,
-    backgroundStart,
-    backgroundEnd,
-  ]);
+  }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
 
   return <div ref={mountRef} className="absolute inset-0 -z-10" />;
 }
