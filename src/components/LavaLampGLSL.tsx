@@ -70,26 +70,37 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
         precision mediump float;
         uniform float u_time;
         uniform vec2 u_resolution;
-        
+
         void main() {
           vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
-          float t = u_time * 0.2;
+          float t = u_time * ${safeBlobSpeed.toFixed(2)};
           float field = 0.0;
-          // Blobs
-          ${blobCode}
-          float mask = smoothstep(1.0, 2.0, field);
-          vec3 baseColor = vec3(0.06, 0.015, 0.18);
-          vec3 lavaColor = mix(vec3(1.0, 0.45, 0.15), vec3(0.4, 0.2, 0.6), uv.y * 0.5 + 0.5);
-          vec3 color = mix(baseColor, lavaColor, mask);
-          // Fallback: always output baseColor if mask is invalid
-          float alpha = mask;
-          if (!(mask >= 0.0 && mask <= 1.0)) {
-            color = baseColor;
-            alpha = 0.0;
-          }
-          gl_FragColor = vec4(color, alpha);
+
+           // Blobs
+           ${blobCode}
+
+          // Soft mask for natural blob blending
+          float threshold = 1.0;
+          float softness = 0.2;
+          float fadeY = smoothstep(1.0, 0.6, uv.y); // fade out at top
+          float maskBase = smoothstep(threshold - softness, threshold + softness, field);
+          float mask = maskBase * fadeY;
+
+          // Rich background: deep purple + radial orange glow
+         vec3 baseColor = vec3(0.06, 0.015, 0.18); // dark purple
+         vec3 glowColor = vec3(1.0, 0.45, 0.15);   // warm orange
+         float glowFactor = smoothstep(2.4, -0.6, length(uv - vec2(0.0, -1.3)));
+         vec3 background = mix(baseColor, glowColor, glowFactor);
+
+          // Lava blob color blending
+          vec3 blobColor = mix(glowColor, vec3(0.65, 0.4, 0.95), clamp(uv.y * 0.5 + 0.5, 0.0, 1.0));
+
+          // Final composite
+          vec3 color = mix(background, blobColor, mask);
+          gl_FragColor = vec4(color, 1.0);
         }
       `,
+
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
