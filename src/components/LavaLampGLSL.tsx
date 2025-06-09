@@ -71,10 +71,6 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
           uv = uv * 2.0 - 1.0;
           float t = u_time * ${blobSpeed.toFixed(2)};
 
-          // DEBUG: Output a solid color to verify shader is running
-          gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Red
-          return;
-
           float field = 0.0;
 
           ${blobCode}
