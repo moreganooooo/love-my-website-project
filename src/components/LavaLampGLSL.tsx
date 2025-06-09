@@ -1,30 +1,37 @@
 // src/components/LavaLampGLSL.tsx
 
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
-// NOTE: Blob count and visual consistency must not be changed per user request.
 export interface LavaLampGLSLProps {
-  blobCount: number;
-  blobSpeed: number;
+  blobCount?: number;
+  blobSpeed?: number;
+  blobSize?: number;
+  blobColorStart?: string;
+  blobColorEnd?: string;
+  backgroundStart?: string;
+  backgroundEnd?: string;
 }
 
-export default function LavaLampGLSL(props: LavaLampGLSLProps) {
-  console.log('LavaLampGLSL rendered');
-  const { blobCount = 8, blobSpeed = 0.2 } = props;
+export default function LavaLampGLSL({
+  blobCount = 10,
+  blobSpeed = 0.1,
+  blobSize = 0.16,
+  blobColorStart = '#ff7a45',
+  blobColorEnd = '#9b4dcb',
+  backgroundStart = '#110224',
+  backgroundEnd = '#f9b890',
+}: LavaLampGLSLProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
-    console.log('LavaLampGLSL mounted');
 
     const width = mount.clientWidth;
     const height = mount.clientHeight;
 
-    // Use alpha: false for opaque canvas
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setClearColor(0x100438, 1); // match baseColor
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     mount.appendChild(renderer.domElement);
 
@@ -32,31 +39,32 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
-    // Clamp blobSpeed to a minimum value to prevent white/NaN output
-    const safeBlobSpeed = Math.max(blobSpeed, 0.05);
+    const toVec3 = (hex: string) => {
+      const c = new THREE.Color(hex);
+      return `vec3(${c.r.toFixed(3)}, ${c.g.toFixed(3)}, ${c.b.toFixed(3)})`;
+    };
 
     const blobParams = Array.from({ length: blobCount }, (_, i) => {
-      const margin = 0.8; // less randomness
       const side = i % 2 === 0 ? 1 : -1;
-      const baseX = side * margin;
-      const ampX = 0.18; // fixed amplitude for smoothness
-      const ampY = 0.8;
-      const speedX = 0.22; // fixed speed for smoothness
-      const speedY = 0.55;
-      const phase = Math.PI * 2 * (i / blobCount); // evenly distributed phases
-      const radius = 0.14; // fixed radius for smoothness
-      return { baseX, ampX, ampY, speedX, speedY, phase, radius };
+      return {
+        baseX: side * (0.7 + Math.random() * 0.2),
+        ampX: 0.15 + Math.random() * 0.05,
+        ampY: 0.6 + Math.random() * 0.2,
+        speedX: 0.2 + Math.random() * 0.1,
+        speedY: 0.3 + Math.random() * 0.1,
+        phase: Math.random() * Math.PI * 2,
+        radius: blobSize,
+      };
     });
 
-    const blobCode = blobCount > 0
-      ? blobParams.map((b, i) => `
-          vec2 pos${i} = vec2(
-            ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-            cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
-          );
-          float dist${i} = length(uv - pos${i});
-          field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
-        `).join("\n") : "// no blobs";
+    const blobCode = blobParams.map((b, i) => `
+      vec2 pos${i} = vec2(
+        ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
+        fract(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * 2.0 - 1.0
+      );
+      float dist${i} = length(uv - pos${i});
+      field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+    `).join("\n");
 
     const uniforms = {
       u_time: { value: 0.0 },
@@ -65,28 +73,32 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
 
     const material = new THREE.ShaderMaterial({
       uniforms,
-      transparent: false,
       fragmentShader: `
         precision mediump float;
         uniform float u_time;
         uniform vec2 u_resolution;
-        
+
         void main() {
-          // Lava lamp effect restored
           vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
-          float t = u_time * 0.2;
+          float t = u_time * ${blobSpeed.toFixed(2)};
           float field = 0.0;
-          // Blobs
+
           ${blobCode}
+
           float mask = smoothstep(1.0, 2.0, field);
-          vec3 baseColor = vec3(0.06, 0.015, 0.18);
-          vec3 lavaColor = mix(vec3(1.0, 0.5, 0.2), vec3(0.7, 0.2, 0.8), uv.y * 0.5 + 0.5);
-          vec3 color = mix(baseColor, lavaColor, mask);
-          // Fallback: always output baseColor if mask is invalid
-          if (!(mask >= 0.0 && mask <= 1.0)) {
-            color = baseColor;
-          }
-          gl_FragColor = vec4(color, 1.0);
+
+          vec3 start = ${toVec3(backgroundStart)};
+          vec3 end = ${toVec3(backgroundEnd)};
+          vec2 center = vec2(0.0, -1.0);
+          float radial = 1.0 - smoothstep(0.0, 1.5, distance(uv, center));
+          vec3 bg = mix(start, end, radial);
+
+          vec3 blobStart = ${toVec3(blobColorStart)};
+          vec3 blobEnd = ${toVec3(blobColorEnd)};
+          vec3 blobColor = mix(blobStart, blobEnd, (uv.y + 1.0) / 2.0);
+
+          vec3 finalColor = mix(bg, blobColor, mask * 0.5);
+          gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
     });
@@ -110,7 +122,7 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
       renderer.dispose();
       mount.removeChild(renderer.domElement);
     };
-  }, [blobCount, blobSpeed]);
+  }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
 
-  return <div ref={mountRef} className="absolute inset-0 -z-10 bg-[#100438] bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700" />;
+  return <div ref={mountRef} className="absolute inset-0 -z-10" />;
 }

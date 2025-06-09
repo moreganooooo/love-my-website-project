@@ -45,7 +45,7 @@ const Projects = () => {
         <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent">
           Featured Projects
         </h2>
-        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+        <p className="text-lg text-white max-w-2xl mx-auto">
           Here are some of my recent projects that showcase my skills and passion for creating
           exceptional digital experiences.
         </p>
