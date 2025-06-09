@@ -14,8 +14,8 @@ export interface LavaLampGLSLProps {
 }
 
 export default function LavaLampGLSL({
-  blobCount = 20,
-  blobSpeed = 0.35,
+  blobCount = 26,
+  blobSpeed = 0.42,
   blobSize = 0.16,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
@@ -62,12 +62,17 @@ export default function LavaLampGLSL({
       const phase = (i / blobCount) * Math.PI * 2;
       const radius = 0.1 + Math.random() * (blobSize - 0.1);
       const stretch = 0.85 + Math.random() * 0.3;
+      const wobbleFreq = 1.0 + Math.random();
+      const wobbleAmp = 0.02 + Math.random() * 0.03;
       return `
         vec2 pos${i} = vec2(
           ${baseX.toFixed(2)} + sin(t * ${speedX.toFixed(2)} + ${phase.toFixed(2)}) * ${ampX.toFixed(2)},
           cos(t * ${speedY.toFixed(2)} + ${phase.toFixed(2)}) * ${ampY.toFixed(2)}
         );
         vec2 diff${i} = uv - pos${i};
+        float angle${i} = sin(t * ${wobbleFreq.toFixed(2)} + ${phase.toFixed(2)}) * ${wobbleAmp.toFixed(2)};
+        mat2 rot${i} = mat2(cos(angle${i}), -sin(angle${i}), sin(angle${i}), cos(angle${i}));
+        diff${i} = rot${i} * diff${i};
         diff${i}.y *= ${stretch.toFixed(2)};
         float dist${i} = length(diff${i});
         field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist${i} * dist${i} + 0.0003);
