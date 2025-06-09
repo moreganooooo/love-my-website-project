@@ -93,10 +93,15 @@ export default function LavaLampGLSL({
           ${blobCode}
 
           float mask = smoothstep(1.0, 2.0, field);
-          float grad = (uv.y + 1.0) / 2.0;
 
+          // ☀️ Radial gradient from bottom center
+          float grad = distance(uv, vec2(0.0, -1.0));
+          grad = clamp(1.0 - grad, 0.0, 1.0);
           vec3 background = mix(u_bgStart, u_bgEnd, grad);
-          vec3 blobColor = mix(u_blobColorStart, u_blobColorEnd, grad);
+
+          // 💧 Lava blob gradient
+          float yGrad = (uv.y + 1.0) / 2.0;
+          vec3 blobColor = mix(u_blobColorStart, u_blobColorEnd, yGrad);
 
           vec3 finalColor = mix(background, blobColor, mask * 0.5);
           gl_FragColor = vec4(finalColor, 1.0);
@@ -123,7 +128,15 @@ export default function LavaLampGLSL({
       renderer.dispose();
       mount.removeChild(renderer.domElement);
     };
-  }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
+  }, [
+    blobCount,
+    blobSpeed,
+    blobSize,
+    blobColorStart,
+    blobColorEnd,
+    backgroundStart,
+    backgroundEnd,
+  ]);
 
   return <div ref={mountRef} className="absolute inset-0 -z-10" />;
 }
