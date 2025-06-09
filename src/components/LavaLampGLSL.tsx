@@ -78,20 +78,29 @@ export default function LavaLampGLSL({
           float distToCenter = distance(uv, center);
           vec3 bgColor = mix(bgOrange, bgCranberry, smoothstep(0.0, 1.0, distToCenter));
 
-          // Animate blob
-          vec2 offset = vec2(
-            0.5 * sin(u_time),
-            0.3 * cos(u_time * 0.8)
-          );
-          vec2 centeredUv = uv * 2.0 - 1.0 - offset;
+          float field = 0.0;
 
-          float dist = length(centeredUv);
-          float pulse = 0.1 + 0.05 * sin(u_time * 2.0);
-          float blob = smoothstep(0.0, pulse, dist);
+          for (int i = 0; i < 10; i++) {
+            float fi = float(i);
+            float speed = 0.5 + 0.3 * sin(fi + u_time * 0.5);
+            float radius = 0.08 + 0.04 * sin(fi + u_time * 0.8);
 
-          vec3 blobColor = mix(vec3(1.0, 0.0, 0.0), vec3(0.1, 0.0, 0.2), blob);
+            vec2 offset = vec2(
+              sin(fi + u_time * 0.3 + fi * 1.2) * 0.7,
+              cos(fi + u_time * 0.4 + fi * 1.5) * 0.6
+            );
+            vec2 blobUV = uv * 2.0 - 1.0 - offset;
+            float dist = length(blobUV);
+            field += radius * radius / (dist * dist + 0.001);
+          }
 
-          vec3 finalColor = mix(blobColor, bgColor, blob);
+          float mask = smoothstep(0.7, 1.2, field);
+
+          vec3 blobStart = vec3(1.0, 0.0, 0.0);
+          vec3 blobEnd = vec3(0.1, 0.0, 0.2);
+          vec3 blobColor = mix(blobStart, blobEnd, uv.y);
+
+          vec3 finalColor = mix(bgColor, blobColor, mask);
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
