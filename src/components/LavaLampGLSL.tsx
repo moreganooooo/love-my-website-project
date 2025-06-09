@@ -35,7 +35,7 @@ export default function LavaLampGLSL({
     const height = mount.clientHeight || window.innerHeight;
     console.log('Canvas size:', width, height);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.debug.checkShaderErrors = true;
 
@@ -88,7 +88,7 @@ export default function LavaLampGLSL({
       `,
       depthTest: false,
       depthWrite: false,
-      transparent: false,
+      transparent: true,
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
