@@ -29,15 +29,14 @@ export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.05 }: LavaL
     const safeBlobSpeed = Math.max(blobSpeed, 0.01);
 
     const blobParams = Array.from({ length: blobCount }, (_, i) => {
-      const margin = 0.8;
       const side = i % 2 === 0 ? 1 : -1;
-      const baseX = side * margin;
+      const baseX = side * 0.8;
       const ampX = 0.18;
       const ampY = 0.8;
       const speedX = 0.12;
       const speedY = 0.25;
       const phase = Math.PI * 2 * (i / blobCount);
-      const radius = 0.16; // slightly larger
+      const radius = 0.16;
       return { baseX, ampX, ampY, speedX, speedY, phase, radius };
     });
 
@@ -73,14 +72,18 @@ export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.05 }: LavaL
 
           float mask = smoothstep(1.0, 2.0, field);
 
-          // Permanent background (mimic site gradient)
-          vec3 basePurple = vec3(0.10, 0.04, 0.22);     // dark purple
-          vec3 softOrange = vec3(0.75, 0.35, 0.15);     // duskier orange (less red)
-          float r = length(uv - vec2(0.0, -1.3));       // center lower for smoother top
-          float glowFactor = smoothstep(2.8, 0.4, r);   // much wider radius
-          vec3 background = mix(basePurple, softOrange, glowFactor * 0.25); // subtler mix
+          // Base colors
+          vec3 basePurple = vec3(0.10, 0.04, 0.22);
+          vec3 softOrange = vec3(0.75, 0.35, 0.15);
 
-          // Lava blobs (warm blend, richer color, transparent)
+          // Radial distance from bottom center
+          float r = length(uv - vec2(0.0, -1.2));
+          float glowFactor = smoothstep(2.8, 0.4, r);
+
+          // Nonlinear blend: gently warm up the purple
+          vec3 background = basePurple + glowFactor * 0.25 * (softOrange - basePurple);
+
+          // Blob color
           vec3 blobColor = mix(vec3(0.9, 0.5, 0.2), vec3(0.5, 0.2, 0.6), (uv.y + 1.0) * 0.5);
           vec3 finalColor = mix(background, blobColor, mask);
           float alpha = 0.5 * mask;
@@ -111,10 +114,5 @@ export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.05 }: LavaL
     };
   }, [blobCount, blobSpeed]);
 
-  return (
-    <div
-      ref={mountRef}
-      className="absolute inset-0 -z-10 bg-[#100438] bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700"
-    />
-  );
+  return <div ref={mountRef} className="absolute inset-0 -z-10" />;
 }
