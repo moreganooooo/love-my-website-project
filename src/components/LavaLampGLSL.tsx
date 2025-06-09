@@ -3,28 +3,23 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-// NOTE: Blob count and visual consistency must not be changed per user request.
 export interface LavaLampGLSLProps {
   blobCount: number;
   blobSpeed: number;
 }
 
-export default function LavaLampGLSL(props: LavaLampGLSLProps) {
-  console.log('LavaLampGLSL rendered');
-  const { blobCount = 8, blobSpeed = 0.2 } = props;
+export default function LavaLampGLSL({ blobCount = 8, blobSpeed = 0.08 }: LavaLampGLSLProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
-    console.log('LavaLampGLSL mounted');
 
     const width = mount.clientWidth;
     const height = mount.clientHeight;
 
-    // Use alpha: true for transparent canvas
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setClearColor(0x100438, 0); // transparent, fallback for unsupported alpha
+    renderer.setClearColor(0x100438, 0);
     renderer.setSize(width, height);
     mount.appendChild(renderer.domElement);
 
@@ -32,19 +27,18 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
-    // Clamp blobSpeed to a minimum value to prevent white/NaN output
-    const safeBlobSpeed = Math.max(blobSpeed, 0.05);
+    const safeBlobSpeed = Math.max(blobSpeed, 0.02);
 
     const blobParams = Array.from({ length: blobCount }, (_, i) => {
-      const margin = 0.8; // less randomness
+      const margin = 0.8;
       const side = i % 2 === 0 ? 1 : -1;
       const baseX = side * margin;
-      const ampX = 0.18; // fixed amplitude for smoothness
-      const ampY = 0.8;
-      const speedX = 0.22; // fixed speed for smoothness
-      const speedY = 0.55;
-      const phase = Math.PI * 2 * (i / blobCount); // evenly distributed phases
-      const radius = 0.14; // fixed radius for smoothness
+      const ampX = 0.15;
+      const ampY = 0.7;
+      const speedX = 0.15;
+      const speedY = 0.3;
+      const phase = Math.PI * 2 * (i / blobCount);
+      const radius = 0.14;
       return { baseX, ampX, ampY, speedX, speedY, phase, radius };
     });
 
@@ -55,7 +49,9 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
             cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
           );
           float dist${i} = length(uv - pos${i});
-          field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+          float strength${i} = ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+          field += strength${i};
+          glow += 0.015 / (dist${i} + 0.03);
         `).join("\n") : "// no blobs";
 
     const uniforms = {
@@ -67,43 +63,43 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
       uniforms,
       transparent: false,
       fragmentShader: `
-  precision mediump float;
-  uniform float u_time;
-  uniform vec2 u_resolution;
+        precision mediump float;
+        uniform float u_time;
+        uniform vec2 u_resolution;
 
-  void main() {
-    vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
-    float t = u_time * ${(
-      safeBlobSpeed * 0.3
-    ).toFixed(2)}; // significantly slowed down
-    float field = 0.0;
+        void main() {
+          vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
+          float t = u_time * ${safeBlobSpeed};
 
-    // Blobs
-    ${blobCode}
+          float field = 0.0;
+          float glow = 0.0;
 
-    // Fade blobs at top
-    float threshold = 1.0;
-    float softness = 0.2;
-    float fadeY = smoothstep(1.0, 0.5, uv.y);
-    float maskBase = smoothstep(threshold - softness, threshold + softness, field);
-    float mask = maskBase * fadeY;
+          ${blobCode}
 
-    // 🎨 Background: dark purple + larger, brighter orange radial from bottom
-    vec3 basePurple = vec3(0.05, 0.01, 0.13);       // deeper background purple
-    vec3 glowOrange = vec3(1.0, 0.6, 0.3);          // warmer, more glowing orange
-    float radialGlow = smoothstep(1.8, 0.0, length(uv - vec2(0.0, -1.4)));
-    vec3 background = mix(basePurple, glowOrange, radialGlow);
+          float threshold = 1.0;
+          float softness = 0.25;
+          float mask = smoothstep(threshold - softness, threshold + softness, field);
 
-    // 🌈 Blobs: very rich purple and orange tones
-    vec3 lavaOrange = vec3(0.9, 0.3, 0.1);
-    vec3 lavaPurple = vec3(0.5, 0.2, 0.8);
-    vec3 blobColor = mix(lavaOrange, lavaPurple, clamp(uv.y * 0.5 + 0.5, 0.0, 1.0));
+          // Background: deep warm purple + radial orange from bottom center
+          vec2 radialCenter = vec2(0.0, -1.0);
+          float radial = distance(uv, radialCenter);
+          float glowFactor = smoothstep(1.2, 0.1, radial);
+          vec3 bgPurple = vec3(0.15, 0.04, 0.20); // warmer purple
+          vec3 bgOrange = vec3(1.0, 0.5, 0.2);    // sunset orange
+          vec3 background = mix(bgPurple, bgOrange, glowFactor);
 
-    // Composite
-    vec3 color = mix(background, blobColor, mask);
-    gl_FragColor = vec4(color, 1.0);
-  }
-`,
+          // Blobs: deep, warm orange-to-purple blend
+          vec3 orange = vec3(1.0, 0.4, 0.2);
+          vec3 purple = vec3(0.6, 0.3, 0.6);
+          vec3 blobColor = mix(orange, purple, (uv.y + 1.0) / 2.0);
+
+          vec3 softGlow = vec3(1.0, 0.7, 0.4) * glow * 0.25;
+          vec3 color = mix(background, blobColor, mask * 0.5);
+          color += softGlow * mask;
+
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `,
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
@@ -127,5 +123,5 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
     };
   }, [blobCount, blobSpeed]);
 
-  return <div ref={mountRef} className="absolute inset-0 -z-10 bg-[#100438] bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700" />;
+  return <div ref={mountRef} className="absolute inset-0 -z-10" />;
 }
