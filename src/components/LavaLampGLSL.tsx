@@ -14,8 +14,8 @@ export interface LavaLampGLSLProps {
 }
 
 export default function LavaLampGLSL({
-  blobCount = 26,
-  blobSpeed = 0.42,
+  blobCount = 32,
+  blobSpeed = 0.48,
   blobSize = 0.16,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
@@ -64,6 +64,7 @@ export default function LavaLampGLSL({
       const stretch = 0.85 + Math.random() * 0.3;
       const wobbleFreq = 1.0 + Math.random();
       const wobbleAmp = 0.02 + Math.random() * 0.03;
+      const shade = 0.3 + Math.random() * 0.4;
       return `
         vec2 pos${i} = vec2(
           ${baseX.toFixed(2)} + sin(t * ${speedX.toFixed(2)} + ${phase.toFixed(2)}) * ${ampX.toFixed(2)},
@@ -76,6 +77,7 @@ export default function LavaLampGLSL({
         diff${i}.y *= ${stretch.toFixed(2)};
         float dist${i} = length(diff${i});
         field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist${i} * dist${i} + 0.0003);
+        blobShade += ${shade.toFixed(2)} / (dist${i} * dist${i} + 0.001);
       `;
     }).join('\n');
 
@@ -92,6 +94,7 @@ export default function LavaLampGLSL({
           uv = uv * 2.0 - 1.0;
           float t = u_time * ${blobSpeed.toFixed(2)};
           float field = 0.0;
+          float blobShade = 0.0;
 
           ${blobCode}
 
@@ -104,6 +107,7 @@ export default function LavaLampGLSL({
           vec3 background = mix(purple, orange, glowFactor * 0.8);
 
           vec3 blobColor = mix(orange, purple, (uv.y + 1.0) * 0.5);
+          blobColor *= 0.6 + 0.4 * clamp(blobShade, 0.0, 1.0);
 
           vec3 finalColor = mix(background, blobColor, mask * 0.5);
           gl_FragColor = vec4(finalColor, 1.0);
