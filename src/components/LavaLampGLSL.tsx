@@ -90,7 +90,7 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
           float edge = 0.09; // softer edge
           float maskBase = smoothstep(threshold - edge, threshold + edge, field);
           float fadeY = smoothstep(1.0, 0.0, uv.y); // fade out more at top
-          float mask = maskBase * fadeY;
+          float mask = clamp(maskBase * fadeY, 0.0, 1.0);
 
           vec3 baseColor = vec3(0.06, 0.015, 0.18); // always non-white background
           vec3 glow = vec3(1.0, 0.5, 0.15);
@@ -104,7 +104,12 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
           float blobAlpha = 0.45 + 0.15 * sin(t + uv.x * 2.0);
 
           vec3 finalColor = mix(background, blobColor, mask * blobAlpha);
-          gl_FragColor = vec4(finalColor, 1.0);
+          // Fallback: if mask is zero, always output baseColor (never white)
+          if (mask <= 0.0001) {
+            gl_FragColor = vec4(baseColor, 1.0);
+          } else {
+            gl_FragColor = vec4(finalColor, 1.0);
+          }
         }
       `,
     });
