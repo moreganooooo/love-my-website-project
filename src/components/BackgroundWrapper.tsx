@@ -18,7 +18,7 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
 
   const [blobColorStart, setBlobColorStart] = useState("#f9b890"); // warm light orange
   const [blobColorEnd, setBlobColorEnd] = useState("#b76bf2");     // rich lavender
-  const [backgroundStart, setBackgroundStart] = useState("#6f0e7b"); // warm purple
+  const [backgroundStart, setBackgroundStart] = useState("#6f0e7b"); // warm deep purple
   const [backgroundEnd, setBackgroundEnd] = useState("#f7885e");     // glowing orange
 
   const resetToGorgeous = () => {
@@ -27,7 +27,7 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
     setBlobSize(0.16);
     setBlobColorStart("#f9b890");
     setBlobColorEnd("#b76bf2");
-    setBackgroundStart("#6f0e7b");
+    setBackgroundStart("#6f0e7b"); // <- your screenshot color
     setBackgroundEnd("#f7885e");
   };
 
@@ -78,32 +78,22 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
                 </label>
 
                 <label>
-                  <span className="text-sm">Blob Color Start</span>
+                  <span className="text-sm">Top Lava</span>
                   <input type="color" value={blobColorStart} onChange={e => setBlobColorStart(e.target.value)} className="w-full" />
                 </label>
 
                 <label>
-                  <span className="text-sm">Blob Color End</span>
+                  <span className="text-sm"> Bottom Lava</span>
                   <input type="color" value={blobColorEnd} onChange={e => setBlobColorEnd(e.target.value)} className="w-full" />
                 </label>
 
-                <label>
-                  <span className="text-sm">Background Color Start</span>
-                  <input type="color" value={backgroundStart} onChange={e => setBackgroundStart(e.target.value)} className="w-full" />
-                </label>
-
-                <label>
-                  <span className="text-sm">Background Color End</span>
-                  <input type="color" value={backgroundEnd} onChange={e => setBackgroundEnd(e.target.value)} className="w-full" />
-                </label>
+                <button
+                  onClick={resetToGorgeous}
+                  className="mt-4 w-full bg-gradient-to-r from-purple-600 to-orange-500 text-white rounded-md py-1.5 text-sm font-semibold hover:brightness-110 transition"
+                >
+                  Reset to Gorgeous
+                </button>
               </div>
-
-              <button
-                onClick={resetToGorgeous}
-                className="mt-4 w-full bg-gradient-to-r from-purple-600 to-orange-500 text-white rounded-md py-1.5 text-sm font-semibold hover:brightness-110 transition"
-              >
-                Reset to Gorgeous
-              </button>
             </details>
           </div>
         )}
