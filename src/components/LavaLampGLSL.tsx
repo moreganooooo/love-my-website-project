@@ -80,10 +80,11 @@ export default function LavaLampGLSL({
           float d = length(centeredUv);
           float blob = smoothstep(0.2, 0.0, d);
 
-          vec3 bg = ${toVec3(backgroundStart)};
-          vec3 color = mix(bg, ${toVec3(blobColorStart)}, blob);
-
-          gl_FragColor = vec4(color, 1.0);
+          if (blob > 0.5) {
+            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+          } else {
+            gl_FragColor = vec4(${toVec3(backgroundStart)}, 1.0);
+          }
         }
       `,
       depthTest: false,
