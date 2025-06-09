@@ -57,7 +57,8 @@ export default function LavaLampGLSL({
       return { baseX, ampX, ampY, speedX, speedY, phase, radius };
     });
 
-    const blobCode = blobParams.map((b, i) => `
+const blobCode = blobCount > 0
+  ? blobParams.map((b, i) => `
       vec2 pos${i} = vec2(
         ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
         mod(${b.ampY.toFixed(2)} * t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}, 2.0) - 1.0);
@@ -65,7 +66,8 @@ export default function LavaLampGLSL({
       float light${i} = 0.005 / (dist${i} * dist${i} + 0.0001);
       field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.0001);
       glowAcc += light${i};
-    `).join("\n");
+    `).join("\n")
+  : "// no blobs";
 
     const uniforms = {
       u_time: { value: 0.0 },
@@ -98,7 +100,9 @@ export default function LavaLampGLSL({
 
     float threshold = 1.0;
     float edge = 0.05;
-    float mask = smoothstep(threshold - edge, threshold + edge, field);
+    float maskBase = smoothstep(threshold - edge, threshold + edge, field);
+    float fadeY = smoothstep(1.0, 0.6, uv.y); // fades from y=0.6 to y=1.0
+    float mask = maskBase * fadeY;
 
     // ✨ Rich background: purple base + orange radial glow
     vec3 baseColor = vec3(0.06, 0.015, 0.18); // deep purple
