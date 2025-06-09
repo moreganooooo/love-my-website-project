@@ -1,4 +1,3 @@
-
 // src/components/LavaLampGLSL.tsx
 
 import { useLayoutEffect, useRef } from 'react';
@@ -119,12 +118,12 @@ export default function LavaLampGLSL({
           // More defined edges with less blur
           float mask = smoothstep(0.8, 1.2, field);
 
-          // Enhanced sunset colors
+          // Enhanced sunset colors - BRIGHT background
           vec3 deepPurple = vec3(0.08, 0.02, 0.20);
           vec3 warmOrange = vec3(1.0, 0.5, 0.2);
           vec3 softPink = vec3(0.9, 0.4, 0.5);
           
-          // Create a more sophisticated background gradient
+          // Create a more sophisticated background gradient - FULL BRIGHTNESS
           float radial = length(uv - vec2(0.0, -1.0));
           float verticalGrad = (uv.y + 1.0) * 0.5;
           float glowFactor = smoothstep(2.2, 0.0, radial);
@@ -137,8 +136,11 @@ export default function LavaLampGLSL({
           vec3 blobHighlight = mix(blobBase, vec3(1.0, 0.8, 0.6), 0.3);
           vec3 blobColor = mix(blobBase, blobHighlight, clamp(blobShade * 0.8, 0.0, 1.0));
 
-          // Separate opacity for background and blobs
-          vec3 finalColor = background + (blobColor - background) * mask * 0.75;
+          // CRITICAL FIX: Use pure background where mask is 0, only blend blobs with reduced opacity
+          vec3 finalColor = background;
+          if (mask > 0.0) {
+            finalColor = mix(background, blobColor, mask * 0.75);
+          }
           
           // Full opacity for the complete background
           gl_FragColor = vec4(finalColor, 1.0);
