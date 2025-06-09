@@ -78,46 +78,46 @@ export default function LavaLampGLSL({
     const material = new THREE.ShaderMaterial({
       uniforms,
       transparent: false, // Ensure the material is fully opaque
-      fragmentShader: `
-        precision mediump float;
-        uniform vec2 u_resolution;
-        uniform float u_time;
-        uniform vec2 mouse;
-        uniform float u_glowIntensity;
-        uniform float u_hoverBoost;
+    fragmentShader: `
+  precision mediump float;
+  uniform vec2 u_resolution;
+  uniform float u_time;
+  uniform vec2 mouse;
+  uniform float u_glowIntensity;
+  uniform float u_hoverBoost;
 
-        void main() {
-          vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-          uv = uv * 2.0 - 1.0;
-          float t = u_time * ${blobSpeed};
+  void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    uv = uv * 2.0 - 1.0;
+    float t = u_time * ${blobSpeed};
 
-          float field = 0.0;
-          float glowAcc = 0.0;
+    float field = 0.0;
+    float glowAcc = 0.0;
 
-          ${blobCode}
+    ${blobCode}
 
-          float threshold = 1.0;
-          float edge = 0.05;
-          float mask = smoothstep(threshold - edge, threshold + edge, field);
+    float threshold = 1.0;
+    float edge = 0.05;
+    float mask = smoothstep(threshold - edge, threshold + edge, field);
 
-          // Hero section gradient reference:
-          // from-orange-400 via-orange-500 to-purple-700
-          vec3 orange1 = vec3(1.0, 0.7, 0.3); // #fdba4e
-          vec3 orange2 = vec3(1.0, 0.55, 0.15); // #fb880f
-          vec3 purple = vec3(0.45, 0.27, 0.67); // #a21caf
-          float grad = clamp((uv.y + 1.0) / 2.0, 0.0, 1.0);
-          vec3 background = mix(orange1, orange2, grad * 0.7);
-          background = mix(background, purple, grad * grad);
+    // ✨ Rich background: purple base + orange radial glow
+    vec3 baseColor = vec3(0.06, 0.015, 0.18); // deep purple
+    vec3 glow = vec3(1.0, 0.5, 0.15);         // warm orange
+    float glowFactor = smoothstep(2.4, -0.6, length(uv - vec2(0.0, -1.3)));
+    vec3 background = mix(baseColor, glow, glowFactor);
 
-          // Blobs: semi-transparent, blended, not bright, no internal glow
-          vec3 blobColor = mix(orange2, purple, grad);
-          float blobAlpha = 0.45 + 0.15 * sin(t + uv.x * 2.0);
+    // 🎨 Blobs with color blend and soft alpha
+    vec3 purple = vec3(0.65, 0.4, 0.95);
+    vec3 orange = vec3(0.95, 0.4, 0.2);
+    float grad = clamp((uv.y + 1.0) / 2.0, 0.0, 1.0);
+    vec3 blobColor = mix(orange, purple, grad);
+    float blobAlpha = 0.45 + 0.15 * sin(t + uv.x * 2.0);
 
-          vec3 finalColor = mix(background, blobColor, mask * blobAlpha);
-
-          gl_FragColor = vec4(finalColor, 1.0); // Force full opacity
-        }
-      `,
+    // 💡 Composite blobs with mask + fade
+    vec3 finalColor = mix(background, blobColor, mask * blobAlpha);
+    gl_FragColor = vec4(finalColor, 1.0); // full opacity background
+  }
+`,
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
