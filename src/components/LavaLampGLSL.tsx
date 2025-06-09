@@ -92,8 +92,25 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
           float fadeY = smoothstep(1.0, 0.0, uv.y);
           float mask = clamp(maskBase * fadeY, 0.0, 1.0);
 
-          // DEBUG: Output mask as grayscale
-          gl_FragColor = vec4(vec3(mask), 1.0);
+          vec3 baseColor = vec3(0.06, 0.015, 0.18);
+          vec3 glow = vec3(1.0, 0.5, 0.15);
+          float glowFactor = smoothstep(2.4, -0.6, length(uv - vec2(0.0, -1.3)));
+          vec3 background = mix(baseColor, glow, glowFactor);
+
+          vec3 purple = vec3(0.65, 0.4, 0.95);
+          vec3 orange = vec3(0.95, 0.4, 0.2);
+          float grad = clamp((uv.y + 1.0) / 2.0, 0.0, 1.0);
+          vec3 blobColor = mix(orange, purple, grad);
+          float blobAlpha = 0.45 + 0.15 * sin(t + uv.x * 2.0);
+
+          vec3 finalColor = mix(background, blobColor, mask * blobAlpha);
+
+          // If mask is zero, always output baseColor (never white)
+          if (mask <= 0.0001) {
+            gl_FragColor = vec4(baseColor, 1.0);
+          } else {
+            gl_FragColor = vec4(finalColor, 1.0);
+          }
         }
       `,
     });
