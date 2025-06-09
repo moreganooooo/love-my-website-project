@@ -42,26 +42,30 @@ export default function LavaLampGLSL({
     };
     mount.addEventListener("mousemove", onMouseMove);
 
-    const blobParams = Array.from({ length: blobCount }, () => ({
-      ampX: Math.random() * 0.2 + 0.6,
-      ampY: Math.random() * 0.4 + 0.8,
-      speedX: Math.random() * 0.2 + 0.1,
-      speedY: Math.random() * 0.15 + 0.1,
-      radius: Math.random() * 0.1 + 0.12,
-      phase: Math.random() * Math.PI * 2,
-    }));
+    // Generate blob parameters
+    const blobParams = Array.from({ length: blobCount }, (_, i) => {
+      const angle = (i / blobCount) * Math.PI * 2;
+      return {
+        speedX: 0.7 + Math.random() * 0.6,
+        speedY: 0.5 + Math.random() * 0.7,
+        ampX: 0.5 + Math.random() * 0.4,
+        ampY: 0.7 + Math.random() * 0.3,
+        phase: Math.random() * Math.PI * 2,
+        radius: 0.25 + Math.random() * 0.15,
+      };
+    });
 
     const blobCode = blobParams.map((b, i) => `
       vec2 pos${i} = vec2(
-        sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-        mod(${b.ampY.toFixed(2)} * t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}, 2.0) - 1.0);
-      float dist${i} = length(uv - pos${i});
-      float light${i} = 0.005 / (dist${i} * dist${i} + 0.0001);
-      field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.0001);
-      glowAcc += light${i};
-      float hover${i} = 0.2 / (length(mouse - pos${i}) + 0.1);
-      glowAcc += hover${i} * u_hoverBoost;
-    `).join("\n");
+    sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
+    mod(${b.ampY.toFixed(2)} * t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}, 2.0) - 1.0);
+  float dist${i} = length(uv - pos${i});
+  float light${i} = 0.005 / (dist${i} * dist${i} + 0.0001);
+  field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.0001);
+  glowAcc += light${i};
+  float hover${i} = 0.2 / (length(mouse - pos${i}) + 0.1);
+  glowAcc += hover${i} * u_hoverBoost;
+`).join("\n");
 
     const uniforms = {
       u_time: { value: 0.0 },
