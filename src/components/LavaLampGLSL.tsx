@@ -94,15 +94,16 @@ export default function LavaLampGLSL({
 
           float mask = smoothstep(1.0, 2.0, field);
 
-          // ☀️ Radial gradient from bottom center (glow outward)
+          // 💡 Radial gradient from bottom center
           float grad = distance(uv, vec2(0.0, -1.0));
           grad = clamp(1.0 - grad, 0.0, 1.0);
-          vec3 background = mix(u_bgEnd, u_bgStart, grad); // now blends to purple
+          vec3 background = mix(u_bgStart, u_bgEnd, grad);
 
-          // 💧 Blob vertical gradient (warmer orange to rich purple)
+          // 🟠 Blob gradient vertical blend
           float yGrad = (uv.y + 1.0) / 2.0;
           vec3 blobColor = mix(u_blobColorStart, u_blobColorEnd, yGrad);
 
+          // Final composition
           vec3 finalColor = mix(background, blobColor, mask * 0.5);
           gl_FragColor = vec4(finalColor, 1.0);
         }

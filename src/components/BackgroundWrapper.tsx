@@ -18,9 +18,9 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
   const [blobSize, setBlobSize] = useState(0.18);
 
   const [blobColorStart, setBlobColorStart] = useState('#ff6600');  // Lava orange
-  const [blobColorEnd, setBlobColorEnd] = useState('#a442ec');      // Soft purple
-  const [backgroundStart, setBackgroundStart] = useState('#160330'); // Deep purple
-  const [backgroundEnd, setBackgroundEnd] = useState('#ff6600');     // Orange glow
+  const [blobColorEnd, setBlobColorEnd] = useState('#a442ec');      // Warm purple
+  const [backgroundStart, setBackgroundStart] = useState('#a442ec'); // Background purple
+  const [backgroundEnd, setBackgroundEnd] = useState('#ff8147');     // Softer orange glow
 
   return (
     <section id={id} className="relative overflow-hidden py-20 px-6">
