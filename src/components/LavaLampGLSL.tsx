@@ -69,7 +69,7 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution.xy;
           uv = uv * 2.0 - 1.0;
-          float t = u_time * ${blobSpeed.toFixed(2)};
+          float t = u_time * (${blobSpeed.toFixed(2)} * 0.5);
 
           float field = 0.0;
 
@@ -119,5 +119,5 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
     };
   }, [blobCount, blobSpeed]);
 
-  return <div ref={mountRef} style={{ position: 'absolute', inset: 0, zIndex: -10, border: '4px solid lime', height: '100vh', width: '100vw' }} className="bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700" />;
+  return <div ref={mountRef} className="absolute inset-0 -z-10 bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700" />;
 }
