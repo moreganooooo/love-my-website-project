@@ -28,11 +28,8 @@ export default function LavaLampGLSL({
     const mount = mountRef.current;
     if (!mount) return;
 
-    mount.style.position = 'relative';
-    mount.style.zIndex = '0';
-
-    const width = mount.clientWidth || window.innerWidth;
-    const height = mount.clientHeight || window.innerHeight;
+    const width = mount.offsetWidth;
+    const height = mount.offsetHeight;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -130,11 +127,13 @@ export default function LavaLampGLSL({
     <div
       ref={mountRef}
       style={{
-        position: 'relative',
+        position: 'absolute',
+        inset: 0,
         width: '100%',
         height: '100%',
         overflow: 'hidden',
         zIndex: 0,
+        pointerEvents: 'none',
       }}
     />
   );
