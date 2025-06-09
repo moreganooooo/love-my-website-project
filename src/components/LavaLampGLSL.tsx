@@ -29,7 +29,6 @@ export default function LavaLampGLSL({
     if (!mount) return;
 
     mount.style.position = 'relative';
-    mount.style.minHeight = '300px';
     mount.style.zIndex = '0';
 
     const width = mount.clientWidth || window.innerWidth;
@@ -133,9 +132,11 @@ export default function LavaLampGLSL({
       ref={mountRef}
       style={{
         width: '100%',
-        height: '300px',
-        position: 'relative',
-        backgroundColor: 'black',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
         overflow: 'hidden',
         zIndex: 0,
       }}
