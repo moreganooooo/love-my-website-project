@@ -75,18 +75,18 @@ export default function LavaLampGLSL({
             float phase = fi * 1.2;
 
             float side = mod(fi, 2.0) * 2.0 - 1.0;
-            float x = 0.1 + 0.8 * step(0.0, side) + 0.01 * sin(u_time * 0.15 + phase);
-            float y = mod(0.05 * sin(u_time * 0.1 + phase) + u_time * 0.07 * (0.5 + 0.5 * sin(phase)), 1.2);
+            float x = 0.05 + 0.9 * step(0.0, side) + 0.005 * sin(u_time * 0.15 + phase);
+            float y = mod(u_time * 0.07 * (0.5 + 0.5 * sin(phase)), 1.2);
             vec2 pos = vec2(x, y);
 
             vec2 delta = uv - pos;
             float dist = length(delta);
-            float radius = 0.07 + 0.03 * sin(u_time + fi * 0.5);
-            field += radius * radius / (dist * dist + 0.0005);
+            float radius = 0.09;
+            field += radius * radius / (dist * dist + 0.0001);
           }
 
-          float mask = smoothstep(0.6, 1.3, field);
-          float softEdge = smoothstep(0.85, 1.1, field);
+          float mask = smoothstep(0.8, 1.1, field);
+          float softEdge = smoothstep(0.95, 1.02, field);
 
           vec3 blobStart = vec3(0.43, 0.15, 0.38);
           vec3 blobEnd = vec3(0.69, 0.36, 0.41);
