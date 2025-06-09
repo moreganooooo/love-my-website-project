@@ -17,8 +17,8 @@ export default function LavaLampGLSL({
   blobCount = 10,
   blobSpeed = 0.1,
   blobSize = 0.16,
-  blobColorStart = '#ff7a45',
-  blobColorEnd = '#9b4dcb',
+  blobColorStart = '#6e285f',
+  blobColorEnd = '#b15d6a',
   backgroundStart = '#2e003e',
   backgroundEnd = '#ff8c42',
 }: LavaLampGLSLProps) {
@@ -34,11 +34,9 @@ export default function LavaLampGLSL({
 
     const width = mount.clientWidth || window.innerWidth;
     const height = mount.clientHeight || window.innerHeight;
-    console.log('Canvas size:', width, height);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
-    renderer.debug.checkShaderErrors = true;
 
     const canvas = renderer.domElement;
     canvas.style.position = 'absolute';
@@ -49,8 +47,6 @@ export default function LavaLampGLSL({
     canvas.style.zIndex = '0';
     canvas.style.pointerEvents = 'none';
     mount.appendChild(canvas);
-
-    console.log('Renderer appended:', canvas);
 
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
@@ -71,7 +67,6 @@ export default function LavaLampGLSL({
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution;
 
-          // Radial gradient background from cranberry (bottom) to orange (outer)
           vec3 bgCranberry = vec3(0.18, 0.0, 0.24);
           vec3 bgOrange = vec3(1.0, 0.55, 0.26);
           vec2 center = vec2(0.5, 0.2);
@@ -82,25 +77,28 @@ export default function LavaLampGLSL({
 
           for (int i = 0; i < 10; i++) {
             float fi = float(i);
-            float speed = 0.5 + 0.3 * sin(fi + u_time * 0.5);
-            float radius = 0.08 + 0.04 * sin(fi + u_time * 0.8);
+            float phase = fi * 1.2;
 
-            vec2 offset = vec2(
-              sin(fi + u_time * 0.3 + fi * 1.2) * 0.7,
-              cos(fi + u_time * 0.4 + fi * 1.5) * 0.6
-            );
-            vec2 blobUV = uv * 2.0 - 1.0 - offset;
-            float dist = length(blobUV);
-            field += radius * radius / (dist * dist + 0.001);
+            float x = 0.5 + 0.4 * sin(u_time * 0.5 + phase);
+            float y = mod(0.2 * sin(u_time * 0.3 + phase) + u_time * 0.1 * (0.5 + 0.5 * sin(phase)), 1.5);
+            vec2 pos = vec2(x, y);
+
+            vec2 delta = uv - pos;
+            float dist = length(delta);
+            float radius = 0.10 + 0.05 * sin(u_time + fi * 0.75);
+            field += radius * radius / (dist * dist + 0.005);
           }
 
-          float mask = smoothstep(0.7, 1.2, field);
+          float mask = smoothstep(0.5, 1.2, field);
+          float softEdge = smoothstep(0.6, 0.9, field);
 
-          vec3 blobStart = vec3(1.0, 0.0, 0.0);
-          vec3 blobEnd = vec3(0.1, 0.0, 0.2);
+          vec3 blobStart = vec3(0.43, 0.15, 0.38);
+          vec3 blobEnd = vec3(0.69, 0.36, 0.41);
           vec3 blobColor = mix(blobStart, blobEnd, uv.y);
 
-          vec3 finalColor = mix(bgColor, blobColor, mask);
+          vec3 blended = mix(bgColor, blobColor, mask);
+          vec3 finalColor = mix(blended, blobColor, softEdge * 0.25);
+
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
