@@ -131,18 +131,33 @@ export default function LavaLampGLSL({
     scene.add(mesh);
 
     const clock = new THREE.Clock();
-    let frameId: number;
+    let previousTime = 0;
 
     const animate = () => {
-      uniforms.u_time.value = clock.getElapsedTime();
+      const elapsed = clock.getElapsedTime();
+      const delta = elapsed - previousTime;
+      previousTime = elapsed;
+
+      uniforms.u_time.value = elapsed;
       renderer.render(scene, camera);
-      frameId = requestAnimationFrame(animate);
     };
-    animate();
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        renderer.setAnimationLoop(null);
+      } else {
+        previousTime = clock.getElapsedTime();
+        renderer.setAnimationLoop(animate);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    renderer.setAnimationLoop(animate);
 
     return () => {
-      cancelAnimationFrame(frameId);
+      renderer.setAnimationLoop(null);
       renderer.dispose();
+      document.removeEventListener('visibilitychange', handleVisibility);
       mount.removeChild(canvas);
     };
   }, [blobCount, blobSpeed, blobSize]);
@@ -158,6 +173,7 @@ export default function LavaLampGLSL({
         overflow: 'hidden',
         zIndex: 0,
         pointerEvents: 'none',
+        willChange: 'transform',
       }}
     />
   );
