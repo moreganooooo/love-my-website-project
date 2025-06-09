@@ -30,41 +30,16 @@ export default function LavaLampGLSL({
 
     const width = mount.clientWidth;
     const height = mount.clientHeight;
+    console.log('Canvas size:', width, height);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setSize(width, height);
+    renderer.debug.checkShaderErrors = true;
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
-
-    const toVec3 = (hex: string) => {
-      const c = new THREE.Color(hex);
-      return `vec3(${c.r.toFixed(3)}, ${c.g.toFixed(3)}, ${c.b.toFixed(3)})`;
-    };
-
-    const blobParams = Array.from({ length: blobCount }, (_, i) => {
-      const side = i % 2 === 0 ? 1 : -1;
-      return {
-        baseX: side * (0.7 + Math.random() * 0.2),
-        ampX: 0.15 + Math.random() * 0.05,
-        ampY: 0.6 + Math.random() * 0.2,
-        speedX: 0.2 + Math.random() * 0.1,
-        speedY: 0.3 + Math.random() * 0.1,
-        phase: Math.random() * Math.PI * 2,
-        radius: blobSize,
-      };
-    });
-
-    const blobCode = blobParams.map((b, i) => `
-      vec2 pos${i} = vec2(
-        ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-        fract(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * 2.0 - 1.0
-      );
-      float dist${i} = length(uv - pos${i});
-      field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
-    `).join("\n");
 
     const uniforms = {
       u_time: { value: 0.0 },
@@ -75,38 +50,25 @@ export default function LavaLampGLSL({
       uniforms,
       fragmentShader: `
         precision mediump float;
-        uniform float u_time;
-        uniform vec2 u_resolution;
-
         void main() {
-          vec2 uv = (gl_FragCoord.xy / u_resolution) * 2.0 - 1.0;
-          float t = u_time * ${blobSpeed.toFixed(2)};
-          float field = 0.0;
-
-          ${blobCode}
-
-          float mask = smoothstep(0.7, 1.8, field);
-
-          vec3 bgStart = ${toVec3(backgroundStart)};
-          vec3 bgEnd = ${toVec3(backgroundEnd)};
-          vec2 center = vec2(0.0, -1.0);
-          float radial = 1.0 - smoothstep(0.0, 1.5, distance(uv, center));
-          vec3 bg = mix(bgStart, bgEnd, radial);
-
-          vec3 blobStart = ${toVec3(blobColorStart)};
-          vec3 blobEnd = ${toVec3(blobColorEnd)};
-          vec3 blobColor = mix(blobStart, blobEnd, (uv.y + 1.0) * 0.5);
-
-          vec3 finalColor = mix(bg, blobColor, mask * 0.5);
-
-          gl_FragColor = vec4(finalColor, mask * 0.8 + 0.2);
+          gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // RED
         }
       `,
+      depthTest: false,
+      depthWrite: false,
+      transparent: false,
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
+
+    // Add test geometry to verify rendering
+    const testMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff });
+    const testGeo = new THREE.PlaneGeometry(1, 1);
+    const testMesh = new THREE.Mesh(testGeo, testMaterial);
+    testMesh.position.set(0, 0, 0);
+    // scene.add(testMesh); // optional debug
 
     const clock = new THREE.Clock();
     let frameId: number;
@@ -125,5 +87,5 @@ export default function LavaLampGLSL({
     };
   }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
 
-  return <div ref={mountRef} className="absolute inset-0 -z-10" style={{ width: '100%', height: '100%' }} />;
+  return <div ref={mountRef} className="absolute inset-0 z-0" style={{ width: '100%', height: '100%' }} />;
 }
