@@ -14,9 +14,9 @@ export interface LavaLampGLSLProps {
 }
 
 export default function LavaLampGLSL({
-  blobCount = 24,
-  blobSpeed = 0.1,
-  blobSize = 0.08,
+  blobCount = 12,
+  blobSpeed = 0.15,
+  blobSize = 0.16,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
   backgroundStart = '#2e003e',
@@ -52,59 +52,55 @@ export default function LavaLampGLSL({
       u_resolution: { value: new THREE.Vector2(width, height) },
     };
 
+    const blobCode = Array.from({ length: blobCount }, (_, i) => {
+      const side = i % 2 === 0 ? 1 : -1;
+      const baseX = side * 0.8;
+      const ampX = 0.2;
+      const ampY = 0.9;
+      const speedX = 0.15 + Math.random() * 0.1;
+      const speedY = 0.2 + Math.random() * 0.2;
+      const phase = (i / blobCount) * Math.PI * 2;
+      const radius = blobSize;
+      return `
+        vec2 pos${i} = vec2(
+          ${baseX.toFixed(2)} + sin(t * ${speedX.toFixed(2)} + ${phase.toFixed(2)}) * ${ampX.toFixed(2)},
+          cos(t * ${speedY.toFixed(2)} + ${phase.toFixed(2)}) * ${ampY.toFixed(2)}
+        );
+        float dist${i} = length(uv - pos${i});
+        field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+      `;
+    }).join('\n');
+
     const material = new THREE.ShaderMaterial({
       uniforms,
+      transparent: true,
       fragmentShader: `
         precision mediump float;
         uniform float u_time;
         uniform vec2 u_resolution;
 
-        float random(float x) {
-          return fract(sin(x) * 43758.5453);
-        }
-
-        float metaball(vec2 p, vec2 pos, float r) {
-          float d = length(p - pos);
-          return r * r / (d * d + 0.01);
-        }
-
         void main() {
-          vec2 uv = gl_FragCoord.xy / u_resolution;
-
-          vec3 bgStart = vec3(0.18, 0.0, 0.24);
-          vec3 bgEnd = vec3(1.0, 0.55, 0.26);
-          vec2 center = vec2(0.5, 0.2);
-          float distToCenter = distance(uv, center);
-          vec3 bgColor = mix(bgEnd, bgStart, smoothstep(0.0, 1.0, distToCenter));
-
+          vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+          uv = uv * 2.0 - 1.0;
+          float t = u_time * ${blobSpeed.toFixed(2)};
           float field = 0.0;
 
-          for (int i = 0; i < 24; i++) {
-            float fi = float(i);
-            float phase = fi * 1.5;
-            float side = mod(fi, 2.0) * 2.0 - 1.0;
-            float randOffset = mix(0.1, 0.3, random(fi));
-            float x = randOffset + 0.6 * step(0.0, side);
-            float y = mod(u_time * 0.07 + random(fi * 10.0), 1.2);
-            vec2 pos = vec2(x, y);
-            field += metaball(uv, pos, 0.06);
-          }
+          ${blobCode}
 
-          float mask = smoothstep(0.85, 1.0, field);
+          float mask = smoothstep(0.9, 1.3, field);
 
-          vec3 blobColor = mix(vec3(0.43, 0.15, 0.38), vec3(0.69, 0.36, 0.41), uv.y);
-          vec3 finalColor = mix(bgColor, blobColor, mask);
+          vec3 purple = vec3(0.12, 0.03, 0.25);
+          vec3 orange = vec3(1.0, 0.4, 0.15);
+          float radial = length(uv - vec2(0.0, -1.2));
+          float glowFactor = smoothstep(2.4, 0.0, radial);
+          vec3 background = mix(purple, orange, glowFactor * 0.8);
 
-          float fadeTop = smoothstep(1.0, 0.95, uv.y);
-          float fadeBottom = smoothstep(0.0, 0.05, uv.y);
-          float alpha = fadeTop * fadeBottom;
+          vec3 blobColor = mix(orange, purple, (uv.y + 1.0) * 0.5);
 
-          gl_FragColor = vec4(finalColor, alpha);
+          vec3 finalColor = mix(background, blobColor, mask * 0.5);
+          gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
-      depthTest: false,
-      depthWrite: false,
-      transparent: true,
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
@@ -126,7 +122,7 @@ export default function LavaLampGLSL({
       renderer.dispose();
       mount.removeChild(canvas);
     };
-  }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
+  }, [blobCount, blobSpeed, blobSize]);
 
   return (
     <div
