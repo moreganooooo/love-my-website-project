@@ -76,10 +76,10 @@ export default function LavaLampGLSL({
         diff${i} = rot${i} * diff${i};
         diff${i}.y *= ${stretch.toFixed(2)};
         float dist${i} = length(diff${i});
-        float softness = smoothstep(0.0, 0.2, dist${i});
+        float softness = smoothstep(0.0, 0.25, dist${i});
         float centerGlow = 1.0 - softness;
         field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist${i} * dist${i} + 0.00015);
-        blobShade += ${shade.toFixed(2)} * centerGlow / (dist${i} * dist${i} + 0.001);
+        blobShade += ${shade.toFixed(2)} * mix(0.7, 1.0, centerGlow) / (dist${i} * dist${i} + 0.001);
       `;
     }).join('\n');
 
@@ -109,7 +109,7 @@ export default function LavaLampGLSL({
           vec3 background = mix(purple, orange, glowFactor * 0.8);
 
           vec3 blobColor = mix(orange, purple, (uv.y + 1.0) * 0.5);
-          blobColor *= 0.6 + 0.4 * clamp(blobShade, 0.0, 1.0);
+          blobColor *= 0.7 + 0.3 * clamp(blobShade, 0.0, 1.0);
 
           vec3 finalColor = mix(background, blobColor, mask * 0.5);
           gl_FragColor = vec4(finalColor, 1.0);
