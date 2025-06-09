@@ -19,8 +19,8 @@ export default function LavaLampGLSL({
   blobSize = 0.16,
   blobColorStart = '#ff7a45',
   blobColorEnd = '#9b4dcb',
-  backgroundStart = '#2e003e', // deep cranberry purple
-  backgroundEnd = '#ff8c42',   // soft orange
+  backgroundStart = '#2e003e',
+  backgroundEnd = '#ff8c42',
 }: LavaLampGLSLProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -96,21 +96,8 @@ export default function LavaLampGLSL({
 
           ${blobCode}
 
-          float mask = smoothstep(0.3, 1.2, field);
-
-          vec3 bgStart = ${toVec3(backgroundStart)};
-          vec3 bgEnd = ${toVec3(backgroundEnd)};
-          vec2 center = vec2(0.0, -1.0);
-          float radial = smoothstep(1.5, 0.0, distance(centeredUv, center));
-          vec3 bg = mix(bgStart, bgEnd, radial);
-
-          vec3 blobStart = ${toVec3(blobColorStart)};
-          vec3 blobEnd = ${toVec3(blobColorEnd)};
-          vec3 blobColor = mix(blobStart, blobEnd, (centeredUv.y + 1.0) * 0.5);
-
-          vec3 finalColor = mix(bg, blobColor, mask * 0.6);
-
-          gl_FragColor = vec4(finalColor, mask * 0.7 + 0.3);
+          // Debug output: visualize the field as grayscale
+          gl_FragColor = vec4(vec3(field), 1.0);
         }
       `,
       depthTest: false,
