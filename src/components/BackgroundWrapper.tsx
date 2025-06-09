@@ -19,7 +19,7 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
   const [blobColorStart, setBlobColorStart] = useState("#f9b890"); // warm light orange
   const [blobColorEnd, setBlobColorEnd] = useState("#b76bf2");     // rich lavender
   const [backgroundStart, setBackgroundStart] = useState("#6f0e7b"); // warm deep purple
-  const [backgroundEnd, setBackgroundEnd] = useState("#f7885e");     // glowing orange
+  const [backgroundEnd, setBackgroundEnd] = useState("#f9b890");     // glowing orange
 
   const resetToGorgeous = () => {
     setBlobCount(10);
@@ -27,8 +27,6 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
     setBlobSize(0.16);
     setBlobColorStart("#f9b890");
     setBlobColorEnd("#b76bf2");
-    setBackgroundStart("#6f0e7b"); // <- your screenshot color
-    setBackgroundEnd("#f7885e");
   };
 
   return (
@@ -49,30 +47,30 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
         {toggleable && (
           <div className="flex flex-col items-end gap-4 mb-6">
             <label className="flex items-center gap-2 text-white text-sm">
-              Lava Lamp Background
+              Lava On/Off
               <Switch checked={enabled} onCheckedChange={setEnabled} />
             </label>
 
             <details className="w-full text-white">
               <summary className="cursor-pointer select-none py-1 px-2 rounded bg-white/10 hover:bg-white/20 transition w-max">
-                Customize Lava Lamp
+                Customize Lava
               </summary>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 bg-white/10 backdrop-blur rounded-lg">
                 <label>
-                  <span className="text-sm">Blob Count: {blobCount}</span>
+                  <span className="text-sm">Lava Count: {blobCount}</span>
                   <input type="range" min={1} max={20} value={blobCount}
                     onChange={e => setBlobCount(parseInt(e.target.value))} className="w-full" />
                 </label>
 
                 <label>
-                  <span className="text-sm">Blob Speed: {blobSpeed.toFixed(2)}</span>
+                  <span className="text-sm">Lava Speed: {blobSpeed.toFixed(2)}</span>
                   <input type="range" min={0.05} max={1.0} step={0.01} value={blobSpeed}
                     onChange={e => setBlobSpeed(Math.max(0.05, parseFloat(e.target.value)))} className="w-full" />
                 </label>
 
                 <label>
-                  <span className="text-sm">Blob Size: {blobSize.toFixed(2)}</span>
+                  <span className="text-sm">Lava Size: {blobSize.toFixed(2)}</span>
                   <input type="range" min={0.05} max={0.4} step={0.01} value={blobSize}
                     onChange={e => setBlobSize(parseFloat(e.target.value))} className="w-full" />
                 </label>
