@@ -22,9 +22,9 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
     const width = mount.clientWidth;
     const height = mount.clientHeight;
 
-    // Use alpha: false for opaque canvas
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setClearColor(0x100438, 1); // match baseColor
+    // Use alpha: true for transparent canvas
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setClearColor(0x100438, 0); // transparent, fallback for unsupported alpha
     renderer.setSize(width, height);
     mount.appendChild(renderer.domElement);
 
@@ -72,7 +72,6 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
         uniform vec2 u_resolution;
         
         void main() {
-          // Lava lamp effect restored
           vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
           float t = u_time * 0.2;
           float field = 0.0;
@@ -83,10 +82,12 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
           vec3 lavaColor = mix(vec3(1.0, 0.45, 0.15), vec3(0.4, 0.2, 0.6), uv.y * 0.5 + 0.5);
           vec3 color = mix(baseColor, lavaColor, mask);
           // Fallback: always output baseColor if mask is invalid
+          float alpha = mask;
           if (!(mask >= 0.0 && mask <= 1.0)) {
             color = baseColor;
+            alpha = 0.0;
           }
-          gl_FragColor = vec4(color, 1.0);
+          gl_FragColor = vec4(color, alpha);
         }
       `,
     });
