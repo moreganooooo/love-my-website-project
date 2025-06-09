@@ -1,3 +1,5 @@
+// src/components/LavaLampGLSL.tsx
+
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
@@ -6,6 +8,7 @@ interface LavaLampGLSLProps {
   blobCount?: number;
   blobSpeed?: number;
   opacity?: number;
+  hoverBoost?: number;
 }
 
 export default function LavaLampGLSL({
@@ -13,6 +16,7 @@ export default function LavaLampGLSL({
   blobCount = 8,
   blobSpeed = 0.2,
   opacity = 0.5,
+  hoverBoost = 0.1,
 }: LavaLampGLSLProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -55,8 +59,8 @@ export default function LavaLampGLSL({
       float light${i} = 0.005 / (dist${i} * dist${i} + 0.0001);
       field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.0001);
       glowAcc += light${i};
-      float hover = 0.2 / (length(mouse - pos${i}) + 0.1);
-      glowAcc += hover * 0.1;
+      float hover${i} = 0.2 / (length(mouse - pos${i}) + 0.1);
+      glowAcc += hover${i} * u_hoverBoost;
     `).join("\n");
 
     const uniforms = {
@@ -64,6 +68,7 @@ export default function LavaLampGLSL({
       u_resolution: { value: new THREE.Vector2(width, height) },
       mouse: { value: new THREE.Vector2(0, 0) },
       u_glowIntensity: { value: glowIntensity },
+      u_hoverBoost: { value: hoverBoost },
     };
 
     const material = new THREE.ShaderMaterial({
@@ -75,6 +80,7 @@ export default function LavaLampGLSL({
         uniform float u_time;
         uniform vec2 mouse;
         uniform float u_glowIntensity;
+        uniform float u_hoverBoost;
 
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution.xy;
@@ -120,6 +126,7 @@ export default function LavaLampGLSL({
       uniforms.u_time.value = clock.getElapsedTime();
       uniforms.mouse.value.copy(mouse);
       uniforms.u_glowIntensity.value = glowIntensity;
+      uniforms.u_hoverBoost.value = hoverBoost;
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(animate);
     };
@@ -131,7 +138,7 @@ export default function LavaLampGLSL({
       mount.removeChild(renderer.domElement);
       mount.removeEventListener("mousemove", onMouseMove);
     };
-  }, [glowIntensity, blobCount, blobSpeed, opacity]);
+  }, [glowIntensity, blobCount, blobSpeed, opacity, hoverBoost]);
 
   return <div ref={mountRef} className="absolute inset-0 -z-10" />;
 }
