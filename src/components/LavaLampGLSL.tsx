@@ -39,8 +39,7 @@ export default function LavaLampGLSL({
 
     const canvas = renderer.domElement;
     canvas.style.position = 'absolute';
-    canvas.style.top = '0';
-    canvas.style.left = '0';
+    canvas.style.inset = '0';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.zIndex = '0';
@@ -131,12 +130,10 @@ export default function LavaLampGLSL({
     <div
       ref={mountRef}
       style={{
-        width: '100%',
         position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
+        inset: 0,
+        width: '100%',
+        height: '100%',
         overflow: 'hidden',
         zIndex: 0,
       }}
