@@ -70,6 +70,15 @@ export default function LavaLampGLSL({
 
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution;
+
+          // Radial gradient background from cranberry (bottom) to orange (outer)
+          vec3 bgCranberry = vec3(0.18, 0.0, 0.24);
+          vec3 bgOrange = vec3(1.0, 0.55, 0.26);
+          vec2 center = vec2(0.5, 0.2);
+          float distToCenter = distance(uv, center);
+          vec3 bgColor = mix(bgOrange, bgCranberry, smoothstep(0.0, 1.0, distToCenter));
+
+          // Animate blob
           vec2 offset = vec2(
             0.5 * sin(u_time),
             0.3 * cos(u_time * 0.8)
@@ -80,8 +89,10 @@ export default function LavaLampGLSL({
           float pulse = 0.1 + 0.05 * sin(u_time * 2.0);
           float blob = smoothstep(0.0, pulse, dist);
 
-          vec3 color = mix(vec3(1.0, 0.0, 0.0), vec3(0.1, 0.0, 0.2), blob);
-          gl_FragColor = vec4(color, 1.0);
+          vec3 blobColor = mix(vec3(1.0, 0.0, 0.0), vec3(0.1, 0.0, 0.2), blob);
+
+          vec3 finalColor = mix(blobColor, bgColor, blob);
+          gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
       depthTest: false,
