@@ -23,6 +23,7 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
 
     // Use alpha: false for opaque canvas
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setClearColor(0x100438, 1); // match baseColor
     renderer.setSize(width, height);
     mount.appendChild(renderer.domElement);
 
@@ -53,73 +54,49 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
             cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
           );
           float dist${i} = length(uv - pos${i});
-          field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001); // larger epsilon for safety
-        `).join("\n")
-      : "// no blobs";
+          field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+        `).join("\n") : "// no blobs";
 
     const uniforms = {
       u_time: { value: 0.0 },
       u_resolution: { value: new THREE.Vector2(width, height) },
     };
 
-    let material;
-    try {
-      material = new THREE.ShaderMaterial({
-        uniforms,
-        transparent: false,
-        fragmentShader: `
-          precision mediump float;
-          uniform vec2 u_resolution;
-          uniform float u_time;
+    const material = new THREE.ShaderMaterial({
+      uniforms,
+      transparent: false,
+      fragmentShader: `
+        precision mediump float;
+        uniform vec2 u_resolution;
+        uniform float u_time;
 
-          void main() {
-            vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-            uv = uv * 2.0 - 1.0;
-            float t = u_time * (${safeBlobSpeed.toFixed(2)} * 0.25);
+        void main() {
+          vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+          uv = uv * 2.0 - 1.0;
+          float t = u_time * (${safeBlobSpeed.toFixed(2)} * 0.25);
 
-            float field = 0.0;
+          float field = 0.0;
 
-            ${blobCount > 0 ? blobParams.map((b, i) => `
-              vec2 pos${i} = vec2(
-                ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-                cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
-              );
-              float dist${i} = length(uv - pos${i});
-              field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
-            `).join("\n") : "// no blobs"}
+          ${blobCount > 0 ? blobParams.map((b, i) => `
+            vec2 pos${i} = vec2(
+              ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
+              cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
+            );
+            float dist${i} = length(uv - pos${i});
+            field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+          `).join("\n") : "// no blobs"}
 
-            float threshold = 1.0;
-            float edge = 0.09;
-            float maskBase = smoothstep(threshold - edge, threshold + edge, field);
-            float fadeY = smoothstep(1.0, 0.0, uv.y);
-            float mask = clamp(maskBase * fadeY, 0.0, 1.0);
+          float threshold = 1.0;
+          float edge = 0.09;
+          float maskBase = smoothstep(threshold - edge, threshold + edge, field);
+          float fadeY = smoothstep(1.0, 0.0, uv.y);
+          float mask = clamp(maskBase * fadeY, 0.0, 1.0);
 
-            vec3 baseColor = vec3(0.06, 0.015, 0.18);
-            vec3 glow = vec3(1.0, 0.5, 0.15);
-            float glowFactor = smoothstep(2.4, -0.6, length(uv - vec2(0.0, -1.3)));
-            vec3 background = mix(baseColor, glow, glowFactor);
-
-            vec3 purple = vec3(0.65, 0.4, 0.95);
-            vec3 orange = vec3(0.95, 0.4, 0.2);
-            float grad = clamp((uv.y + 1.0) / 2.0, 0.0, 1.0);
-            vec3 blobColor = mix(orange, purple, grad);
-            float blobAlpha = 0.45 + 0.15 * sin(t + uv.x * 2.0);
-
-            float safeField = clamp(field, 0.0, 1e6);
-            vec3 finalColor = mix(background, blobColor, mask * blobAlpha);
-
-            // Robust fallback: if mask or color is invalid, always output baseColor
-            if (mask <= 0.0001 || isnan(mask) || isinf(mask) || isnan(finalColor.r) || isinf(finalColor.r)) {
-              gl_FragColor = vec4(baseColor, 1.0);
-            } else {
-              gl_FragColor = vec4(finalColor, 1.0);
-            }
-          }
-        `,
-      });
-    } catch (e) {
-      console.error('Shader failed to compile:', e);
-    }
+          // DEBUG: Output mask as grayscale
+          gl_FragColor = vec4(vec3(mask), 1.0);
+        }
+      `,
+    });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
     const mesh = new THREE.Mesh(geometry, material);
