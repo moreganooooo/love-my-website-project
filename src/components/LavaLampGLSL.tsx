@@ -8,7 +8,7 @@ export interface LavaLampGLSLProps {
   blobSpeed: number;
 }
 
-export default function LavaLampGLSL({ blobCount = 8, blobSpeed = 0.05 }: LavaLampGLSLProps) {
+export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.05 }: LavaLampGLSLProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function LavaLampGLSL({ blobCount = 8, blobSpeed = 0.05 }: LavaLa
       const speedX = 0.12;
       const speedY = 0.25;
       const phase = Math.PI * 2 * (i / blobCount);
-      const radius = 0.14;
+      const radius = 0.16; // slightly larger
       return { baseX, ampX, ampY, speedX, speedY, phase, radius };
     });
 
@@ -73,16 +73,15 @@ export default function LavaLampGLSL({ blobCount = 8, blobSpeed = 0.05 }: LavaLa
 
           float mask = smoothstep(1.0, 2.0, field);
 
-          // Gradient background (deep purple to warm orange glow from bottom center)
-          vec3 basePurple = vec3(0.16, 0.06, 0.28);  // warmer purple
-          vec3 warmOrange = vec3(1.0, 0.6, 0.2);
+          // Permanent background (mimic site gradient)
+          vec3 basePurple = vec3(0.16, 0.06, 0.28);     // warm purple
+          vec3 brightOrange = vec3(1.0, 0.55, 0.25);    // brighter orange
           float r = length(uv - vec2(0.0, -1.2));
           float g = smoothstep(1.5, 0.0, r);
-          vec3 background = mix(basePurple, warmOrange, g);
+          vec3 background = mix(basePurple, brightOrange, g);
 
-          // Lava blobs: deeper richer orange/purple mix, semi-transparent
+          // Lava blobs (warm blend, richer color, transparent)
           vec3 blobColor = mix(vec3(0.9, 0.5, 0.2), vec3(0.5, 0.2, 0.6), (uv.y + 1.0) * 0.5);
-
           vec3 finalColor = mix(background, blobColor, mask);
           float alpha = 0.5 * mask;
 
@@ -112,5 +111,10 @@ export default function LavaLampGLSL({ blobCount = 8, blobSpeed = 0.05 }: LavaLa
     };
   }, [blobCount, blobSpeed]);
 
-  return <div ref={mountRef} className="absolute inset-0 -z-10" />;
+  return (
+    <div
+      ref={mountRef}
+      className="absolute inset-0 -z-10 bg-[#100438] bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700"
+    />
+  );
 }
