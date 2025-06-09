@@ -15,7 +15,7 @@ export interface LavaLampGLSLProps {
 
 export default function LavaLampGLSL({
   blobCount = 12,
-  blobSpeed = 0.15,
+  blobSpeed = 0.18,
   blobSize = 0.16,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
@@ -55,10 +55,10 @@ export default function LavaLampGLSL({
     const blobCode = Array.from({ length: blobCount }, (_, i) => {
       const side = i % 2 === 0 ? 1 : -1;
       const baseX = side * 0.8;
-      const ampX = 0.2;
-      const ampY = 0.9;
-      const speedX = 0.15 + Math.random() * 0.1;
-      const speedY = 0.2 + Math.random() * 0.2;
+      const ampX = 0.25;
+      const ampY = 1.2;
+      const speedX = 0.18 + Math.random() * 0.1;
+      const speedY = 0.3 + Math.random() * 0.2;
       const phase = (i / blobCount) * Math.PI * 2;
       const radius = blobSize;
       return `
