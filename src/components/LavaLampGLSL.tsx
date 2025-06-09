@@ -74,25 +74,27 @@ export default function LavaLampGLSL({
             float fi = float(i);
             float phase = fi * 1.2;
 
-            float x = 0.5 + 0.4 * sin(u_time * 0.5 + phase);
-            float y = mod(0.2 * sin(u_time * 0.3 + phase) + u_time * 0.1 * (0.5 + 0.5 * sin(phase)), 1.5);
+            float x = 0.5 + 0.02 * sin(u_time * 0.2 + phase);
+            float y = mod(0.2 * sin(u_time * 0.15 + phase) + u_time * 0.08 * (0.5 + 0.5 * sin(phase)), 1.2);
             vec2 pos = vec2(x, y);
 
             vec2 delta = uv - pos;
             float dist = length(delta);
-            float radius = 0.10 + 0.05 * sin(u_time + fi * 0.75);
-            field += radius * radius / (dist * dist + 0.005);
+            float radius = 0.08 + 0.04 * sin(u_time + fi * 0.5);
+            field += radius * radius / (dist * dist + 0.006);
           }
 
           float mask = smoothstep(0.5, 1.2, field);
-          float softEdge = smoothstep(0.6, 0.9, field);
+          float softEdge = smoothstep(0.65, 0.9, field);
 
           vec3 blobStart = vec3(0.43, 0.15, 0.38);
           vec3 blobEnd = vec3(0.69, 0.36, 0.41);
           vec3 blobColor = mix(blobStart, blobEnd, uv.y);
 
           vec3 blended = mix(bgColor, blobColor, mask);
-          vec3 finalColor = mix(blended, blobColor, softEdge * 0.25);
+          vec3 finalColor = mix(blended, blobColor, softEdge * 0.1);
+
+          if (uv.y > 1.0) discard;
 
           gl_FragColor = vec4(finalColor, 1.0);
         }
