@@ -45,50 +45,50 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
 
       <div className="max-w-8xl mx-auto relative z-10">
         {toggleable && (
-          <details className="w-full max-w-sm text-white mb-6">
-            <summary className="cursor-pointer select-none py-1 px-2 rounded bg-white/10 hover:bg-white/20 transition w-full text-left">
+          <details className="w-full text-white">
+            <summary className="cursor-pointer select-none py-1 px-2 rounded bg-white/10 hover:bg-white/20 transition w-max ml-auto">
               Customize ♥︎
             </summary>
-            <div className="flex flex-col gap-4 mt-4 p-4 bg-white/10 backdrop-blur rounded-lg">
+            <div className="flex flex-col items-end gap-4 mb-6">
               <label className="flex items-center gap-2 text-white text-sm">
                 Lava On/Off
-                <Switch checked={enabled} onCheckedChange={setEnabled} />
+                <Switch
+                  checked={enabled}
+                  onCheckedChange={setEnabled}
+                  className="w-16 h-6"
+                />
               </label>
-
-              <label>
-                <span className="text-sm">Lava Count: {blobCount}</span>
-                <input type="range" min={1} max={20} value={blobCount}
-                  onChange={e => setBlobCount(parseInt(e.target.value))} className="w-full" />
-              </label>
-
-              <label>
-                <span className="text-sm">Lava Speed: {blobSpeed.toFixed(2)}</span>
-                <input type="range" min={0.05} max={1.0} step={0.01} value={blobSpeed}
-                  onChange={e => setBlobSpeed(Math.max(0.05, parseFloat(e.target.value)))} className="w-full" />
-              </label>
-
-              <label>
-                <span className="text-sm">Lava Size: {blobSize.toFixed(2)}</span>
-                <input type="range" min={0.05} max={0.4} step={0.01} value={blobSize}
-                  onChange={e => setBlobSize(parseFloat(e.target.value))} className="w-full" />
-              </label>
-
-              <label>
-                <span className="text-sm">Bottom Lava</span>
-                <input type="color" value={blobColorStart} onChange={e => setBlobColorStart(e.target.value)} className="w-full" />
-              </label>
-
-              <label>
-                <span className="text-sm">Top Lava</span>
-                <input type="color" value={blobColorEnd} onChange={e => setBlobColorEnd(e.target.value)} className="w-full" />
-              </label>
-
-              <button
-                onClick={resetToGorgeous}
-                className="mt-2 w-full bg-gradient-to-r from-purple-600 to-orange-500 text-white rounded-md py-1.5 text-sm font-semibold hover:brightness-110 transition"
-              >
-                Reset to Gorgeous
-              </button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 bg-white/10 backdrop-blur rounded-lg">
+                <label>
+                  <span className="text-sm">Lava Count: {blobCount}</span>
+                  <input type="range" min={1} max={20} value={blobCount}
+                    onChange={e => setBlobCount(parseInt(e.target.value))} className="w-full" />
+                </label>
+                <label>
+                  <span className="text-sm">Lava Speed: {blobSpeed.toFixed(2)}</span>
+                  <input type="range" min={0.05} max={1.0} step={0.01} value={blobSpeed}
+                    onChange={e => setBlobSpeed(Math.max(0.05, parseFloat(e.target.value)))} className="w-full" />
+                </label>
+                <label>
+                  <span className="text-sm">Lava Size: {blobSize.toFixed(2)}</span>
+                  <input type="range" min={0.05} max={0.4} step={0.01} value={blobSize}
+                    onChange={e => setBlobSize(parseFloat(e.target.value))} className="w-full" />
+                </label>
+                <label>
+                  <span className="text-sm">Bottom Lava</span>
+                  <input type="color" value={blobColorStart} onChange={e => setBlobColorStart(e.target.value)} className="w-full" />
+                </label>
+                <label>
+                  <span className="text-sm"> Top Lava</span>
+                  <input type="color" value={blobColorEnd} onChange={e => setBlobColorEnd(e.target.value)} className="w-full" />
+                </label>
+                <button
+                  onClick={resetToGorgeous}
+                  className="mt-4 w-full bg-gradient-to-r from-purple-600 to-orange-500 text-white rounded-md py-1.5 text-sm font-semibold hover:brightness-110 transition"
+                >
+                  Reset to Gorgeous
+                </button>
+              </div>
             </div>
           </details>
         )}
