@@ -74,32 +74,32 @@ export default function LavaLampGLSL({
     const material = new THREE.ShaderMaterial({
       uniforms,
       fragmentShader: `
-        precision mediump float;
-        uniform float u_time;
-        uniform vec2 u_resolution;
+      precision mediump float;
+      uniform float u_time;
+      uniform vec2 u_resolution;
 
-        void main() {
-          vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
-          float t = u_time * ${blobSpeed.toFixed(2)};
-          float field = 0.0;
+      void main() {
+        vec2 uv = (gl_FragCoord.xy / u_resolution) * 2.0 - 1.0;
+        float t = u_time * ${blobSpeed.toFixed(2)};
+        float field = 0.0;
 
-          ${blobCode}
+        ${blobCode /* must include this */}
 
-          float mask = smoothstep(1.0, 2.0, field);
+        float mask = smoothstep(1.0, 2.0, field);
 
-          vec3 start = ${toVec3(backgroundStart)};
-          vec3 end = ${toVec3(backgroundEnd)};
-          vec2 center = vec2(0.0, -1.0);
-          float radial = 1.0 - smoothstep(0.0, 1.5, distance(uv, center));
-          vec3 bg = mix(start, end, radial);
+        vec3 bgStart = ${toVec3(backgroundStart)};
+        vec3 bgEnd = ${toVec3(backgroundEnd)};
+        vec2 center = vec2(0.0, -1.0);
+        float radial = 1.0 - smoothstep(0.0, 1.5, distance(uv, center));
+        vec3 bg = mix(bgStart, bgEnd, radial);
 
-          vec3 blobStart = ${toVec3(blobColorStart)};
-          vec3 blobEnd = ${toVec3(blobColorEnd)};
-          vec3 blobColor = mix(blobStart, blobEnd, (uv.y + 1.0) / 2.0);
+        vec3 blobStart = ${toVec3(blobColorStart)};
+        vec3 blobEnd = ${toVec3(blobColorEnd)};
+        vec3 blobColor = mix(blobStart, blobEnd, (uv.y + 1.0) * 0.5);
 
-          vec3 finalColor = mix(bg, blobColor, mask * 0.5);
-          gl_FragColor = vec4(finalColor, 1.0);
-        }
+        vec3 finalColor = mix(bg, blobColor, mask * 0.5);
+        gl_FragColor = vec4(finalColor, 1.0);
+      }
       `,
     });
 
