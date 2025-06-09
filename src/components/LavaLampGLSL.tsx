@@ -77,7 +77,7 @@ export default function LavaLampGLSL({
 
     const material = new THREE.ShaderMaterial({
       uniforms,
-      transparent: true,
+      transparent: false, // Ensure the material is fully opaque
       fragmentShader: `
         precision mediump float;
         uniform vec2 u_resolution;
@@ -102,8 +102,8 @@ export default function LavaLampGLSL({
 
           // Hero section gradient reference:
           // from-orange-400 via-orange-500 to-purple-700
-          vec3 orange1 = vec3(1.0, 0.7, 0.3); // brighter orange, #fdba4e
-          vec3 orange2 = vec3(1.0, 0.55, 0.15); // more vivid orange, #fb880f
+          vec3 orange1 = vec3(1.0, 0.7, 0.3); // #fdba4e
+          vec3 orange2 = vec3(1.0, 0.55, 0.15); // #fb880f
           vec3 purple = vec3(0.45, 0.27, 0.67); // #a21caf
           float grad = clamp((uv.y + 1.0) / 2.0, 0.0, 1.0);
           vec3 background = mix(orange1, orange2, grad * 0.7);
@@ -115,7 +115,7 @@ export default function LavaLampGLSL({
 
           vec3 finalColor = mix(background, blobColor, mask * blobAlpha);
 
-          gl_FragColor = vec4(finalColor, ${opacity.toFixed(2)});
+          gl_FragColor = vec4(finalColor, 1.0); // Force full opacity
         }
       `,
     });
