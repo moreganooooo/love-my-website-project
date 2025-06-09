@@ -54,9 +54,9 @@ export default function LavaLampControls() {
             type="range"
             min="0.05"
             max="1.0"
-            step="0.05"
+            step="0.01"
             value={blobSpeed}
-            onChange={(e) => setBlobSpeed(parseFloat(e.target.value))}
+            onChange={(e) => setBlobSpeed(Math.max(0.05, parseFloat(e.target.value)))}
             className="w-full"
           />
         </label>

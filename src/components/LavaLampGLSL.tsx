@@ -34,15 +34,15 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
     const safeBlobSpeed = Math.max(blobSpeed, 0.05);
 
     const blobParams = Array.from({ length: blobCount }, (_, i) => {
-      const margin = 0.7 + Math.random() * 0.2;
+      const margin = 0.8; // less randomness
       const side = i % 2 === 0 ? 1 : -1;
       const baseX = side * margin;
-      const ampX = 0.15 + Math.random() * 0.07; // slightly less randomness for smoother motion
-      const ampY = 0.7 + Math.random() * 0.2;
-      const speedX = 0.2 + Math.random() * 0.15;
-      const speedY = 0.5 + Math.random() * 0.5;
-      const phase = Math.random() * Math.PI * 2;
-      const radius = 0.12 + Math.random() * 0.06;
+      const ampX = 0.18; // fixed amplitude for smoothness
+      const ampY = 0.8;
+      const speedX = 0.22; // fixed speed for smoothness
+      const speedY = 0.55;
+      const phase = Math.PI * 2 * (i / blobCount); // evenly distributed phases
+      const radius = 0.14; // fixed radius for smoothness
       return { baseX, ampX, ampY, speedX, speedY, phase, radius };
     });
 
@@ -50,9 +50,10 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
       ? blobParams.map((b, i) => `
           vec2 pos${i} = vec2(
             ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-            mod(${b.ampY.toFixed(2)} * t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}, 2.0) - 1.0);
+            cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
+          );
           float dist${i} = length(uv - pos${i});
-          field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.0001);
+          field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001); // larger epsilon for safety
         `).join("\n")
       : "// no blobs";
 
@@ -76,15 +77,22 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
 
           float field = 0.0;
 
-          ${blobCode}
+          ${blobCount > 0 ? blobParams.map((b, i) => `
+            vec2 pos${i} = vec2(
+              ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
+              cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
+            );
+            float dist${i} = length(uv - pos${i});
+            field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001); // larger epsilon for safety
+          `).join("\n") : "// no blobs"}
 
           float threshold = 1.0;
-          float edge = 0.05;
+          float edge = 0.09; // softer edge
           float maskBase = smoothstep(threshold - edge, threshold + edge, field);
-          float fadeY = smoothstep(1.0, 0.3, uv.y); // More gradual fade at the top
+          float fadeY = smoothstep(1.0, 0.0, uv.y); // fade out more at top
           float mask = maskBase * fadeY;
 
-          vec3 baseColor = vec3(0.06, 0.015, 0.18);
+          vec3 baseColor = vec3(0.06, 0.015, 0.18); // always non-white background
           vec3 glow = vec3(1.0, 0.5, 0.15);
           float glowFactor = smoothstep(2.4, -0.6, length(uv - vec2(0.0, -1.3)));
           vec3 background = mix(baseColor, glow, glowFactor);
