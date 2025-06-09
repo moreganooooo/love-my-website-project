@@ -138,7 +138,7 @@ export default function LavaLampGLSL({
           vec3 blobColor = mix(blobBase, blobHighlight, clamp(blobShade * 0.8, 0.0, 1.0));
 
           // Separate opacity for background and blobs
-          vec3 finalColor = mix(background, blobColor, mask * 0.75); // Reduced blob opacity
+          vec3 finalColor = background + (blobColor - background) * mask * 0.75;
           
           // Full opacity for the complete background
           gl_FragColor = vec4(finalColor, 1.0);
