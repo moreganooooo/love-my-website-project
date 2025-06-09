@@ -74,11 +74,11 @@ export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.05 }: LavaL
           float mask = smoothstep(1.0, 2.0, field);
 
           // Permanent background (mimic site gradient)
-          vec3 basePurple = vec3(0.16, 0.06, 0.28);     // warm purple
-          vec3 brightOrange = vec3(1.0, 0.55, 0.25);    // brighter orange
+          vec3 basePurple = vec3(0.10, 0.04, 0.22);     // dark moody purple
+          vec3 glowOrange = vec3(1.0, 0.5, 0.2);        // soft warm orange
           float r = length(uv - vec2(0.0, -1.2));
-          float g = smoothstep(1.5, 0.0, r);
-          vec3 background = mix(basePurple, brightOrange, g);
+          float g = smoothstep(2.4, 0.4, r);            // much larger radius
+          vec3 background = mix(basePurple, glowOrange, g * 0.4); // gentle mix
 
           // Lava blobs (warm blend, richer color, transparent)
           vec3 blobColor = mix(vec3(0.9, 0.5, 0.2), vec3(0.5, 0.2, 0.6), (uv.y + 1.0) * 0.5);
