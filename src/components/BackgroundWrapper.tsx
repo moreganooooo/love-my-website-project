@@ -43,9 +43,9 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
         />
       )}
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-8xl mx-auto relative z-10">
         {toggleable && (
-            <details className="w-full text-white">
+            <details className="grid grid-cols-1 md:grid-cols-2 w-full text-white">
               <summary className="cursor-pointer select-none py-1 px-2 rounded bg-white/10 hover:bg-white/20 transition w-max">
                 Customize ♥︎
               </summary>
