@@ -80,7 +80,7 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
           ${blobCode}
           float mask = smoothstep(1.0, 2.0, field);
           vec3 baseColor = vec3(0.06, 0.015, 0.18);
-          vec3 lavaColor = mix(vec3(1.0, 0.5, 0.2), vec3(0.7, 0.2, 0.8), uv.y * 0.5 + 0.5);
+          vec3 lavaColor = mix(vec3(1.0, 0.45, 0.15), vec3(0.4, 0.2, 0.6), uv.y * 0.5 + 0.5);
           vec3 color = mix(baseColor, lavaColor, mask);
           // Fallback: always output baseColor if mask is invalid
           if (!(mask >= 0.0 && mask <= 1.0)) {
