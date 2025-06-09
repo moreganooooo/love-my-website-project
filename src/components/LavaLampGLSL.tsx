@@ -99,21 +99,21 @@ export default function LavaLampGLSL({
           float edge = 0.05;
           float mask = smoothstep(threshold - edge, threshold + edge, field);
 
-          vec3 baseColor = vec3(0.2, 0.05, 0.3);
-          vec3 glow = vec3(1.0, 0.5, 0.1);
-          float glowFactor = smoothstep(1.6, 0.0, length(uv - vec2(0.0, -1.2)));
-          vec3 background = mix(baseColor, glow, glowFactor * 0.9);
+          vec3 baseColor = vec3(0.08, 0.02, 0.2); // deeper purple
+          vec3 glow = vec3(1.0, 0.5, 0.15); // stronger orange glow
+          float glowFactor = smoothstep(1.8, -0.2, length(uv - vec2(0.0, -1.1)));
+          vec3 background = mix(baseColor, glow, glowFactor);
 
-          vec3 purple = vec3(0.6, 0.4, 0.9);
-          vec3 orange = vec3(1.0, 0.6, 0.3);
-          vec3 blobColor = mix(orange, purple, uv.y * 0.5 + 0.5);
+          vec3 purple = vec3(0.55, 0.35, 0.85);
+          vec3 orange = vec3(1.0, 0.5, 0.2);
+          vec3 blobColor = mix(orange, purple, clamp((uv.y + 1.0) / 2.0, 0.0, 1.0));
 
           vec3 highlight = glowAcc * vec3(1.0, 0.8, 0.6) * u_glowIntensity;
           vec3 finalColor = mix(background, blobColor, mask);
           finalColor += highlight * mask;
 
           float fadeIn = smoothstep(0.0, 3.0, t);
-          gl_FragColor = vec4(finalColor, fadeIn * ${opacity.toFixed(2)});
+          gl_FragColor = vec4(finalColor * mask + background * (1.0 - mask), ${opacity.toFixed(2)} * fadeIn);
         }
       `,
     });
