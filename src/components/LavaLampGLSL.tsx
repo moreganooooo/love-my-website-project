@@ -27,7 +27,7 @@ export default function LavaLampGLSL({
     const width = mount.clientWidth;
     const height = mount.clientHeight;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     mount.appendChild(renderer.domElement);
 
@@ -50,7 +50,7 @@ export default function LavaLampGLSL({
         ampX: 0.5 + Math.random() * 0.4,
         ampY: 0.7 + Math.random() * 0.3,
         phase: Math.random() * Math.PI * 2,
-        radius: 0.25 + Math.random() * 0.15,
+        radius: 0.12 + Math.random() * 0.08,
       };
     });
 
@@ -76,7 +76,7 @@ export default function LavaLampGLSL({
 
     const material = new THREE.ShaderMaterial({
       uniforms,
-      transparent: false,
+      transparent: true,
       fragmentShader: `
         precision mediump float;
         uniform vec2 u_resolution;
