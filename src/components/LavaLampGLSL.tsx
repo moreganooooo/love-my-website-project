@@ -68,36 +68,37 @@ export default function LavaLampGLSL({ blobCount, blobSpeed }: LavaLampGLSLProps
       uniforms,
       transparent: true,
       fragmentShader: `
-        precision mediump float;
-        uniform float u_time;
-        uniform vec2 u_resolution;
+  precision mediump float;
+  uniform float u_time;
+  uniform vec2 u_resolution;
 
-        void main() {
-          vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-          uv = uv * 2.0 - 1.0;
-          float t = u_time * ${safeBlobSpeed};
+  void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    uv = uv * 2.0 - 1.0;
+    float t = u_time * ${safeBlobSpeed};
 
-          float field = 0.0;
-          ${blobCode}
+    float field = 0.0;
+    ${blobCode}
 
-          float mask = smoothstep(1.0, 1.5, field);
+    float mask = smoothstep(0.8, 1.2, field);  // tighter threshold
 
-          // Radial gradient from bottom center
-          vec3 darkPurple = vec3(0.1, 0.03, 0.25); // base
-          vec3 sunsetOrange = vec3(1.0, 0.45, 0.15); // glow
-          float radial = length(uv - vec2(0.0, -1.2));
-          float radialFade = smoothstep(2.5, 0.2, radial);
-          vec3 background = mix(darkPurple, sunsetOrange, radialFade * 0.7);
+    // Radial gradient from bottom center
+    vec3 darkPurple = vec3(0.1, 0.03, 0.25);
+    vec3 sunsetOrange = vec3(1.0, 0.45, 0.15);
+    float radial = length(uv - vec2(0.0, -1.2));
+    float radialFade = smoothstep(2.5, 0.1, radial);
+    vec3 background = mix(darkPurple, sunsetOrange, radialFade * 0.75);
 
-          // Blobs blend into background
-          vec3 blobColor = mix(sunsetOrange, darkPurple, uv.y * 0.5 + 0.5);
-          float blobAlpha = 0.5;
+    // Blobs
+    vec3 blobColor = mix(sunsetOrange, darkPurple, uv.y * 0.5 + 0.5);
+    float blobAlpha = 0.5;
 
-          vec3 color = mix(background, blobColor, mask * blobAlpha);
+    vec3 color = mix(background, blobColor, mask * blobAlpha);
 
-          gl_FragColor = vec4(color, 1.0);
-        }
-      `,
+    gl_FragColor = vec4(color, 1.0);
+  }
+`,
+
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
