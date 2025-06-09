@@ -60,13 +60,16 @@ export default function LavaLampGLSL({
       const speedX = 0.3 + Math.random() * 0.15;
       const speedY = 0.5 + Math.random() * 0.25;
       const phase = (i / blobCount) * Math.PI * 2;
-      const radius = blobSize;
+      const radius = 0.1 + Math.random() * (blobSize - 0.1);
+      const stretch = 0.85 + Math.random() * 0.3;
       return `
         vec2 pos${i} = vec2(
           ${baseX.toFixed(2)} + sin(t * ${speedX.toFixed(2)} + ${phase.toFixed(2)}) * ${ampX.toFixed(2)},
           cos(t * ${speedY.toFixed(2)} + ${phase.toFixed(2)}) * ${ampY.toFixed(2)}
         );
-        float dist${i} = length(uv - pos${i});
+        vec2 diff${i} = uv - pos${i};
+        diff${i}.y *= ${stretch.toFixed(2)};
+        float dist${i} = length(diff${i});
         field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist${i} * dist${i} + 0.0003);
       `;
     }).join('\n');
