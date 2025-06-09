@@ -55,11 +55,6 @@ export default function LavaLampGLSL({
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
-    const toVec3 = (hex: string) => {
-      const c = new THREE.Color(hex);
-      return `vec3(${c.r.toFixed(3)}, ${c.g.toFixed(3)}, ${c.b.toFixed(3)})`;
-    };
-
     const uniforms = {
       u_time: { value: 0.0 },
       u_resolution: { value: new THREE.Vector2(width, height) },
@@ -73,17 +68,7 @@ export default function LavaLampGLSL({
         uniform vec2 u_resolution;
 
         void main() {
-          vec2 uv = gl_FragCoord.xy / u_resolution;
-          vec2 centeredUv = uv * 2.0 - 1.0;
-
-          float d = length(centeredUv);
-          float blob = smoothstep(0.2, 0.0, d);
-
-          if (blob > 0.5) {
-            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-          } else {
-            gl_FragColor = vec4(${toVec3(backgroundStart)}, 1.0);
-          }
+          gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
         }
       `,
       depthTest: false,
