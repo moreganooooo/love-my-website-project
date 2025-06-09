@@ -125,5 +125,5 @@ export default function LavaLampGLSL({
     };
   }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
 
-  return <div ref={mountRef} className="absolute inset-0 -z-10" />;
+  return <div ref={mountRef} className="absolute inset-0 -z-10" style={{ width: '100%', height: '100%' }} />;
 }
