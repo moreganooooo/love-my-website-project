@@ -16,7 +16,7 @@ export interface LavaLampGLSLProps {
 export default function LavaLampGLSL({
   blobCount = 24,
   blobSpeed = 0.1,
-  blobSize = 0.08,
+  blobSize = 0.1,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
   backgroundStart = '#2e003e',
@@ -88,7 +88,7 @@ export default function LavaLampGLSL({
             field += radius / (dist * 15.0 + 0.005);
           }
 
-          float mask = smoothstep(0.97, 1.0, field);
+          float mask = smoothstep(0.96, 1.0, field);
 
           vec3 blobColor = mix(vec3(0.43, 0.15, 0.38), vec3(0.69, 0.36, 0.41), uv.y);
           vec3 finalColor = mix(bgColor, blobColor, mask);
