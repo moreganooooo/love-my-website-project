@@ -96,8 +96,20 @@ export default function LavaLampGLSL({
 
           ${blobCode}
 
-          // Debug output: visualize the field as grayscale
-          gl_FragColor = vec4(vec3(field), 1.0);
+          float mask = smoothstep(0.3, 1.2, field);
+
+          vec3 bgStart = ${toVec3(backgroundStart)};
+          vec3 bgEnd = ${toVec3(backgroundEnd)};
+          float radial = smoothstep(1.5, 0.0, distance(centeredUv, vec2(0.0, -1.0)));
+          vec3 bg = mix(bgStart, bgEnd, radial);
+
+          vec3 blobStart = ${toVec3(blobColorStart)};
+          vec3 blobEnd = ${toVec3(blobColorEnd)};
+          vec3 blobColor = mix(blobStart, blobEnd, (centeredUv.y + 1.0) * 0.5);
+
+          vec3 finalColor = mix(bg, blobColor, mask * 0.6);
+
+          gl_FragColor = vec4(finalColor, mask * 0.7 + 0.3);
         }
       `,
       depthTest: false,
