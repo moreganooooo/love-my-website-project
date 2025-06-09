@@ -99,18 +99,17 @@ export default function LavaLampGLSL({
           float edge = 0.05;
           float mask = smoothstep(threshold - edge, threshold + edge, field);
 
-          // Full color, rich background (no pastel)
-          vec3 baseColor = vec3(0.07, 0.02, 0.13); // deep purple
-          vec3 glowColor = vec3(1.0, 0.45, 0.1);   // strong orange
-          float glowRadius = 1.2;
-          float glowStrength = 1.0;
-          float glow = smoothstep(glowRadius, 0.0, length(uv - vec2(0.0, -1.2)));
-          vec3 background = mix(baseColor, glowColor, glow * glowStrength);
+          // Hero section gradient reference:
+          // from-orange-400 via-orange-500 to-purple-700
+          vec3 orange1 = vec3(1.0, 0.6, 0.2); // #fb923c
+          vec3 orange2 = vec3(1.0, 0.4, 0.1); // #f97316
+          vec3 purple = vec3(0.45, 0.27, 0.67); // #a21caf
+          float grad = clamp((uv.y + 1.0) / 2.0, 0.0, 1.0);
+          vec3 background = mix(orange1, orange2, grad * 0.7);
+          background = mix(background, purple, grad * grad);
 
           // Blobs: semi-transparent, blended, not bright, no internal glow
-          vec3 purple = vec3(0.7, 0.4, 0.95);
-          vec3 orange = vec3(1.0, 0.5, 0.2);
-          vec3 blobColor = mix(orange, purple, clamp((uv.y + 1.0) / 2.0, 0.0, 1.0));
+          vec3 blobColor = mix(orange2, purple, grad);
           float blobAlpha = 0.45 + 0.15 * sin(t + uv.x * 2.0);
 
           vec3 finalColor = mix(background, blobColor, mask * blobAlpha);
