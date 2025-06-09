@@ -69,9 +69,9 @@ export default function LavaLampGLSL({
     const blobCode = blobParams.map((b, i) => `
       vec2 pos${i} = vec2(
         ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-        1.0 - fract(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * 2.0 // flip upward
+        1.0 - fract(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * 2.0
       );
-      float dist${i} = length(uv - pos${i});
+      float dist${i} = length(centeredUv - pos${i});
       field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
     `).join("\n");
 
@@ -96,7 +96,7 @@ export default function LavaLampGLSL({
 
           ${blobCode}
 
-          float mask = smoothstep(0.7, 1.8, field);
+          float mask = smoothstep(0.3, 1.2, field);
 
           vec3 bgStart = ${toVec3(backgroundStart)};
           vec3 bgEnd = ${toVec3(backgroundEnd)};
@@ -106,11 +106,11 @@ export default function LavaLampGLSL({
 
           vec3 blobStart = ${toVec3(blobColorStart)};
           vec3 blobEnd = ${toVec3(blobColorEnd)};
-          vec3 blobColor = mix(blobStart, blobEnd, uv.y);
+          vec3 blobColor = mix(blobStart, blobEnd, (centeredUv.y + 1.0) * 0.5);
 
-          vec3 finalColor = mix(bg, blobColor, mask * 0.4);
+          vec3 finalColor = mix(bg, blobColor, mask * 0.6);
 
-          gl_FragColor = vec4(finalColor, mask * 0.6 + 0.2);
+          gl_FragColor = vec4(finalColor, mask * 0.7 + 0.3);
         }
       `,
       depthTest: false,
