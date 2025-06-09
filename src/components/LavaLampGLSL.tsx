@@ -14,8 +14,8 @@ export interface LavaLampGLSLProps {
 }
 
 export default function LavaLampGLSL({
-  blobCount = 32,
-  blobSpeed = 0.48,
+  blobCount = 40,
+  blobSpeed = 0.55,
   blobSize = 0.16,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
@@ -57,14 +57,14 @@ export default function LavaLampGLSL({
       const baseX = side * 0.8;
       const ampX = 0.15;
       const ampY = 1.4;
-      const speedX = 0.3 + Math.random() * 0.15;
-      const speedY = 0.5 + Math.random() * 0.25;
+      const speedX = 0.3 + Math.random() * 0.25;
+      const speedY = 0.4 + Math.random() * 0.8;
       const phase = (i / blobCount) * Math.PI * 2;
-      const radius = 0.1 + Math.random() * (blobSize - 0.1);
+      const radius = 0.08 + Math.random() * 0.18;
       const stretch = 0.85 + Math.random() * 0.3;
       const wobbleFreq = 1.0 + Math.random();
       const wobbleAmp = 0.02 + Math.random() * 0.03;
-      const shade = 0.3 + Math.random() * 0.4;
+      const shade = 0.2 + Math.random() * 0.8;
       return `
         vec2 pos${i} = vec2(
           ${baseX.toFixed(2)} + sin(t * ${speedX.toFixed(2)} + ${phase.toFixed(2)}) * ${ampX.toFixed(2)},
