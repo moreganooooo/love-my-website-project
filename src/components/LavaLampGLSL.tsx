@@ -67,40 +67,43 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
       uniforms,
       transparent: false,
       fragmentShader: `
-        precision mediump float;
-        uniform float u_time;
-        uniform vec2 u_resolution;
+      precision mediump float;
+      uniform float u_time;
+      uniform vec2 u_resolution;
 
-        void main() {
-          vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
-          float t = u_time * ${safeBlobSpeed.toFixed(2)};
-          float field = 0.0;
+      void main() {
+        vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
+        float t = u_time * ${(
+        safeBlobSpeed * 0.6
+        ).toFixed(2)}; // slowed down for elegance
+        float field = 0.0;
 
-           // Blobs
-           ${blobCode}
+        // Blobs
+        ${blobCode}
 
-          // Soft mask for natural blob blending
-          float threshold = 1.0;
-          float softness = 0.2;
-          float fadeY = smoothstep(1.0, 0.6, uv.y); // fade out at top
-          float maskBase = smoothstep(threshold - softness, threshold + softness, field);
-          float mask = maskBase * fadeY;
+        // Blob appearance fadeout at top
+        float threshold = 1.0;
+        float softness = 0.2;
+        float fadeY = smoothstep(1.0, 0.55, uv.y); // fade out gently at top
+        float maskBase = smoothstep(threshold - softness, threshold + softness, field);
+        float mask = maskBase * fadeY;
 
-          // Rich background: deep purple + radial orange glow
-         vec3 baseColor = vec3(0.06, 0.015, 0.18); // dark purple
-         vec3 glowColor = vec3(1.0, 0.45, 0.15);   // warm orange
-         float glowFactor = smoothstep(2.4, -0.6, length(uv - vec2(0.0, -1.3)));
-         vec3 background = mix(baseColor, glowColor, glowFactor);
+        // 🌄 Radial purple-orange gradient from bottom center
+        vec3 basePurple = vec3(0.06, 0.015, 0.18);       // deep background purple
+        vec3 glowOrange = vec3(1.0, 0.55, 0.25);         // slightly brighter orange
+        float radialGlow = smoothstep(1.3, 0.0, length(uv - vec2(0.0, -1.2)));
+        vec3 background = mix(basePurple, glowOrange, radialGlow);
 
-          // Lava blob color blending
-          vec3 blobColor = mix(glowColor, vec3(0.65, 0.4, 0.95), clamp(uv.y * 0.5 + 0.5, 0.0, 1.0));
+        // 🎨 Blob coloring (deeper, richer)
+        vec3 deepOrange = vec3(0.95, 0.4, 0.2);
+        vec3 richPurple = vec3(0.65, 0.4, 0.95);
+        vec3 blobColor = mix(deepOrange, richPurple, clamp(uv.y * 0.5 + 0.5, 0.0, 1.0));
 
-          // Final composite
-          vec3 color = mix(background, blobColor, mask);
-          gl_FragColor = vec4(color, 1.0);
-        }
+        // Final composite
+        vec3 color = mix(background, blobColor, mask);
+        gl_FragColor = vec4(color, 1.0);
+      }
       `,
-
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
