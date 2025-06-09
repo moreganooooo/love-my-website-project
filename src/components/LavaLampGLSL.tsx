@@ -1,6 +1,6 @@
 // src/components/LavaLampGLSL.tsx
 
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 export interface LavaLampGLSLProps {
@@ -24,7 +24,7 @@ export default function LavaLampGLSL({
 }: LavaLampGLSLProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
 
@@ -35,7 +35,14 @@ export default function LavaLampGLSL({
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setSize(width, height);
     renderer.debug.checkShaderErrors = true;
-    mount.appendChild(renderer.domElement);
+
+    const canvas = renderer.domElement;
+    canvas.style.display = 'block';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    mount.appendChild(canvas);
+
+    console.log('Renderer appended:', canvas);
 
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
@@ -63,19 +70,13 @@ export default function LavaLampGLSL({
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    // Add test geometry to verify rendering
-    const testMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff });
-    const testGeo = new THREE.PlaneGeometry(1, 1);
-    const testMesh = new THREE.Mesh(testGeo, testMaterial);
-    testMesh.position.set(0, 0, 0);
-    // scene.add(testMesh); // optional debug
-
     const clock = new THREE.Clock();
     let frameId: number;
 
     const animate = () => {
       uniforms.u_time.value = clock.getElapsedTime();
       renderer.render(scene, camera);
+      console.log('Rendering frame', uniforms.u_time.value.toFixed(2));
       frameId = requestAnimationFrame(animate);
     };
     animate();
@@ -83,9 +84,23 @@ export default function LavaLampGLSL({
     return () => {
       cancelAnimationFrame(frameId);
       renderer.dispose();
-      mount.removeChild(renderer.domElement);
+      mount.removeChild(canvas);
     };
   }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
 
-  return <div ref={mountRef} className="absolute inset-0 z-0" style={{ width: '100%', height: '100%' }} />;
+  return (
+    <div
+      ref={mountRef}
+      style={{
+        width: '100vw',
+        height: '100vh',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        backgroundColor: 'black',
+        zIndex: 0,
+        border: '2px dashed red',
+      }}
+    />
+  );
 }
