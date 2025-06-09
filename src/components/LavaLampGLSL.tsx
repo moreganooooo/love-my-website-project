@@ -16,7 +16,7 @@ export interface LavaLampGLSLProps {
 export default function LavaLampGLSL({
   blobCount = 24,
   blobSpeed = 0.1,
-  blobSize = 0.1,
+  blobSize = 0.12,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
   backgroundStart = '#2e003e',
