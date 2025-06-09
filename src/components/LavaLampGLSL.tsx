@@ -15,7 +15,7 @@ export interface LavaLampGLSLProps {
 
 export default function LavaLampGLSL({
   blobCount = 12,
-  blobSpeed = 0.18,
+  blobSpeed = 0.25,
   blobSize = 0.16,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
@@ -55,10 +55,10 @@ export default function LavaLampGLSL({
     const blobCode = Array.from({ length: blobCount }, (_, i) => {
       const side = i % 2 === 0 ? 1 : -1;
       const baseX = side * 0.8;
-      const ampX = 0.25;
-      const ampY = 1.2;
-      const speedX = 0.18 + Math.random() * 0.1;
-      const speedY = 0.3 + Math.random() * 0.2;
+      const ampX = 0.15;
+      const ampY = 1.4;
+      const speedX = 0.25 + Math.random() * 0.1;
+      const speedY = 0.4 + Math.random() * 0.2;
       const phase = (i / blobCount) * Math.PI * 2;
       const radius = blobSize;
       return `
@@ -67,7 +67,7 @@ export default function LavaLampGLSL({
           cos(t * ${speedY.toFixed(2)} + ${phase.toFixed(2)}) * ${ampY.toFixed(2)}
         );
         float dist${i} = length(uv - pos${i});
-        field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+        field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist${i} * dist${i} + 0.0005);
       `;
     }).join('\n');
 
@@ -87,7 +87,7 @@ export default function LavaLampGLSL({
 
           ${blobCode}
 
-          float mask = smoothstep(0.9, 1.3, field);
+          float mask = smoothstep(1.0, 1.25, field);
 
           vec3 purple = vec3(0.12, 0.03, 0.25);
           vec3 orange = vec3(1.0, 0.4, 0.15);
