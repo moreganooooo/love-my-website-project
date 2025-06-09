@@ -23,7 +23,7 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
   const backgroundEnd = '#f9b890';
 
   return (
-    <section id={id} className="relative overflow-hidden py-20 px-6 bg-[#110224] min-h-[800px]">
+    <section id={id} className="relative overflow-hidden py-20 px-6 bg-[#110224] min-h-[100svh]">
       {enabled && (
         <LavaLampGLSL
           blobCount={blobCount}

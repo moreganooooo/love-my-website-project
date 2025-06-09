@@ -5,7 +5,7 @@ import Contact from '@/components/sections/Contact';
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-svh">
       <Hero />
       <About />
       <Projects />

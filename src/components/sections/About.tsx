@@ -5,7 +5,7 @@ import styles from './About.module.css';
 
 const About = () => {
   return (
-    <section className="relative min-h-[60vh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden">
+    <section className="relative min-h-[60svh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden">
       {/* Static Decorative background */}
       <div className="pointer-events-none select-none absolute inset-0 w-full h-full z-0" aria-hidden="true">
         <img src="/5594016.jpg" alt="" className="w-full h-full object-cover opacity-10" />
