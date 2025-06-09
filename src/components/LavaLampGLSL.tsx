@@ -52,7 +52,9 @@ export default function LavaLampGLSL({
       u_resolution: { value: new THREE.Vector2(width, height) },
     };
 
-    const blobCode = Array.from({ length: blobCount }, (_, i) => {
+    const blobSnippets: string[] = [];
+
+    for (let i = 0; i < blobCount; i++) {
       const side = i % 2 === 0 ? 1 : -1;
       const baseX = side * 0.8;
       const ampX = 0.15;
@@ -65,23 +67,26 @@ export default function LavaLampGLSL({
       const wobbleFreq = 1.0 + Math.random();
       const wobbleAmp = 0.02 + Math.random() * 0.03;
       const shade = 0.2 + Math.random() * 0.8;
-      return `
-        vec2 pos${i} = vec2(
-          ${baseX.toFixed(2)} + sin(t * ${speedX.toFixed(2)} + ${phase.toFixed(2)}) * ${ampX.toFixed(2)},
-          mod(t * ${speedY.toFixed(2)} + ${phase.toFixed(2)}, 2.5) - 1.25
-        );
-        vec2 diff${i} = uv - pos${i};
-        float angle${i} = sin(t * ${wobbleFreq.toFixed(2)} + ${phase.toFixed(2)}) * ${wobbleAmp.toFixed(2)};
-        mat2 rot${i} = mat2(cos(angle${i}), -sin(angle${i}), sin(angle${i}), cos(angle${i}));
-        diff${i} = rot${i} * diff${i};
-        diff${i}.y *= ${stretch.toFixed(2)};
-        float dist${i} = length(diff${i});
-        float softness = smoothstep(0.0, 0.25, dist${i});
-        float centerGlow = 1.0 - softness;
-        field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist${i} * dist${i} + 0.00015);
-        blobShade += ${shade.toFixed(2)} * mix(0.7, 1.0, centerGlow) / (dist${i} * dist${i} + 0.001);
-      `;
-    }).join('\n');
+
+      blobSnippets.push(`
+        {
+          vec2 pos = vec2(
+            ${baseX.toFixed(2)} + sin(t * ${speedX.toFixed(2)} + ${phase.toFixed(2)}) * ${ampX.toFixed(2)},
+            mod(t * ${speedY.toFixed(2)} + ${phase.toFixed(2)}, 2.5) - 1.25
+          );
+          vec2 diff = uv - pos;
+          float angle = sin(t * ${wobbleFreq.toFixed(2)} + ${phase.toFixed(2)}) * ${wobbleAmp.toFixed(2)};
+          mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+          diff = rot * diff;
+          diff.y *= ${stretch.toFixed(2)};
+          float dist = length(diff);
+          float softness = smoothstep(0.0, 0.25, dist);
+          float centerGlow = 1.0 - softness;
+          field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist * dist + 0.00015);
+          blobShade += ${shade.toFixed(2)} * mix(0.7, 1.0, centerGlow) / (dist * dist + 0.001);
+        }
+      `);
+    }
 
     const material = new THREE.ShaderMaterial({
       uniforms,
@@ -95,10 +100,11 @@ export default function LavaLampGLSL({
           vec2 uv = gl_FragCoord.xy / u_resolution.xy;
           uv = uv * 2.0 - 1.0;
           float t = u_time * ${blobSpeed.toFixed(2)};
+
           float field = 0.0;
           float blobShade = 0.0;
 
-          ${blobCode}
+          ${blobSnippets.join('\n')}
 
           float mask = smoothstep(0.7, 1.4, field);
 
