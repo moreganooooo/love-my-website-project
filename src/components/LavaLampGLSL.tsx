@@ -53,28 +53,6 @@ export default function LavaLampGLSL({
       return `vec3(${c.r.toFixed(3)}, ${c.g.toFixed(3)}, ${c.b.toFixed(3)})`;
     };
 
-    const blobParams = Array.from({ length: blobCount }, (_, i) => {
-      const side = i % 2 === 0 ? 1 : -1;
-      return {
-        baseX: side * (0.7 + Math.random() * 0.2),
-        ampX: 0.15 + Math.random() * 0.05,
-        ampY: 0.6 + Math.random() * 0.2,
-        speedX: 0.2 + Math.random() * 0.1,
-        speedY: 0.3 + Math.random() * 0.1,
-        phase: Math.random() * Math.PI * 2,
-        radius: blobSize,
-      };
-    });
-
-    const blobCode = blobParams.map((b, i) => `
-      vec2 pos${i} = vec2(
-        ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-        1.0 - fract(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * 2.0
-      );
-      float dist${i} = length(centeredUv - pos${i});
-      field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
-    `).join("\n");
-
     const uniforms = {
       u_time: { value: 0.0 },
       u_resolution: { value: new THREE.Vector2(width, height) },
@@ -91,25 +69,14 @@ export default function LavaLampGLSL({
           vec2 uv = gl_FragCoord.xy / u_resolution;
           uv.y = 1.0 - uv.y;
           vec2 centeredUv = uv * 2.0 - 1.0;
-          float t = u_time * ${blobSpeed.toFixed(2)};
-          float field = 0.0;
 
-          ${blobCode}
+          float d = length(centeredUv);
+          float blob = smoothstep(0.2, 0.0, d);
 
-          float mask = 1.0;
+          vec3 bg = ${toVec3(backgroundStart)};
+          vec3 color = mix(bg, ${toVec3(blobColorStart)}, blob);
 
-          vec3 bgStart = ${toVec3(backgroundStart)};
-          vec3 bgEnd = ${toVec3(backgroundEnd)};
-          float radial = smoothstep(1.5, 0.0, distance(centeredUv, vec2(0.0, -1.0)));
-          vec3 bg = mix(bgStart, bgEnd, radial);
-
-          vec3 blobStart = ${toVec3(blobColorStart)};
-          vec3 blobEnd = ${toVec3(blobColorEnd)};
-          vec3 blobColor = mix(blobStart, blobEnd, clamp((centeredUv.y + 1.0) * 0.5, 0.0, 1.0));
-
-          vec3 finalColor = mix(bg, blobColor, clamp(mask * 1.2, 0.0, 1.0));
-
-          gl_FragColor = vec4(finalColor, clamp(mask * 1.0 + 0.1, 0.0, 1.0));
+          gl_FragColor = vec4(color, 1.0);
         }
       `,
       depthTest: false,
