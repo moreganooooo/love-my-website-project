@@ -14,9 +14,9 @@ export interface LavaLampGLSLProps {
 }
 
 export default function LavaLampGLSL({
-  blobCount = 16,
+  blobCount = 24,
   blobSpeed = 0.1,
-  blobSize = 0.12,
+  blobSize = 0.08,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
   backgroundStart = '#2e003e',
@@ -59,46 +59,43 @@ export default function LavaLampGLSL({
         uniform float u_time;
         uniform vec2 u_resolution;
 
+        float random(float x) {
+          return fract(sin(x) * 43758.5453);
+        }
+
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution;
 
-          vec3 bgCranberry = vec3(0.18, 0.0, 0.24);
-          vec3 bgOrange = vec3(1.0, 0.55, 0.26);
+          vec3 bgStart = vec3(0.18, 0.0, 0.24);
+          vec3 bgEnd = vec3(1.0, 0.55, 0.26);
           vec2 center = vec2(0.5, 0.2);
           float distToCenter = distance(uv, center);
-          vec3 bgColor = mix(bgOrange, bgCranberry, smoothstep(0.0, 1.0, distToCenter));
+          vec3 bgColor = mix(bgEnd, bgStart, smoothstep(0.0, 1.0, distToCenter));
 
           float field = 0.0;
 
-          for (int i = 0; i < 16; i++) {
+          for (int i = 0; i < 24; i++) {
             float fi = float(i);
             float phase = fi * 1.2;
-
             float side = mod(fi, 2.0) * 2.0 - 1.0;
-            float x = 0.05 + 0.9 * step(0.0, side);
-            float y = mod(u_time * 0.06 * (0.6 + 0.4 * sin(phase)), 1.1);
-            vec2 pos = vec2(x, y);
+            float baseX = mix(0.05, 0.25, random(fi)) + 0.7 * step(0.0, side);
+            float y = mod(u_time * 0.05 * (0.8 + 0.2 * sin(phase)), 1.2);
+            vec2 pos = vec2(baseX, y);
 
             vec2 delta = uv - pos;
             float dist = length(delta);
-            float radius = 0.06;
-            field += radius * radius / (dist * dist + 0.00001);
+            float radius = 0.045;
+            field += radius / (dist * 15.0 + 0.005);
           }
 
-          float mask = smoothstep(0.99, 1.0, field);
+          float mask = smoothstep(0.97, 1.0, field);
 
-          vec3 blobStart = vec3(1.0, 0.52, 0.5);
-          vec3 blobEnd = vec3(1.0, 0.34, 0.5);
-          vec3 blobGlow = vec3(1.0, 0.2, 0.6);
-          float glow = smoothstep(0.5, 0.99, field);
-          vec3 blobColor = mix(blobStart, blobEnd, uv.y);
-          blobColor += blobGlow * glow * 0.2;
-
+          vec3 blobColor = mix(vec3(0.43, 0.15, 0.38), vec3(0.69, 0.36, 0.41), uv.y);
           vec3 finalColor = mix(bgColor, blobColor, mask);
 
           float fadeTop = smoothstep(1.0, 0.95, uv.y);
           float fadeBottom = smoothstep(0.0, 0.05, uv.y);
-          float alpha = fadeTop * fadeBottom * 0.5;
+          float alpha = fadeTop * fadeBottom;
 
           gl_FragColor = vec4(finalColor, alpha);
         }
