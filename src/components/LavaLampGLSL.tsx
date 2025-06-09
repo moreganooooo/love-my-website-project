@@ -74,7 +74,6 @@ export default function LavaLampGLSL({
 
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution;
-          uv.y = 1.0 - uv.y;
           vec2 centeredUv = uv * 2.0 - 1.0;
 
           float d = length(centeredUv);
