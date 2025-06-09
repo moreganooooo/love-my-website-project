@@ -112,5 +112,16 @@ export default function LavaLampGLSL({
     };
   }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
 
-  return <div ref={mountRef} style={{ width: '100%', height: '100%' }} />;
+  return (
+    <div
+      ref={mountRef}
+      style={{
+        width: '100%',
+        height: '300px',
+        position: 'relative',
+        backgroundColor: 'black',
+        overflow: 'hidden',
+      }}
+    />
+  );
 }
