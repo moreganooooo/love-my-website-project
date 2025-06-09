@@ -76,12 +76,12 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
                 </label>
 
                 <label>
-                  <span className="text-sm">Top Lava</span>
+                  <span className="text-sm">Bottom Lava</span>
                   <input type="color" value={blobColorStart} onChange={e => setBlobColorStart(e.target.value)} className="w-full" />
                 </label>
 
                 <label>
-                  <span className="text-sm"> Bottom Lava</span>
+                  <span className="text-sm"> Top Lava</span>
                   <input type="color" value={blobColorEnd} onChange={e => setBlobColorEnd(e.target.value)} className="w-full" />
                 </label>
 
