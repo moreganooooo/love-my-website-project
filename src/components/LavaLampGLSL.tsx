@@ -56,14 +56,12 @@ export default function LavaLampGLSL({
 
     const blobCode = blobParams.map((b, i) => `
       vec2 pos${i} = vec2(
-        sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
+        sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)} + sign(sin(${b.phase.toFixed(2)})) * 0.3,
         mod(${b.ampY.toFixed(2)} * t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}, 2.0) - 1.0);
       float dist${i} = length(uv - pos${i});
       float light${i} = 0.005 / (dist${i} * dist${i} + 0.0001);
       field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.0001);
       glowAcc += light${i};
-      float hover${i} = 0.2 / (length(mouse - pos${i}) + 0.1);
-      glowAcc += hover${i} * u_hoverBoost;
     `).join("\n");
 
     const uniforms = {
@@ -99,13 +97,13 @@ export default function LavaLampGLSL({
           float edge = 0.05;
           float mask = smoothstep(threshold - edge, threshold + edge, field);
 
-          vec3 baseColor = vec3(0.08, 0.02, 0.2); // deeper purple
-          vec3 glow = vec3(1.0, 0.5, 0.15); // stronger orange glow
-          float glowFactor = smoothstep(1.8, -0.2, length(uv - vec2(0.0, -1.1)));
+          vec3 baseColor = vec3(0.06, 0.015, 0.18); // moodier purple
+          vec3 glow = vec3(1.0, 0.5, 0.15);         // stronger orange glow
+          float glowFactor = smoothstep(2.4, -0.6, length(uv - vec2(0.0, -1.3)));
           vec3 background = mix(baseColor, glow, glowFactor);
 
-          vec3 purple = vec3(0.55, 0.35, 0.85);
-          vec3 orange = vec3(1.0, 0.5, 0.2);
+          vec3 purple = vec3(0.65, 0.4, 0.95);
+          vec3 orange = vec3(0.95, 0.4, 0.2);
           vec3 blobColor = mix(orange, purple, clamp((uv.y + 1.0) / 2.0, 0.0, 1.0));
 
           vec3 highlight = glowAcc * vec3(1.0, 0.8, 0.6) * u_glowIntensity;
