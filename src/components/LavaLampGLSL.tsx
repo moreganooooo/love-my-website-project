@@ -30,6 +30,7 @@ export default function LavaLampGLSL({
 
     mount.style.position = 'relative';
     mount.style.minHeight = '300px';
+    mount.style.zIndex = '0';
 
     const width = mount.clientWidth || window.innerWidth;
     const height = mount.clientHeight || window.innerHeight;
@@ -45,7 +46,7 @@ export default function LavaLampGLSL({
     canvas.style.left = '0';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
-    canvas.style.zIndex = '-1';
+    canvas.style.zIndex = '0';
     canvas.style.pointerEvents = 'none';
     mount.appendChild(canvas);
 
@@ -106,6 +107,7 @@ export default function LavaLampGLSL({
         position: 'relative',
         backgroundColor: 'black',
         overflow: 'hidden',
+        zIndex: 0,
       }}
     />
   );
