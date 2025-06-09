@@ -30,16 +30,19 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
+    // Clamp blobSpeed to a minimum value to prevent white/NaN output
+    const safeBlobSpeed = Math.max(blobSpeed, 0.05);
+
     const blobParams = Array.from({ length: blobCount }, (_, i) => {
       const margin = 0.7 + Math.random() * 0.2;
       const side = i % 2 === 0 ? 1 : -1;
       const baseX = side * margin;
-      const ampX = 0.15 + Math.random() * 0.1;
-      const ampY = 0.7 + Math.random() * 0.3;
-      const speedX = 0.2 + Math.random() * 0.2;
-      const speedY = 0.5 + Math.random() * 0.7;
+      const ampX = 0.15 + Math.random() * 0.07; // slightly less randomness for smoother motion
+      const ampY = 0.7 + Math.random() * 0.2;
+      const speedX = 0.2 + Math.random() * 0.15;
+      const speedY = 0.5 + Math.random() * 0.5;
       const phase = Math.random() * Math.PI * 2;
-      const radius = 0.12 + Math.random() * 0.08;
+      const radius = 0.12 + Math.random() * 0.06;
       return { baseX, ampX, ampY, speedX, speedY, phase, radius };
     });
 
@@ -69,7 +72,7 @@ export default function LavaLampGLSL(props: LavaLampGLSLProps) {
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution.xy;
           uv = uv * 2.0 - 1.0;
-          float t = u_time * (${blobSpeed.toFixed(2)} * 0.25);
+          float t = u_time * (${safeBlobSpeed.toFixed(2)} * 0.25);
 
           float field = 0.0;
 
