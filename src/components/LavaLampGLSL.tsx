@@ -96,7 +96,7 @@ export default function LavaLampGLSL({
 
           ${blobCode}
 
-          float mask = smoothstep(0.2, 0.9, field);
+          float mask = 1.0;
 
           vec3 bgStart = ${toVec3(backgroundStart)};
           vec3 bgEnd = ${toVec3(backgroundEnd)};
