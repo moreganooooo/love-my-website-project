@@ -76,7 +76,7 @@ export default function LavaLampGLSL({
           float pulse = 0.1 + 0.05 * sin(u_time * 2.0);
           float blob = smoothstep(0.0, pulse, dist);
 
-          vec3 color = mix(vec3(0.1, 0.0, 0.2), vec3(1.0, 0.0, 0.0), blob);
+          vec3 color = mix(vec3(1.0, 0.0, 0.0), vec3(0.1, 0.0, 0.2), blob);
           gl_FragColor = vec4(color, 1.0);
         }
       `,
