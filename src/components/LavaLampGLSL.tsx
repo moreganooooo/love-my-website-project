@@ -1,14 +1,27 @@
 // src/components/LavaLampGLSL.tsx
 
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
 export interface LavaLampGLSLProps {
   blobCount: number;
   blobSpeed: number;
+  blobSize: number;
+  blobColorStart: string;
+  blobColorEnd: string;
+  backgroundStart: string;
+  backgroundEnd: string;
 }
 
-export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.1 }: LavaLampGLSLProps) {
+export default function LavaLampGLSL({
+  blobCount,
+  blobSpeed,
+  blobSize,
+  blobColorStart,
+  blobColorEnd,
+  backgroundStart,
+  backgroundEnd,
+}: LavaLampGLSLProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,7 +30,6 @@ export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.1 }: LavaLa
 
     const width = mount.clientWidth;
     const height = mount.clientHeight;
-
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     mount.appendChild(renderer.domElement);
@@ -27,32 +39,38 @@ export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.1 }: LavaLa
     camera.position.z = 1;
 
     const safeBlobSpeed = Math.max(blobSpeed, 0.05);
+    const safeBlobSize = Math.max(blobSize, 0.01);
 
     const blobParams = Array.from({ length: blobCount }, (_, i) => {
+      const margin = 0.8;
       const side = i % 2 === 0 ? 1 : -1;
-      return {
-        baseX: side * 0.8,
-        ampX: 0.2,
-        ampY: 0.9,
-        speedX: 0.15 + Math.random() * 0.1,
-        speedY: 0.2 + Math.random() * 0.2,
-        phase: (i / blobCount) * Math.PI * 2,
-        radius: 0.16,
-      };
+      const baseX = side * margin;
+      const ampX = 0.18;
+      const ampY = 0.8;
+      const speedX = 0.22;
+      const speedY = 0.55;
+      const phase = Math.PI * 2 * (i / blobCount);
+      const radius = safeBlobSize;
+      return { baseX, ampX, ampY, speedX, speedY, phase, radius };
     });
 
-    const blobCode = blobParams.map((b, i) => `
-      vec2 pos${i} = vec2(
-        ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-        cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
-      );
-      float dist${i} = length(uv - pos${i});
-      field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
-    `).join("\n");
+    const blobCode = blobCount > 0
+      ? blobParams.map((b, i) => `
+          vec2 pos${i} = vec2(
+            ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
+            cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
+          );
+          float dist${i} = length(uv - pos${i});
+          field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+        `).join("\n") : "// no blobs";
 
     const uniforms = {
       u_time: { value: 0.0 },
       u_resolution: { value: new THREE.Vector2(width, height) },
+      u_blobColorStart: { value: new THREE.Color(blobColorStart) },
+      u_blobColorEnd: { value: new THREE.Color(blobColorEnd) },
+      u_bgStart: { value: new THREE.Color(backgroundStart) },
+      u_bgEnd: { value: new THREE.Color(backgroundEnd) },
     };
 
     const material = new THREE.ShaderMaterial({
@@ -62,28 +80,25 @@ export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.1 }: LavaLa
         precision mediump float;
         uniform float u_time;
         uniform vec2 u_resolution;
+        uniform vec3 u_blobColorStart;
+        uniform vec3 u_blobColorEnd;
+        uniform vec3 u_bgStart;
+        uniform vec3 u_bgEnd;
 
         void main() {
-          vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-          uv = uv * 2.0 - 1.0;
-          float t = u_time * ${safeBlobSpeed.toFixed(2)};
+          vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;
+          float t = u_time * ${safeBlobSpeed};
           float field = 0.0;
 
           ${blobCode}
 
-          float mask = smoothstep(0.9, 1.3, field);
+          float mask = smoothstep(1.0, 2.0, field);
+          float grad = (uv.y + 1.0) / 2.0;
 
-          // Gradient background: radial from bottom center
-          vec3 purple = vec3(0.12, 0.03, 0.25);  // warm purple
-          vec3 orange = vec3(1.0, 0.4, 0.15);    // brightened orange
-          float radial = length(uv - vec2(0.0, -1.2));
-          float glowFactor = smoothstep(2.4, 0.0, radial);
-          vec3 background = mix(purple, orange, glowFactor * 0.8);
+          vec3 background = mix(u_bgStart, u_bgEnd, grad);
+          vec3 blobColor = mix(u_blobColorStart, u_blobColorEnd, grad);
 
-          // Blob color
-          vec3 blobColor = mix(orange, purple, (uv.y + 1.0) * 0.5);
           vec3 finalColor = mix(background, blobColor, mask * 0.5);
-
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
@@ -108,12 +123,7 @@ export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.1 }: LavaLa
       renderer.dispose();
       mount.removeChild(renderer.domElement);
     };
-  }, [blobCount, blobSpeed]);
+  }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
 
-  return (
-    <div
-      ref={mountRef}
-      className="absolute inset-0 -z-10 bg-[#100438]"
-    />
-  );
+  return <div ref={mountRef} className="absolute inset-0 -z-10" />;
 }
