@@ -28,8 +28,11 @@ export default function LavaLampGLSL({
     const mount = mountRef.current;
     if (!mount) return;
 
-    const width = mount.clientWidth;
-    const height = mount.clientHeight;
+    mount.style.position = 'relative';
+    mount.style.minHeight = '300px';
+
+    const width = mount.clientWidth || window.innerWidth;
+    const height = mount.clientHeight || window.innerHeight;
     console.log('Canvas size:', width, height);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
@@ -37,9 +40,13 @@ export default function LavaLampGLSL({
     renderer.debug.checkShaderErrors = true;
 
     const canvas = renderer.domElement;
-    canvas.style.display = 'block';
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
+    canvas.style.zIndex = '-1';
+    canvas.style.pointerEvents = 'none';
     mount.appendChild(canvas);
 
     console.log('Renderer appended:', canvas);
@@ -105,18 +112,5 @@ export default function LavaLampGLSL({
     };
   }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
 
-  return (
-    <div
-      ref={mountRef}
-      style={{
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        backgroundColor: 'black',
-        zIndex: -1,
-      }}
-    />
-  );
+  return <div ref={mountRef} style={{ width: '100%', height: '100%' }} />;
 }
