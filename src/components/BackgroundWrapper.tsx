@@ -1,6 +1,6 @@
 // src/components/BackgroundWrapper.tsx
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import LavaLampGLSL from "./LavaLampGLSL";
 import { Switch } from "@/components/ui/switch";
 
@@ -12,24 +12,22 @@ interface BackgroundWrapperProps {
 
 export default function BackgroundWrapper({ children, id, toggleable = false }: BackgroundWrapperProps) {
   const [enabled, setEnabled] = useState(true);
-
   const [blobCount, setBlobCount] = useState(10);
   const [blobSpeed, setBlobSpeed] = useState(0.1);
   const [blobSize, setBlobSize] = useState(0.16);
-
-  const [blobColorStart, setBlobColorStart] = useState("#ff7a45");
-  const [blobColorEnd, setBlobColorEnd] = useState("#9b4dcb");
-  const [backgroundStart, setBackgroundStart] = useState("#110224");
-  const [backgroundEnd, setBackgroundEnd] = useState("#fc8b51");
+  const [blobColorStart, setBlobColorStart] = useState("#ff944d");
+  const [blobColorEnd, setBlobColorEnd] = useState("#b76bf2");
+  const [backgroundStart, setBackgroundStart] = useState("#22023a");
+  const [backgroundEnd, setBackgroundEnd] = useState("#ff9657");
 
   const resetToGorgeous = () => {
     setBlobCount(10);
     setBlobSpeed(0.1);
     setBlobSize(0.16);
-    setBlobColorStart("#ff7a45");
-    setBlobColorEnd("#9b4dcb");
-    setBackgroundStart("#110224");
-    setBackgroundEnd("#fc8b51");
+    setBlobColorStart("#ff944d");
+    setBlobColorEnd("#b76bf2");
+    setBackgroundStart("#22023a");
+    setBackgroundEnd("#ff9657");
   };
 
   return (
