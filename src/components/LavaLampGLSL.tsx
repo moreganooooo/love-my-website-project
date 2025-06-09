@@ -8,7 +8,7 @@ export interface LavaLampGLSLProps {
   blobSpeed: number;
 }
 
-export default function LavaLampGLSL({ blobCount, blobSpeed }: LavaLampGLSLProps) {
+export default function LavaLampGLSL({ blobCount = 10, blobSpeed = 0.1 }: LavaLampGLSLProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,7 +19,6 @@ export default function LavaLampGLSL({ blobCount, blobSpeed }: LavaLampGLSLProps
     const height = mount.clientHeight;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setClearColor(0x000000, 0); // transparent
     renderer.setSize(width, height);
     mount.appendChild(renderer.domElement);
 
@@ -28,36 +27,28 @@ export default function LavaLampGLSL({ blobCount, blobSpeed }: LavaLampGLSLProps
     camera.position.z = 1;
 
     const safeBlobSpeed = Math.max(blobSpeed, 0.05);
-    const safeBlobCount = Math.max(blobCount, 0);
 
-    const blobParams = Array.from({ length: safeBlobCount }, (_, i) => {
+    const blobParams = Array.from({ length: blobCount }, (_, i) => {
       const side = i % 2 === 0 ? 1 : -1;
       return {
         baseX: side * 0.8,
-        ampX: 0.18,
-        ampY: 0.8,
-        speedX: 0.15,
-        speedY: 0.35,
-        phase: (Math.PI * 2 * i) / safeBlobCount,
-        radius: 0.17,
+        ampX: 0.2,
+        ampY: 0.9,
+        speedX: 0.15 + Math.random() * 0.1,
+        speedY: 0.2 + Math.random() * 0.2,
+        phase: (i / blobCount) * Math.PI * 2,
+        radius: 0.16,
       };
     });
 
-    const blobCode =
-      safeBlobCount > 0
-        ? blobParams
-            .map(
-              (b, i) => `
-          vec2 pos${i} = vec2(
-            ${b.baseX} + sin(t * ${b.speedX} + ${b.phase}) * ${b.ampX},
-            cos(t * ${b.speedY} + ${b.phase}) * ${b.ampY}
-          );
-          float dist${i} = length(uv - pos${i});
-          field += ${b.radius} * ${b.radius} / (dist${i} * dist${i} + 0.001);
-        `
-            )
-            .join("\n")
-        : "// no blobs";
+    const blobCode = blobParams.map((b, i) => `
+      vec2 pos${i} = vec2(
+        ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
+        cos(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampY.toFixed(2)}
+      );
+      float dist${i} = length(uv - pos${i});
+      field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+    `).join("\n");
 
     const uniforms = {
       u_time: { value: 0.0 },
@@ -68,37 +59,34 @@ export default function LavaLampGLSL({ blobCount, blobSpeed }: LavaLampGLSLProps
       uniforms,
       transparent: true,
       fragmentShader: `
-  precision mediump float;
-  uniform float u_time;
-  uniform vec2 u_resolution;
+        precision mediump float;
+        uniform float u_time;
+        uniform vec2 u_resolution;
 
-  void main() {
-    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-    uv = uv * 2.0 - 1.0;
-    float t = u_time * ${safeBlobSpeed};
+        void main() {
+          vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+          uv = uv * 2.0 - 1.0;
+          float t = u_time * ${safeBlobSpeed.toFixed(2)};
+          float field = 0.0;
 
-    float field = 0.0;
-    ${blobCode}
+          ${blobCode}
 
-    float mask = smoothstep(0.8, 1.2, field);  // tighter threshold
+          float mask = smoothstep(0.9, 1.3, field);
 
-    // Radial gradient from bottom center
-    vec3 darkPurple = vec3(0.1, 0.03, 0.25);
-    vec3 sunsetOrange = vec3(1.0, 0.45, 0.15);
-    float radial = length(uv - vec2(0.0, -1.2));
-    float radialFade = smoothstep(2.5, 0.1, radial);
-    vec3 background = mix(darkPurple, sunsetOrange, radialFade * 0.75);
+          // Gradient background: radial from bottom center
+          vec3 purple = vec3(0.12, 0.03, 0.25);  // warm purple
+          vec3 orange = vec3(1.0, 0.4, 0.15);    // brightened orange
+          float radial = length(uv - vec2(0.0, -1.2));
+          float glowFactor = smoothstep(2.4, 0.0, radial);
+          vec3 background = mix(purple, orange, glowFactor * 0.8);
 
-    // Blobs
-    vec3 blobColor = mix(sunsetOrange, darkPurple, uv.y * 0.5 + 0.5);
-    float blobAlpha = 0.5;
+          // Blob color
+          vec3 blobColor = mix(orange, purple, (uv.y + 1.0) * 0.5);
+          vec3 finalColor = mix(background, blobColor, mask * 0.5);
 
-    vec3 color = mix(background, blobColor, mask * blobAlpha);
-
-    gl_FragColor = vec4(color, 1.0);
-  }
-`,
-
+          gl_FragColor = vec4(finalColor, 1.0);
+        }
+      `,
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
@@ -125,7 +113,7 @@ export default function LavaLampGLSL({ blobCount, blobSpeed }: LavaLampGLSLProps
   return (
     <div
       ref={mountRef}
-      className="absolute inset-0 -z-10 bg-[#100438]" // visually locked base
+      className="absolute inset-0 -z-10 bg-[#100438]"
     />
   );
 }
