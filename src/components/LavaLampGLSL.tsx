@@ -69,7 +69,15 @@ export default function LavaLampGLSL({
         uniform vec2 u_resolution;
 
         void main() {
-          gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+          vec2 uv = gl_FragCoord.xy / u_resolution;
+          vec2 centeredUv = uv * 2.0 - 1.0;
+
+          float dist = length(centeredUv);
+          float pulse = 0.1 + 0.05 * sin(u_time * 2.0);
+          float blob = smoothstep(pulse, 0.0, dist);
+
+          vec3 color = mix(vec3(0.1, 0.0, 0.2), vec3(1.0, 0.0, 0.0), blob);
+          gl_FragColor = vec4(color, 1.0);
         }
       `,
       depthTest: false,
