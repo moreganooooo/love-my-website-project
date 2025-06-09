@@ -27,7 +27,8 @@ export default function LavaLampGLSL({
     const width = mount.clientWidth;
     const height = mount.clientHeight;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    // Use alpha: false for opaque canvas
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setSize(width, height);
     mount.appendChild(renderer.domElement);
 
