@@ -15,8 +15,8 @@ export interface LavaLampGLSLProps {
 
 export default function LavaLampGLSL({
   blobCount = 40,
-  blobSpeed = 0.55,
-  blobSize = 0.16,
+  blobSpeed = 0.6,
+  blobSize = 0.14,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
   backgroundStart = '#2e003e',
@@ -58,9 +58,9 @@ export default function LavaLampGLSL({
       const ampX = 0.15;
       const ampY = 1.4;
       const speedX = 0.3 + Math.random() * 0.25;
-      const speedY = 0.4 + Math.random() * 0.8;
+      const speedY = 0.7 + Math.random() * 0.5;
       const phase = (i / blobCount) * Math.PI * 2;
-      const radius = 0.08 + Math.random() * 0.18;
+      const radius = 0.06 + Math.random() * 0.14;
       const stretch = 0.85 + Math.random() * 0.3;
       const wobbleFreq = 1.0 + Math.random();
       const wobbleAmp = 0.02 + Math.random() * 0.03;
@@ -68,7 +68,7 @@ export default function LavaLampGLSL({
       return `
         vec2 pos${i} = vec2(
           ${baseX.toFixed(2)} + sin(t * ${speedX.toFixed(2)} + ${phase.toFixed(2)}) * ${ampX.toFixed(2)},
-          cos(t * ${speedY.toFixed(2)} + ${phase.toFixed(2)}) * ${ampY.toFixed(2)}
+          mod(t * ${speedY.toFixed(2)} + ${phase.toFixed(2)}, 2.5) - 1.25
         );
         vec2 diff${i} = uv - pos${i};
         float angle${i} = sin(t * ${wobbleFreq.toFixed(2)} + ${phase.toFixed(2)}) * ${wobbleAmp.toFixed(2)};
@@ -76,8 +76,10 @@ export default function LavaLampGLSL({
         diff${i} = rot${i} * diff${i};
         diff${i}.y *= ${stretch.toFixed(2)};
         float dist${i} = length(diff${i});
-        field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist${i} * dist${i} + 0.0003);
-        blobShade += ${shade.toFixed(2)} / (dist${i} * dist${i} + 0.001);
+        float softness = smoothstep(0.0, 0.2, dist${i});
+        float centerGlow = 1.0 - softness;
+        field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist${i} * dist${i} + 0.00015);
+        blobShade += ${shade.toFixed(2)} * centerGlow / (dist${i} * dist${i} + 0.001);
       `;
     }).join('\n');
 
@@ -98,7 +100,7 @@ export default function LavaLampGLSL({
 
           ${blobCode}
 
-          float mask = smoothstep(1.05, 1.2, field);
+          float mask = smoothstep(1.02, 1.18, field);
 
           vec3 purple = vec3(0.12, 0.03, 0.25);
           vec3 orange = vec3(1.0, 0.4, 0.15);
