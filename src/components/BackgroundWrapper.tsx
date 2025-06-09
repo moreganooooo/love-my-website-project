@@ -15,19 +15,20 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
   const [blobCount, setBlobCount] = useState(10);
   const [blobSpeed, setBlobSpeed] = useState(0.1);
   const [blobSize, setBlobSize] = useState(0.16);
-  const [blobColorStart, setBlobColorStart] = useState("#ff944d");
-  const [blobColorEnd, setBlobColorEnd] = useState("#b76bf2");
-  const [backgroundStart, setBackgroundStart] = useState("#22023a");
-  const [backgroundEnd, setBackgroundEnd] = useState("#ff9657");
+
+  const [blobColorStart, setBlobColorStart] = useState("#f9b890"); // warm light orange
+  const [blobColorEnd, setBlobColorEnd] = useState("#b76bf2");     // rich lavender
+  const [backgroundStart, setBackgroundStart] = useState("#6f0e7b"); // warm purple
+  const [backgroundEnd, setBackgroundEnd] = useState("#f7885e");     // glowing orange
 
   const resetToGorgeous = () => {
     setBlobCount(10);
     setBlobSpeed(0.1);
     setBlobSize(0.16);
-    setBlobColorStart("#ff944d");
+    setBlobColorStart("#f9b890");
     setBlobColorEnd("#b76bf2");
-    setBackgroundStart("#22023a");
-    setBackgroundEnd("#ff9657");
+    setBackgroundStart("#6f0e7b");
+    setBackgroundEnd("#f7885e");
   };
 
   return (
@@ -60,80 +61,40 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 bg-white/10 backdrop-blur rounded-lg">
                 <label>
                   <span className="text-sm">Blob Count: {blobCount}</span>
-                  <input
-                    type="range"
-                    min={1}
-                    max={20}
-                    value={blobCount}
-                    onChange={e => setBlobCount(parseInt(e.target.value))}
-                    className="w-full"
-                  />
+                  <input type="range" min={1} max={20} value={blobCount}
+                    onChange={e => setBlobCount(parseInt(e.target.value))} className="w-full" />
                 </label>
 
                 <label>
                   <span className="text-sm">Blob Speed: {blobSpeed.toFixed(2)}</span>
-                  <input
-                    type="range"
-                    min={0.05}
-                    max={1.0}
-                    step={0.01}
-                    value={blobSpeed}
-                    onChange={e => setBlobSpeed(Math.max(0.05, parseFloat(e.target.value)))}
-                    className="w-full"
-                  />
+                  <input type="range" min={0.05} max={1.0} step={0.01} value={blobSpeed}
+                    onChange={e => setBlobSpeed(Math.max(0.05, parseFloat(e.target.value)))} className="w-full" />
                 </label>
 
                 <label>
                   <span className="text-sm">Blob Size: {blobSize.toFixed(2)}</span>
-                  <input
-                    type="range"
-                    min={0.05}
-                    max={0.4}
-                    step={0.01}
-                    value={blobSize}
-                    onChange={e => setBlobSize(parseFloat(e.target.value))}
-                    className="w-full"
-                  />
+                  <input type="range" min={0.05} max={0.4} step={0.01} value={blobSize}
+                    onChange={e => setBlobSize(parseFloat(e.target.value))} className="w-full" />
                 </label>
 
                 <label>
                   <span className="text-sm">Blob Color Start</span>
-                  <input
-                    type="color"
-                    value={blobColorStart}
-                    onChange={e => setBlobColorStart(e.target.value)}
-                    className="w-full"
-                  />
+                  <input type="color" value={blobColorStart} onChange={e => setBlobColorStart(e.target.value)} className="w-full" />
                 </label>
 
                 <label>
                   <span className="text-sm">Blob Color End</span>
-                  <input
-                    type="color"
-                    value={blobColorEnd}
-                    onChange={e => setBlobColorEnd(e.target.value)}
-                    className="w-full"
-                  />
+                  <input type="color" value={blobColorEnd} onChange={e => setBlobColorEnd(e.target.value)} className="w-full" />
                 </label>
 
                 <label>
                   <span className="text-sm">Background Color Start</span>
-                  <input
-                    type="color"
-                    value={backgroundStart}
-                    onChange={e => setBackgroundStart(e.target.value)}
-                    className="w-full"
-                  />
+                  <input type="color" value={backgroundStart} onChange={e => setBackgroundStart(e.target.value)} className="w-full" />
                 </label>
 
                 <label>
                   <span className="text-sm">Background Color End</span>
-                  <input
-                    type="color"
-                    value={backgroundEnd}
-                    onChange={e => setBackgroundEnd(e.target.value)}
-                    className="w-full"
-                  />
+                  <input type="color" value={backgroundEnd} onChange={e => setBackgroundEnd(e.target.value)} className="w-full" />
                 </label>
               </div>
 
