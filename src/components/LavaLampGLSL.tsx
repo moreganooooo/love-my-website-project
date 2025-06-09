@@ -19,8 +19,8 @@ export default function LavaLampGLSL({
   blobSize = 0.16,
   blobColorStart = '#ff7a45',
   blobColorEnd = '#9b4dcb',
-  backgroundStart = '#110224',
-  backgroundEnd = '#f9b890',
+  backgroundStart = '#2e003e', // deep cranberry purple
+  backgroundEnd = '#ff8c42',   // soft orange
 }: LavaLampGLSLProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -69,7 +69,7 @@ export default function LavaLampGLSL({
     const blobCode = blobParams.map((b, i) => `
       vec2 pos${i} = vec2(
         ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-        fract(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * 2.0 - 1.0
+        1.0 - fract(t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}) * 2.0 // flip upward
       );
       float dist${i} = length(uv - pos${i});
       field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.001);
@@ -101,16 +101,16 @@ export default function LavaLampGLSL({
           vec3 bgStart = ${toVec3(backgroundStart)};
           vec3 bgEnd = ${toVec3(backgroundEnd)};
           vec2 center = vec2(0.0, -1.0);
-          float radial = 1.0 - smoothstep(0.0, 1.5, distance(centeredUv, center));
+          float radial = smoothstep(1.5, 0.0, distance(centeredUv, center));
           vec3 bg = mix(bgStart, bgEnd, radial);
 
           vec3 blobStart = ${toVec3(blobColorStart)};
           vec3 blobEnd = ${toVec3(blobColorEnd)};
-          vec3 blobColor = mix(blobStart, blobEnd, (uv.y));
+          vec3 blobColor = mix(blobStart, blobEnd, uv.y);
 
-          vec3 finalColor = mix(bg, blobColor, mask * 0.5);
+          vec3 finalColor = mix(bg, blobColor, mask * 0.4);
 
-          gl_FragColor = vec4(finalColor, mask * 0.8 + 0.2);
+          gl_FragColor = vec4(finalColor, mask * 0.6 + 0.2);
         }
       `,
       depthTest: false,
@@ -128,7 +128,6 @@ export default function LavaLampGLSL({
     const animate = () => {
       uniforms.u_time.value = clock.getElapsedTime();
       renderer.render(scene, camera);
-      console.log('Rendering frame', uniforms.u_time.value.toFixed(2));
       frameId = requestAnimationFrame(animate);
     };
     animate();
@@ -144,14 +143,13 @@ export default function LavaLampGLSL({
     <div
       ref={mountRef}
       style={{
-        width: '100vw',
-        height: '100vh',
-        position: 'fixed',
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
         top: 0,
         left: 0,
         backgroundColor: 'black',
-        zIndex: 0,
-        border: '2px dashed red',
+        zIndex: -1,
       }}
     />
   );
