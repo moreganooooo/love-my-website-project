@@ -43,20 +43,22 @@ export default function LavaLampGLSL({
     mount.addEventListener("mousemove", onMouseMove);
 
     const blobParams = Array.from({ length: blobCount }, (_, i) => {
-      const angle = (i / blobCount) * Math.PI * 2;
-      return {
-        speedX: 0.7 + Math.random() * 0.6,
-        speedY: 0.5 + Math.random() * 0.7,
-        ampX: 0.5 + Math.random() * 0.4,
-        ampY: 0.7 + Math.random() * 0.3,
-        phase: Math.random() * Math.PI * 2,
-        radius: 0.12 + Math.random() * 0.08,
-      };
+      // Distribute blobs mostly on the left/right margins, with some randomness
+      const margin = 0.7 + Math.random() * 0.2; // 0.7-0.9, further from center
+      const side = i % 2 === 0 ? 1 : -1; // alternate left/right
+      const baseX = side * margin; // -0.7 to -0.9 (left), 0.7 to 0.9 (right)
+      const ampX = 0.15 + Math.random() * 0.1; // small horizontal wiggle
+      const ampY = 0.7 + Math.random() * 0.3;
+      const speedX = 0.2 + Math.random() * 0.2;
+      const speedY = 0.5 + Math.random() * 0.7;
+      const phase = Math.random() * Math.PI * 2;
+      const radius = 0.12 + Math.random() * 0.08;
+      return { baseX, ampX, ampY, speedX, speedY, phase, radius };
     });
 
     const blobCode = blobParams.map((b, i) => `
       vec2 pos${i} = vec2(
-        sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)} + sign(sin(${b.phase.toFixed(2)})) * 0.3,
+        ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
         mod(${b.ampY.toFixed(2)} * t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}, 2.0) - 1.0);
       float dist${i} = length(uv - pos${i});
       float light${i} = 0.005 / (dist${i} * dist${i} + 0.0001);
@@ -97,21 +99,27 @@ export default function LavaLampGLSL({
           float edge = 0.05;
           float mask = smoothstep(threshold - edge, threshold + edge, field);
 
-          vec3 baseColor = vec3(0.06, 0.015, 0.18); // moodier purple
-          vec3 glow = vec3(1.0, 0.5, 0.15);         // stronger orange glow
-          float glowFactor = smoothstep(2.4, -0.6, length(uv - vec2(0.0, -1.3)));
-          vec3 background = mix(baseColor, glow, glowFactor);
+          // Dark purple background
+          vec3 baseColor = vec3(0.07, 0.02, 0.13);
+          // Large orange radiant glow from bottom center
+          vec3 glowColor = vec3(1.0, 0.45, 0.1);
+          float glowRadius = 1.2;
+          float glowStrength = 1.0;
+          float glow = smoothstep(glowRadius, 0.0, length(uv - vec2(0.0, -1.2)));
+          vec3 background = mix(baseColor, glowColor, glow * glowStrength);
 
-          vec3 purple = vec3(0.65, 0.4, 0.95);
-          vec3 orange = vec3(0.95, 0.4, 0.2);
+          // Blobs: semi-transparent, blended, not bright
+          vec3 purple = vec3(0.7, 0.4, 0.95);
+          vec3 orange = vec3(1.0, 0.5, 0.2);
           vec3 blobColor = mix(orange, purple, clamp((uv.y + 1.0) / 2.0, 0.0, 1.0));
+          float blobAlpha = 0.45 + 0.15 * sin(t + uv.x * 2.0);
 
           vec3 highlight = glowAcc * vec3(1.0, 0.8, 0.6) * u_glowIntensity;
-          vec3 finalColor = mix(background, blobColor, mask);
-          finalColor += highlight * mask;
+          vec3 finalColor = mix(background, blobColor, mask * blobAlpha);
+          finalColor += highlight * mask * 0.5;
 
           float fadeIn = smoothstep(0.0, 3.0, t);
-          gl_FragColor = vec4(finalColor * mask + background * (1.0 - mask), ${opacity.toFixed(2)} * fadeIn);
+          gl_FragColor = vec4(finalColor, ${opacity.toFixed(2)} * fadeIn);
         }
       `,
     });
