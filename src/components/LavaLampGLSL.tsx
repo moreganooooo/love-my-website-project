@@ -16,7 +16,7 @@ export interface LavaLampGLSLProps {
 export default function LavaLampGLSL({
   blobCount = 24,
   blobSpeed = 0.1,
-  blobSize = 0.12,
+  blobSize = 0.1,
   blobColorStart = '#6e285f',
   blobColorEnd = '#b15d6a',
   backgroundStart = '#2e003e',
@@ -84,8 +84,8 @@ export default function LavaLampGLSL({
 
             vec2 delta = uv - pos;
             float dist = length(delta);
-            float radius = 0.045;
-            field += radius / (dist * 15.0 + 0.005);
+            float radius = 0.05;
+            field += radius / (dist * 12.0 + 0.005);
           }
 
           float mask = smoothstep(0.96, 1.0, field);
