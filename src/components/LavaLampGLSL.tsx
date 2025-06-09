@@ -3,21 +3,16 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-interface LavaLampGLSLProps {
-  glowIntensity?: number;
-  blobCount?: number;
-  blobSpeed?: number;
-  opacity?: number;
-  hoverBoost?: number;
+// NOTE: Blob count and visual consistency must not be changed per user request.
+export interface LavaLampGLSLProps {
+  glowIntensity: number;
+  blobCount: number;
+  blobSpeed: number;
+  opacity: number;
 }
 
-export default function LavaLampGLSL({
-  glowIntensity = 1.0,
-  blobCount = 8,
-  blobSpeed = 0.2,
-  opacity = 0.5,
-  hoverBoost = 0.1,
-}: LavaLampGLSLProps) {
+export default function LavaLampGLSL(props: LavaLampGLSLProps) {
+  const { blobCount = 8, blobSpeed = 0.2 } = props;
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,19 +31,11 @@ export default function LavaLampGLSL({
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
-    const mouse = new THREE.Vector2(0, 0);
-    const onMouseMove = (event: MouseEvent) => {
-      mouse.x = (event.offsetX / width) * 2.0 - 1.0;
-      mouse.y = (1.0 - event.offsetY / height) * 2.0 - 1.0;
-    };
-    mount.addEventListener("mousemove", onMouseMove);
-
     const blobParams = Array.from({ length: blobCount }, (_, i) => {
-      // Distribute blobs mostly on the left/right margins, with some randomness
-      const margin = 0.7 + Math.random() * 0.2; // 0.7-0.9, further from center
-      const side = i % 2 === 0 ? 1 : -1; // alternate left/right
-      const baseX = side * margin; // -0.7 to -0.9 (left), 0.7 to 0.9 (right)
-      const ampX = 0.15 + Math.random() * 0.1; // small horizontal wiggle
+      const margin = 0.7 + Math.random() * 0.2;
+      const side = i % 2 === 0 ? 1 : -1;
+      const baseX = side * margin;
+      const ampX = 0.15 + Math.random() * 0.1;
       const ampY = 0.7 + Math.random() * 0.3;
       const speedX = 0.2 + Math.random() * 0.2;
       const speedY = 0.5 + Math.random() * 0.7;
@@ -57,71 +44,59 @@ export default function LavaLampGLSL({
       return { baseX, ampX, ampY, speedX, speedY, phase, radius };
     });
 
-const blobCode = blobCount > 0
-  ? blobParams.map((b, i) => `
-      vec2 pos${i} = vec2(
-        ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
-        mod(${b.ampY.toFixed(2)} * t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}, 2.0) - 1.0);
-      float dist${i} = length(uv - pos${i});
-      float light${i} = 0.005 / (dist${i} * dist${i} + 0.0001);
-      field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.0001);
-      glowAcc += light${i};
-    `).join("\n")
-  : "// no blobs";
+    const blobCode = blobCount > 0
+      ? blobParams.map((b, i) => `
+          vec2 pos${i} = vec2(
+            ${b.baseX.toFixed(2)} + sin(t * ${b.speedX.toFixed(2)} + ${b.phase.toFixed(2)}) * ${b.ampX.toFixed(2)},
+            mod(${b.ampY.toFixed(2)} * t * ${b.speedY.toFixed(2)} + ${b.phase.toFixed(2)}, 2.0) - 1.0);
+          float dist${i} = length(uv - pos${i});
+          field += ${b.radius.toFixed(2)} * ${b.radius.toFixed(2)} / (dist${i} * dist${i} + 0.0001);
+        `).join("\n")
+      : "// no blobs";
 
     const uniforms = {
       u_time: { value: 0.0 },
       u_resolution: { value: new THREE.Vector2(width, height) },
-      mouse: { value: new THREE.Vector2(0, 0) },
-      u_glowIntensity: { value: glowIntensity },
-      u_hoverBoost: { value: hoverBoost },
     };
 
     const material = new THREE.ShaderMaterial({
       uniforms,
-      transparent: false, // Ensure the material is fully opaque
-    fragmentShader: `
-  precision mediump float;
-  uniform vec2 u_resolution;
-  uniform float u_time;
-  uniform vec2 mouse;
-  uniform float u_glowIntensity;
-  uniform float u_hoverBoost;
+      transparent: false,
+      fragmentShader: `
+        precision mediump float;
+        uniform vec2 u_resolution;
+        uniform float u_time;
 
-  void main() {
-    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-    uv = uv * 2.0 - 1.0;
-    float t = u_time * ${blobSpeed};
+        void main() {
+          vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+          uv = uv * 2.0 - 1.0;
+          float t = u_time * ${blobSpeed};
 
-    float field = 0.0;
-    float glowAcc = 0.0;
+          float field = 0.0;
 
-    ${blobCode}
+          ${blobCode}
 
-    float threshold = 1.0;
-    float edge = 0.05;
-    float maskBase = smoothstep(threshold - edge, threshold + edge, field);
-    float fadeY = smoothstep(1.0, 0.6, uv.y); // fades from y=0.6 to y=1.0
-    float mask = maskBase * fadeY;
+          float threshold = 1.0;
+          float edge = 0.05;
+          float maskBase = smoothstep(threshold - edge, threshold + edge, field);
+          float fadeY = smoothstep(1.0, 0.6, uv.y);
+          float mask = maskBase * fadeY;
 
-    // ✨ Rich background: purple base + orange radial glow
-    vec3 baseColor = vec3(0.06, 0.015, 0.18); // deep purple
-    vec3 glow = vec3(1.0, 0.5, 0.15);         // warm orange
-    float glowFactor = smoothstep(2.4, -0.6, length(uv - vec2(0.0, -1.3)));
-    vec3 background = mix(baseColor, glow, glowFactor);
+          vec3 baseColor = vec3(0.06, 0.015, 0.18);
+          vec3 glow = vec3(1.0, 0.5, 0.15);
+          float glowFactor = smoothstep(2.4, -0.6, length(uv - vec2(0.0, -1.3)));
+          vec3 background = mix(baseColor, glow, glowFactor);
 
-    // 🎨 Blobs with color blend and soft alpha
-    vec3 purple = vec3(0.65, 0.4, 0.95);
-    vec3 orange = vec3(0.95, 0.4, 0.2);
-    float grad = clamp((uv.y + 1.0) / 2.0, 0.0, 1.0);
-    vec3 blobColor = mix(orange, purple, grad);
-    float blobAlpha = 0.45 + 0.15 * sin(t + uv.x * 2.0);
+          vec3 purple = vec3(0.65, 0.4, 0.95);
+          vec3 orange = vec3(0.95, 0.4, 0.2);
+          float grad = clamp((uv.y + 1.0) / 2.0, 0.0, 1.0);
+          vec3 blobColor = mix(orange, purple, grad);
+          float blobAlpha = 0.45 + 0.15 * sin(t + uv.x * 2.0);
 
-    // 💡 Composite blobs with mask + fade
-    vec3 finalColor = mix(background, blobColor, mask * blobAlpha);
-    gl_FragColor = vec4(finalColor, 1.0); // full opacity background
-  }
-`,
+          vec3 finalColor = mix(background, blobColor, mask * blobAlpha);
+          gl_FragColor = vec4(finalColor, 1.0);
+        }
+      `,
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
@@ -133,9 +108,6 @@ const blobCode = blobCount > 0
 
     const animate = () => {
       uniforms.u_time.value = clock.getElapsedTime();
-      uniforms.mouse.value.copy(mouse);
-      uniforms.u_glowIntensity.value = glowIntensity;
-      uniforms.u_hoverBoost.value = hoverBoost;
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(animate);
     };
@@ -145,9 +117,8 @@ const blobCode = blobCount > 0
       cancelAnimationFrame(frameId);
       renderer.dispose();
       mount.removeChild(renderer.domElement);
-      mount.removeEventListener("mousemove", onMouseMove);
     };
-  }, [glowIntensity, blobCount, blobSpeed, opacity, hoverBoost]);
+  }, [blobCount, blobSpeed]);
 
-  return <div ref={mountRef} className="absolute inset-0 -z-10" />;
+  return <div ref={mountRef} className="absolute inset-0 -z-10 bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700" />;
 }

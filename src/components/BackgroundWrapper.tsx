@@ -13,7 +13,14 @@ export default function BackgroundWrapper({ children, id, toggleable = false }: 
 
   return (
     <section id={id} className="relative overflow-hidden py-20 px-6">
-      {enabled && <LavaLampGLSL />}
+      {enabled && (
+        <LavaLampGLSL
+          glowIntensity={1.0}
+          blobCount={5}
+          blobSpeed={1.0}
+          opacity={0.7}
+        />
+      )}
 
       <div className="max-w-6xl mx-auto relative z-10">
         {toggleable && (
