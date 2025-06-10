@@ -52,7 +52,7 @@ const Projects = () => {
       {/* LAVA LAMP BG */}
       <div className="relative">
         <div className="absolute inset-0 h-full w-full pointer-events-none -z-10">
-          <LavaLampSection />
+          <TestLavaLamp />
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 relative z-10">
