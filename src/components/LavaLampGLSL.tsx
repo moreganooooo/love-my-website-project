@@ -32,6 +32,7 @@ export default function LavaLampGLSL({
     const height = mount.offsetHeight;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
 
     const canvas = renderer.domElement;
@@ -51,6 +52,16 @@ export default function LavaLampGLSL({
       u_time: { value: 0.0 },
       u_resolution: { value: new THREE.Vector2(width, height) },
     };
+
+    const handleResize = () => {
+      const newWidth = mount.offsetWidth;
+      const newHeight = mount.offsetHeight;
+      renderer.setSize(newWidth, newHeight);
+      uniforms.u_resolution.value.set(newWidth, newHeight);
+    };
+
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(mount);
 
     const blobSnippets: string[] = [];
 
@@ -180,6 +191,7 @@ export default function LavaLampGLSL({
       renderer.setAnimationLoop(null);
       renderer.dispose();
       document.removeEventListener('visibilitychange', handleVisibility);
+      resizeObserver.disconnect();
       mount.removeChild(canvas);
     };
   }, [blobCount, blobSpeed, blobSize]);
