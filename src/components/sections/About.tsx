@@ -1,3 +1,4 @@
+
 import { SkillCard } from '@/components/shared/skillscard';
 import { skills } from '@/data/skills';
 import { FadeInSection } from '@/components/shared/FadeInSection';
@@ -5,7 +6,7 @@ import styles from './About.module.css';
 
 const About = () => {
   return (
-    <section className="relative min-h-[60dvh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden">
+    <section id="about" className="relative min-h-[60dvh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden">
       {/* Static Decorative background */}
       <div className="pointer-events-none select-none absolute inset-0 w-full h-full z-0" aria-hidden="true">
         <img src="/5594016.jpg" alt="" className="w-full h-full object-cover opacity-10" />
@@ -44,7 +45,12 @@ const About = () => {
           {skills.map((skill, index) => (
             <div
               key={skill.title}
-              className={`transition-all duration-1000 ease-out ${styles.skillCard} ${styles[`delay-${index}`]}`}
+              className={`transition-all duration-[1500ms] ease-out ${styles.skillCard} ${styles[`delay-${index}`]}`}
+              style={{ 
+                transitionDelay: `${(index * 300) + 500}ms`,
+                opacity: 0,
+                transform: 'translateY(40px)'
+              }}
             >
               <SkillCard skill={skill} />
             </div>

@@ -1,5 +1,5 @@
 
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -48,7 +48,7 @@ const Projects = () => {
         </h2>
         <p className="text-lg text-slate-700 max-w-2xl mx-auto">
           Here are some of my recent projects that showcase my skills and passion for creating
-          exceptional digital experiences.
+          exceptional creative experiences.
         </p>
       </div>
 
@@ -94,8 +94,8 @@ const Projects = () => {
                   size="sm"
                   className="flex-1 border-orange-200 hover:bg-orange-50 hover:border-orange-300 transition-all duration-300"
                 >
-                  <Github className="h-4 w-4 mr-2" />
-                  Details
+                  <ArrowRight className="h-4 w-4 mr-2" />
+                  Learn More
                 </Button>
                 <Button
                   size="sm"

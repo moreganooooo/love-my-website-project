@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -217,6 +218,10 @@
     border-style: solid;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: #100438 !important;
     color: hsl(var(--foreground));
@@ -224,6 +229,10 @@
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    
+    /* Optimize for smooth scrolling */
+    overflow-x: hidden;
+    scroll-behavior: smooth;
   }
 
   h1,
@@ -231,5 +240,26 @@
   h3 {
     font-family: 'Playfair Display', serif;
     font-weight: bold;
+  }
+
+  /* Improve scroll performance */
+  * {
+    scroll-behavior: smooth;
+  }
+
+  /* Hardware acceleration for smooth animations */
+  .transform,
+  .transition-transform,
+  .hover\\:scale-105:hover,
+  .hover\\:scale-110:hover,
+  .group-hover\\:scale-110 {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Optimize image rendering */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 }
