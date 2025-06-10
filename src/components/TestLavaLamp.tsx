@@ -42,7 +42,7 @@ function LavaLampBlobs() {
   );
 }
 
-export default function LavaLampTest() {
+export default function TestLavaLamp() {
   return (
     <div style={{ width: "100%", height: 400 }}>
       <Canvas orthographic camera={{ zoom: 1, position: [0, 0, 5] }}>
