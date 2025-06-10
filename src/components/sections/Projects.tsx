@@ -12,7 +12,7 @@ const Projects = () => {
       image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&h=300&fit=crop',
       tech: ['Design', 'Branding', 'Print', 'Digital'],
       category: 'Creative Work',
-      link: 'src/pages/SampleProject.tsx', // <--- Only this one has a link!
+      link: '/pages/sample-project', // <--- Only this one has a link!
     },
     {
       title: 'TreeRing Campaign Materials',
