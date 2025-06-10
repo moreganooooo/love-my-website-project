@@ -46,7 +46,7 @@ const SampleProject = () => {
           </FadeInSection>
 
           <FadeInSection delay={200}>
-           <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent leading-[1.13] pb-3 inline-block overflow-visible">
+           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent leading-[1.13] pb-3 inline-block overflow-visible">
              TreeRing<br />Campaign
            </h1>
           </FadeInSection>
