@@ -14,7 +14,7 @@ const Projects = () => {
       category: 'Creative Work',
       link: 'src/pages/SampleProject.ts', // <--- Only this one has a link!
     },
-    {x
+    {
       title: 'TreeRing Campaign Materials',
       description: "Comprehensive marketing materials and event coordination for TreeRing's educational initiatives and community outreach.",
       image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=500&h=300&fit=crop',
