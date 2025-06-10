@@ -2,12 +2,13 @@ import React, { useRef, useMemo } from "react";
 import { Canvas, useFrame, extend } from "@react-three/fiber";
 import { shaderMaterial } from "@react-three/drei";
 
-// 1. Define the shader material
+// (Shader material definition here, same as before)
 const LavaLampMaterial = shaderMaterial(
   {
     uTime: 0,
     uBlobs: new Float32Array(5 * 4),
   },
+  // vertex shader
   `
     varying vec2 vUv;
     void main() {
@@ -15,6 +16,7 @@ const LavaLampMaterial = shaderMaterial(
       gl_Position = vec4(position, 1.0);
     }
   `,
+  // fragment shader
   `
     precision highp float;
     varying vec2 vUv;
@@ -39,7 +41,8 @@ const LavaLampMaterial = shaderMaterial(
 
 extend({ LavaLampMaterial });
 
-const TestLavaLamp = () => {
+// **This goes INSIDE the Canvas:**
+const LavaLampBlobs = () => {
   const ref = useRef<any>();
   const baseBlobs = useMemo(() => {
     return Array.from({ length: 5 }, (_, i) => ({
@@ -66,16 +69,21 @@ const TestLavaLamp = () => {
   });
 
   return (
-    <div style={{ width: "100%", height: 400 }}>
-      <Canvas orthographic camera={{ zoom: 1, position: [0, 0, 5] }}>
-        <mesh>
-          <planeGeometry args={[1, 1]} />
-          {/* @ts-ignore */}
-          <lavaLampMaterial ref={ref} />
-        </mesh>
-      </Canvas>
-    </div>
+    <mesh>
+      <planeGeometry args={[1, 1]} />
+      {/* @ts-ignore */}
+      <lavaLampMaterial ref={ref} />
+    </mesh>
   );
 };
+
+// **This is your exported wrapper:**
+const TestLavaLamp = () => (
+  <div style={{ width: "100%", height: 400 }}>
+    <Canvas orthographic camera={{ zoom: 1, position: [0, 0, 5] }}>
+      <LavaLampBlobs />
+    </Canvas>
+  </div>
+);
 
 export default TestLavaLamp;
