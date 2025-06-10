@@ -3,6 +3,7 @@ import { Canvas, useFrame, extend } from "@react-three/fiber";
 import * as drei from "@react-three/drei";
 const shaderMaterial = drei.shaderMaterial;
 
+
 // ---- SHADER MATERIAL ----
 const LavaLampMaterial = shaderMaterial(
   {

@@ -6,6 +6,7 @@
       "@/*": ["./src/*"],
       "@/types": ["./types/types"]
     },
+    "esModuleInterop": true,
     "noImplicitAny": false,
     "noUnusedParameters": false,
     "skipLibCheck": true,
@@ -18,5 +19,4 @@
   },
   "include": ["src/**/*", "types/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
-  // Make sure there is NO "extends" property here referencing this file or itself.
 }
