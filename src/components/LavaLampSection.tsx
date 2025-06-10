@@ -108,6 +108,7 @@ const LavaLampMaterial = shaderMaterial(
   `
 );
 
+// Register the custom shader material
 extend({ LavaLampMaterial });
 
 const LavaLamp = ({ blobCount = 5 }: { blobCount?: number }) => {
@@ -152,6 +153,7 @@ const LavaLamp = ({ blobCount = 5 }: { blobCount?: number }) => {
       ref.current.uTime = t;
       ref.current.uBlobCount = blobCount;
       ref.current.uBlobs = new Float32Array(blobs);
+      ref.current.uColors = colors; // Just in case colors ever change
     }
   });
 
