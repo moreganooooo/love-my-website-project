@@ -49,7 +49,7 @@ const About = () => {
               transitionDelay: `${(index * 300) + 500}ms`
               // REMOVE opacity and transform!
                 }}
-            >
+              >
               <SkillCard skill={skill} />
             </div>
           ))}
