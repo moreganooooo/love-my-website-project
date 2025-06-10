@@ -32,6 +32,7 @@ export default function LavaLampGLSL({
     const height = mount.offsetHeight;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
 
     const canvas = renderer.domElement;
@@ -56,6 +57,16 @@ export default function LavaLampGLSL({
       u_backgroundEnd: { value: new THREE.Color(backgroundEnd) },
       u_blobSize: { value: blobSize },
     };
+
+    const handleResize = () => {
+      const newWidth = mount.offsetWidth;
+      const newHeight = mount.offsetHeight;
+      renderer.setSize(newWidth, newHeight);
+      uniforms.u_resolution.value.set(newWidth, newHeight);
+    };
+
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(mount);
 
     const blobSnippets: string[] = [];
 
@@ -164,12 +175,10 @@ export default function LavaLampGLSL({
     scene.add(mesh);
 
     const clock = new THREE.Clock();
-    let previousTime = 0;
 
     const animate = () => {
       const elapsed = clock.getElapsedTime();
       previousTime = elapsed;
-
       uniforms.u_time.value = elapsed;
       renderer.render(scene, camera);
     };
@@ -178,7 +187,6 @@ export default function LavaLampGLSL({
       if (document.hidden) {
         renderer.setAnimationLoop(null);
       } else {
-        previousTime = clock.getElapsedTime();
         renderer.setAnimationLoop(animate);
       }
     };
@@ -189,7 +197,10 @@ export default function LavaLampGLSL({
     return () => {
       renderer.setAnimationLoop(null);
       renderer.dispose();
+      geometry.dispose();
+      material.dispose();
       document.removeEventListener('visibilitychange', handleVisibility);
+      resizeObserver.disconnect();
       mount.removeChild(canvas);
     };
   }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);

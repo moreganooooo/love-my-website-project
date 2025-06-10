@@ -24,7 +24,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="min-h-[90vh] flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-16 md:pt-20 lg:pt-24 pb-12 md:pb-16 lg:pb-20 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700 overflow-hidden">
+    <section className="min-h-[90dvh] flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 pt-16 md:pt-20 lg:pt-24 pb-12 md:pb-16 lg:pb-20 relative bg-gradient-to-br from-orange-400 via-orange-500 to-purple-700 overflow-hidden">
       {/* Static SVG Background Layer */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 opacity-100 z-0">
@@ -78,9 +78,9 @@ const Hero = () => {
       </div>
 
       {/* Content Centered */}
-      <div className="flex items-center justify-center min-h-[50vh] w-full">
+      <div className="flex items-center justify-center min-h-[50dvh] w-full">
         <div className="text-center z-10 w-full max-w-screen-md sm:max-w-screen-lg md:max-w-screen-xl mx-auto animate-fade-up px-4 sm:px-6 md:px-10">
-          <div className="flex flex-col justify-center items-center min-h-[50vh] space-y-8 md:space-y-10">
+          <div className="flex flex-col justify-center items-center min-h-[50dvh] space-y-8 md:space-y-10">
             <h1 className="relative z-10 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-playfair bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-[1.3] px-4 py-2 overflow-visible animate-fade-up delay-200">
               Hi, I'm Morgan.
             </h1>
