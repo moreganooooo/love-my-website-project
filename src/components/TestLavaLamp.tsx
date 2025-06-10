@@ -45,7 +45,11 @@ function LavaLampBlobs() {
 export default function TestLavaLamp() {
   return (
     <div style={{ width: "100%", height: 400 }}>
-      <Canvas orthographic camera={{ zoom: 1, position: [0, 0, 5] }}>
+      <Canvas
+        orthographic
+        camera={{ zoom: 1, position: [0, 0, 5] }}
+        style={{ width: "100%", height: 400, background: "pink" }} // <-- add this
+      >
         <LavaLampBlobs />
       </Canvas>
     </div>
