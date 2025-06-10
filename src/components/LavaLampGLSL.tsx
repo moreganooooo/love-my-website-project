@@ -178,7 +178,6 @@ export default function LavaLampGLSL({
 
     const animate = () => {
       const elapsed = clock.getElapsedTime();
-      previousTime = elapsed;
       uniforms.u_time.value = elapsed;
       renderer.render(scene, camera);
     };
