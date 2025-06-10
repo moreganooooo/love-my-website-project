@@ -42,9 +42,9 @@ const About = () => {
           </p>
         </div>
         
-      <div style={{ border: "2px solid red" }}>
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
   {skills.map((skill, index) => (
-    <div key={skill.title} style={{ border: "2px solid blue", margin: 8 }}>
+    <div key={skill.title} className="transition-all duration-1000 ease-out">
       <SkillCard skill={skill} />
     </div>
   ))}
