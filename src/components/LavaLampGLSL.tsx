@@ -153,12 +153,9 @@ export default function LavaLampGLSL({
     scene.add(mesh);
 
     const clock = new THREE.Clock();
-    let previousTime = 0;
 
     const animate = () => {
       const elapsed = clock.getElapsedTime();
-      const delta = elapsed - previousTime;
-      previousTime = elapsed;
 
       uniforms.u_time.value = elapsed;
       renderer.render(scene, camera);
@@ -168,7 +165,6 @@ export default function LavaLampGLSL({
       if (document.hidden) {
         renderer.setAnimationLoop(null);
       } else {
-        previousTime = clock.getElapsedTime();
         renderer.setAnimationLoop(animate);
       }
     };
@@ -179,6 +175,8 @@ export default function LavaLampGLSL({
     return () => {
       renderer.setAnimationLoop(null);
       renderer.dispose();
+      geometry.dispose();
+      material.dispose();
       document.removeEventListener('visibilitychange', handleVisibility);
       mount.removeChild(canvas);
     };
