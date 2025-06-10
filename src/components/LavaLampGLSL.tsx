@@ -51,6 +51,11 @@ export default function LavaLampGLSL({
     const uniforms = {
       u_time: { value: 0.0 },
       u_resolution: { value: new THREE.Vector2(width, height) },
+      u_blobColorStart: { value: new THREE.Color(blobColorStart) },
+      u_blobColorEnd: { value: new THREE.Color(blobColorEnd) },
+      u_backgroundStart: { value: new THREE.Color(backgroundStart) },
+      u_backgroundEnd: { value: new THREE.Color(backgroundEnd) },
+      u_blobSize: { value: blobSize },
     };
 
     const handleResize = () => {
@@ -69,11 +74,10 @@ export default function LavaLampGLSL({
       const side = i % 2 === 0 ? 1 : -1;
       const baseX = side * 0.8;
       const ampX = 0.15;
-      const ampY = 1.4;
       const speedX = 0.3 + Math.random() * 0.25;
       const speedY = 0.7 + Math.random() * 0.5;
       const phase = (i / blobCount) * Math.PI * 2;
-      const radius = 0.06 + Math.random() * 0.14;
+      const radiusBase = 0.06 + Math.random() * 0.14;
       const stretch = 0.85 + Math.random() * 0.3;
       const wobbleFreq = 1.0 + Math.random();
       const wobbleAmp = 0.02 + Math.random() * 0.03;
@@ -91,6 +95,8 @@ export default function LavaLampGLSL({
           diff = rot * diff;
           diff.y *= ${stretch.toFixed(2)};
           float dist = length(diff);
+
+          float radius = ${radiusBase.toFixed(2)} * u_blobSize;
           
           // More realistic 3D shading
           float lightAngle = atan(diff.y, diff.x) + t * 0.1;
@@ -102,7 +108,7 @@ export default function LavaLampGLSL({
           // Combine lighting for 3D effect
           float lighting = highlight * 0.8 + midtone * 0.6 + shadow * 0.4;
           
-          field += ${radius.toFixed(2)} * ${radius.toFixed(2)} / (dist * dist + 0.0002);
+          field += radius * radius / (dist * dist + 0.0002);
           blobShade += ${shade.toFixed(2)} * lighting / (dist * dist + 0.002);
         }
       `);
@@ -115,6 +121,11 @@ export default function LavaLampGLSL({
         precision mediump float;
         uniform float u_time;
         uniform vec2 u_resolution;
+        uniform vec3 u_blobColorStart;
+        uniform vec3 u_blobColorEnd;
+        uniform vec3 u_backgroundStart;
+        uniform vec3 u_backgroundEnd;
+        uniform float u_blobSize;
 
         void main() {
           vec2 uv = gl_FragCoord.xy / u_resolution.xy;
@@ -129,25 +140,25 @@ export default function LavaLampGLSL({
           // More defined edges with less blur
           float mask = smoothstep(0.8, 1.2, field);
 
-          // Enhanced sunset colors - BRIGHT background
-          vec3 deepPurple = vec3(0.08, 0.02, 0.20);
-          vec3 warmOrange = vec3(1.0, 0.5, 0.2);
-          vec3 softPink = vec3(0.9, 0.4, 0.5);
+          // Colors supplied via uniforms
+          vec3 bgStart = u_backgroundStart;
+          vec3 bgEnd = u_backgroundEnd;
+          vec3 blobStart = u_blobColorStart;
+          vec3 blobEnd = u_blobColorEnd;
           
           // Create a more sophisticated background gradient - FULL BRIGHTNESS
           float radial = length(uv - vec2(0.0, -1.0));
           float verticalGrad = (uv.y + 1.0) * 0.5;
           float glowFactor = smoothstep(2.2, 0.0, radial);
           
-          vec3 background = mix(deepPurple, warmOrange, glowFactor * 0.7);
-          background = mix(background, softPink, verticalGrad * 0.3 * glowFactor);
+          vec3 background = mix(bgStart, bgEnd, glowFactor * 0.7);
+          background = mix(background, blobEnd, verticalGrad * 0.3 * glowFactor);
 
           // Enhanced blob colors with better 3D appearance
-          vec3 blobBase = mix(warmOrange, softPink, (uv.y + 1.0) * 0.4);
+          vec3 blobBase = mix(blobStart, blobEnd, (uv.y + 1.0) * 0.4);
           vec3 blobHighlight = mix(blobBase, vec3(1.0, 0.8, 0.6), 0.3);
           vec3 blobColor = mix(blobBase, blobHighlight, clamp(blobShade * 0.8, 0.0, 1.0));
 
-          // CRITICAL FIX: Use pure background where mask is 0, only blend blobs with reduced opacity
           vec3 finalColor = background;
           if (mask > 0.0) {
             finalColor = mix(background, blobColor, mask * 0.75);
@@ -167,7 +178,7 @@ export default function LavaLampGLSL({
 
     const animate = () => {
       const elapsed = clock.getElapsedTime();
-
+      previousTime = elapsed;
       uniforms.u_time.value = elapsed;
       renderer.render(scene, camera);
     };
@@ -192,7 +203,7 @@ export default function LavaLampGLSL({
       resizeObserver.disconnect();
       mount.removeChild(canvas);
     };
-  }, [blobCount, blobSpeed, blobSize]);
+  }, [blobCount, blobSpeed, blobSize, blobColorStart, blobColorEnd, backgroundStart, backgroundEnd]);
 
   return (
     <div
