@@ -54,9 +54,6 @@ const About = () => {
     </div>
   ))}
 </FadeInSection>
-            </div>
-          ))}
-        </FadeInSection>
       </div>
     </section>
   );
