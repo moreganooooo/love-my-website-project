@@ -34,10 +34,10 @@ function LavaLampBlobs() {
     if (ref.current) ref.current.uTime = clock.getElapsedTime();
   });
   return (
-    <mesh>
+   <mesh>
       <planeGeometry args={[1, 1]} />
-      {/* THIS TAG NAME IS CRUCIAL */}
-      <lavaLampMaterial ref={ref} />
+      {/* <lavaLampMaterial ref={ref} /> */}
+      <meshBasicMaterial color="hotpink" />
     </mesh>
   );
 }
