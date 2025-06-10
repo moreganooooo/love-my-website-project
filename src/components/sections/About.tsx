@@ -41,19 +41,19 @@ const About = () => {
         </div>
         
        <FadeInSection threshold={0.2} rootMargin="80px" className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {skills.map((skill, index) => (
+         {skills.map((skill, index) => (
           <div
-           key={skill.title}
-           className={`transition-all duration-[1500ms] ease-out ${styles.skillCard} ${styles[`delay-${index}`]}`}
-            style={{
-            transitionDelay: `${(index * 300) + 500}ms`
-            // No opacity/transform here!
+            key={skill.title}
+            className={`transition-all duration-[1500ms] ease-out ${styles.skillCard} ${styles[`delay-${index}`]}`}
+            style={{ 
+              transitionDelay: `${(index * 300) + 500}ms`
+              // No opacity/transform here!
             }}
-            >
+          >
             <SkillCard skill={skill} />
           </div>
-    ))}
-       </FadeInSection>
+        ))}
+      </FadeInSection>
             </div>
           ))}
         </FadeInSection>
