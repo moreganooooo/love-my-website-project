@@ -1,7 +1,7 @@
 import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import LavaLampSection from "@/components/LavaLampSection";
+import TestLavaLamp from "@/components/TestLavaLamp";
 import { Link } from "react-router-dom";
 
 const Projects = () => {
