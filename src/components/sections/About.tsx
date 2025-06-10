@@ -3,6 +3,8 @@ import { skills } from '@/data/skills';
 import { FadeInSection } from '@/components/shared/FadeInSection';
 import styles from './About.module.css';
 
+console.log("skills array:", skills);
+
 const About = () => {
   return (
     <section id="about" className="relative min-h-[60dvh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden">
