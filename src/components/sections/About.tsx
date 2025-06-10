@@ -42,13 +42,9 @@ const About = () => {
           </p>
         </div>
         
-       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div style={{ border: "2px solid red" }}>
   {skills.map((skill, index) => (
-    <div
-      key={skill.title}
-      className={`transition-all duration-[1500ms] ease-out ${styles.skillCard} ${styles[`delay-${index}`]}`}
-      style={{ transitionDelay: `${(index * 300) + 500}ms` }}
-    >
+    <div key={skill.title} style={{ border: "2px solid blue", margin: 8 }}>
       <SkillCard skill={skill} />
     </div>
   ))}
