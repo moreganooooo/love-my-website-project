@@ -7,6 +7,9 @@ echo "🧪 Running ESLint + Vitest..."
 
 npm run lint
 npm run test -- --passWithNoTests
+
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 npx lint-staged
 
 echo "✅ Pre-commit checks passed!"
