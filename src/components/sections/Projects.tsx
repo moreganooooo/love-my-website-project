@@ -1,7 +1,6 @@
 import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import TestLavaLamp from "@/components/TestLavaLamp";
 import { Link } from "react-router-dom";
 
 const Projects = () => {
@@ -48,12 +47,6 @@ const Projects = () => {
           Here are some of my recent projects that showcase my skills and passion for creating exceptional creative experiences.
         </p>
       </div>
-
-      {/* LAVA LAMP BG */}
-      <div className="relative">
-        <div className="absolute inset-0 h-full w-full pointer-events-none -z-10">
-          <TestLavaLamp />
-        </div>
 
         <div className="grid md:grid-cols-2 gap-8 relative z-10">
           {projects.map((project, index) => (
