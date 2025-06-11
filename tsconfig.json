@@ -19,12 +19,5 @@
     "composite": true
   },
   "include": ["src/**/*", "types/**/*"],
-  "exclude": [
-    "node_modules",
-    "**/__tests__/**",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "dist",
-    "build"
-  ]
+  "exclude": ["node_modules", "**/__tests__/**", "**/*.spec.ts", "**/*.spec.tsx", "dist", "build"]
 }

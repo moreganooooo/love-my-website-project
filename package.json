@@ -11,9 +11,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "format": "prettier --write .",
     "git:fix": "./git-clean-health-check.sh",
-    "postinstall": "bash scripts/git-clean-health-check.sh"
+    "postinstall": "bash scripts/git-clean-health-check.sh",
+    "format": "prettier --write . && npm run lint -- --fix"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
