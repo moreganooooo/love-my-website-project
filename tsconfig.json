@@ -4,8 +4,7 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": ["./src/*"],
-      "@/types": ["./types/types"],
-      "@/*": ["./src/*"],
+      "@types": ["./types/types"],
       "@utils/*": ["./src/utils/*"]
     },
     "esModuleInterop": true,
@@ -20,5 +19,12 @@
     "composite": true
   },
   "include": ["src/**/*", "types/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": [
+    "node_modules",
+    "**/__tests__/**",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "dist",
+    "build"
+  ]
 }
