@@ -1,4 +1,3 @@
-
 .fadeInSection {
   opacity: 0;
   transform: translateY(40px);
@@ -18,7 +17,15 @@
   transform: translateY(20px);
 }
 
-.fadeInDelay200 { transition-delay: 200ms; }
-.fadeInDelay400 { transition-delay: 400ms; }
-.fadeInDelay600 { transition-delay: 600ms; }
-.fadeInDelay800 { transition-delay: 800ms; }
+.fadeInDelay200 {
+  transition-delay: 200ms;
+}
+.fadeInDelay400 {
+  transition-delay: 400ms;
+}
+.fadeInDelay600 {
+  transition-delay: 600ms;
+}
+.fadeInDelay800 {
+  transition-delay: 800ms;
+}

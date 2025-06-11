@@ -1,4 +1,3 @@
-
 import { ArrowLeft, Calendar, User, Award, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,26 +8,26 @@ const SampleProject = () => {
   const projectFeatures = [
     {
       icon: Palette,
-      title: "Creative Direction",
-      description: "Comprehensive brand strategy and visual identity development",
+      title: 'Creative Direction',
+      description: 'Comprehensive brand strategy and visual identity development',
     },
     {
       icon: Award,
-      title: "Award Recognition",
-      description: "Featured in design publications and industry showcases",
+      title: 'Award Recognition',
+      description: 'Featured in design publications and industry showcases',
     },
     {
       icon: User,
-      title: "Client Collaboration",
-      description: "Close partnership throughout the creative process",
+      title: 'Client Collaboration',
+      description: 'Close partnership throughout the creative process',
     },
   ];
 
   const projectGallery = [
-    "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=600&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1586717791821-3de64ac1f41b?w=600&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop",
+    'https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1586717791821-3de64ac1f41b?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop',
   ];
 
   return (
@@ -36,26 +35,30 @@ const SampleProject = () => {
       {/* Hero Section */}
       <section className="relative py-20 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-orange-100/30 to-purple-100/30"></div>
-        
+
         <div className="max-w-4xl mx-auto relative z-10">
           <FadeInSection>
-            <Link to="/" className="inline-flex items-center text-orange-600 hover:text-orange-700 mb-8 transition-colors">
+            <Link
+              to="/"
+              className="inline-flex items-center text-orange-600 hover:text-orange-700 mb-8 transition-colors"
+            >
               <ArrowLeft className="h-5 w-5 mr-2" />
               Back to Home
             </Link>
           </FadeInSection>
 
           <FadeInSection delay={200}>
-           <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent leading-[1.13] pb-3 inline-block overflow-visible">
-             TreeRing<br />Campaign
-           </h1>
+            <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent leading-[1.13] pb-3 inline-block overflow-visible">
+              TreeRing
+              <br />
+              Campaign
+            </h1>
           </FadeInSection>
 
           <FadeInSection delay={400}>
             <p className="text-xl text-slate-700 mb-8 max-w-2xl leading-relaxed">
-              A comprehensive marketing campaign that brought together storytelling, 
-              visual design, and strategic thinking to create meaningful connections 
-              in the educational space.
+              A comprehensive marketing campaign that brought together storytelling, visual design,
+              and strategic thinking to create meaningful connections in the educational space.
             </p>
           </FadeInSection>
 
@@ -80,21 +83,19 @@ const SampleProject = () => {
           <FadeInSection>
             <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
               <div>
-                <h2 className="text-3xl font-bold mb-6 text-slate-800">
-                  The Challenge
-                </h2>
+                <h2 className="text-3xl font-bold mb-6 text-slate-800">The Challenge</h2>
                 <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                  TreeRing needed a fresh approach to connect with educators and 
-                  families, moving beyond traditional marketing to create genuine 
-                  emotional resonance around memory-making and storytelling.
+                  TreeRing needed a fresh approach to connect with educators and families, moving
+                  beyond traditional marketing to create genuine emotional resonance around
+                  memory-making and storytelling.
                 </p>
                 <p className="text-lg text-slate-600 leading-relaxed">
-                  The goal was to position TreeRing not just as a yearbook company, 
-                  but as a partner in preserving life's most meaningful moments.
+                  The goal was to position TreeRing not just as a yearbook company, but as a partner
+                  in preserving life's most meaningful moments.
                 </p>
               </div>
               <div className="relative">
-                <img 
+                <img
                   src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop"
                   alt="Creative planning session"
                   className="rounded-2xl shadow-2xl"
@@ -108,7 +109,10 @@ const SampleProject = () => {
           <FadeInSection delay={200}>
             <div className="grid md:grid-cols-3 gap-8 mb-16">
               {projectFeatures.map((feature, index) => (
-                <Card key={feature.title} className="border-0 bg-gradient-to-br from-white to-orange-50/30 shadow-lg hover:shadow-xl transition-all duration-300">
+                <Card
+                  key={feature.title}
+                  className="border-0 bg-gradient-to-br from-white to-orange-50/30 shadow-lg hover:shadow-xl transition-all duration-300"
+                >
                   <CardContent className="p-8 text-center">
                     <feature.icon className="h-12 w-12 mx-auto mb-4 text-orange-600" />
                     <h3 className="text-xl font-bold mb-3 text-slate-800">{feature.title}</h3>
@@ -133,12 +137,12 @@ const SampleProject = () => {
           <FadeInSection delay={200}>
             <div className="grid md:grid-cols-2 gap-6">
               {projectGallery.map((image, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500"
                 >
-                  <img 
-                    src={image} 
+                  <img
+                    src={image}
                     alt={`Project visual ${index + 1}`}
                     className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -158,9 +162,9 @@ const SampleProject = () => {
               The Impact
             </h2>
             <p className="text-xl text-slate-700 leading-relaxed mb-12">
-              The campaign successfully repositioned TreeRing in the market, 
-              creating deeper emotional connections with customers and driving 
-              significant engagement across all touchpoints.
+              The campaign successfully repositioned TreeRing in the market, creating deeper
+              emotional connections with customers and driving significant engagement across all
+              touchpoints.
             </p>
           </FadeInSection>
 
@@ -182,10 +186,12 @@ const SampleProject = () => {
           </FadeInSection>
 
           <FadeInSection delay={400}>
-            <Button asChild size="lg" className="bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300">
-              <Link to="/">
-                View More Projects
-              </Link>
+            <Button
+              asChild
+              size="lg"
+              className="bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <Link to="/">View More Projects</Link>
             </Button>
           </FadeInSection>
         </div>

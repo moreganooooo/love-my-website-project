@@ -1,4 +1,3 @@
-
 import { useInView } from '@/hooks/useInView';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
@@ -12,12 +11,12 @@ type FadeInSectionProps = {
   rootMargin?: string;
 };
 
-const FadeInSection = ({ 
-  children, 
-  className, 
-  delay = 0, 
+const FadeInSection = ({
+  children,
+  className,
+  delay = 0,
   threshold = 0.15,
-  rootMargin = '50px'
+  rootMargin = '50px',
 }: FadeInSectionProps) => {
   const { ref, isVisible } = useInView(threshold, rootMargin);
 

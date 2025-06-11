@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 
 export const useInView = (threshold = 0.2, rootMargin = '0px') => {
@@ -10,9 +9,9 @@ export const useInView = (threshold = 0.2, rootMargin = '0px') => {
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
-      { 
+      {
         threshold,
-        rootMargin
+        rootMargin,
       },
     );
 

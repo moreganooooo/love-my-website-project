@@ -187,16 +187,13 @@ const ChartTooltipContent = React.forwardRef<
                       <itemConfig.icon />
                     ) : (
                       <div
-                        className={cn(
-                          'chart-indicator shrink-0 rounded-[2px]',
-                          {
-                            'dot-indicator h-2.5 w-2.5': indicator === 'dot',
-                            'line-indicator w-1': indicator === 'line',
-                            'dashed-indicator w-0 border-[1.5px] border-dashed bg-transparent':
-                              indicator === 'dashed',
-                            'my-0.5': nestLabel && indicator === 'dashed',
-                          },
-                        )}
+                        className={cn('chart-indicator shrink-0 rounded-[2px]', {
+                          'dot-indicator h-2.5 w-2.5': indicator === 'dot',
+                          'line-indicator w-1': indicator === 'line',
+                          'dashed-indicator w-0 border-[1.5px] border-dashed bg-transparent':
+                            indicator === 'dashed',
+                          'my-0.5': nestLabel && indicator === 'dashed',
+                        })}
                         data-indicator-color={indicatorColor}
                       />
                     )}

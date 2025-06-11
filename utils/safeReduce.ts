@@ -10,7 +10,7 @@
 export function safeReduce<T, U>(
   arr: T[] | undefined | null,
   reducer: (acc: U, value: T, index: number, array: T[]) => U,
-  initial: U
+  initial: U,
 ): U {
   if (!Array.isArray(arr)) return initial;
   return arr.reduce((acc, value, index) => {

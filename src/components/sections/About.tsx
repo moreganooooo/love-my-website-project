@@ -3,13 +3,19 @@ import { skills } from '@/data/skills';
 import { FadeInSection } from '@/components/shared/FadeInSection';
 import styles from './About.module.css';
 
-console.log("skills array:", skills);
+console.log('skills array:', skills);
 
 const About = () => {
   return (
-    <section id="about" className="relative min-h-[60dvh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden">
+    <section
+      id="about"
+      className="relative min-h-[60dvh] py-20 px-6 bg-gradient-to-br from-purple-100 via-white to-orange-50 overflow-hidden"
+    >
       {/* Static Decorative background */}
-      <div className="pointer-events-none select-none absolute inset-0 w-full h-full z-0" aria-hidden="true">
+      <div
+        className="pointer-events-none select-none absolute inset-0 w-full h-full z-0"
+        aria-hidden="true"
+      >
         <img src="/5594016.jpg" alt="" className="w-full h-full object-cover opacity-10" />
       </div>
 
@@ -25,10 +31,11 @@ const About = () => {
             About Me
           </h2>
           <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
-            I'm a creative strategist and CRM whisperer with a deep love for systems that make stories sing.
+            I'm a creative strategist and CRM whisperer with a deep love for systems that make
+            stories sing.
             <br />
-            I've spent the last 10+ years blending structure with soul: building lifecycle
-            campaigns in Salesforce,
+            I've spent the last 10+ years blending structure with soul: building lifecycle campaigns
+            in Salesforce,
             <br />
             writing content that connects, and designing visual experiences that feel thoughtful
             <br />
@@ -41,14 +48,14 @@ const About = () => {
             If that sounds like your vibe — let's talk.
           </p>
         </div>
-        
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-  {skills.map((skill, index) => (
-    <div key={skill.title} className="transition-all duration-1000 ease-out">
-      <SkillCard skill={skill} />
-    </div>
-  ))}
-</div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {skills.map((skill, index) => (
+            <div key={skill.title} className="transition-all duration-1000 ease-out">
+              <SkillCard skill={skill} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
