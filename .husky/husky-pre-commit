@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# ✅ Auto-lint and test before commit
+
+echo "🧪 Running ESLint + Vitest..."
+
+npm run lint
+npm run test -- --passWithNoTests
+
+echo "✅ Pre-commit checks passed!"
