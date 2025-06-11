@@ -4,7 +4,9 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": ["./src/*"],
-      "@/types": ["./types/types"]
+      "@/types": ["./types/types"],
+      "@/*": ["./src/*"],
+      "@utils/*": ["./src/utils/*"]
     },
     "esModuleInterop": true,
     "noImplicitAny": false,
