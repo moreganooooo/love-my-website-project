@@ -70,6 +70,12 @@
     "vaul": "^0.9.3",
     "zod": "^3.23.8"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "@hint/hint-no-inline-styles": "^1.0.19",
     "@react-three/fiber": "8.13.3",
@@ -95,6 +101,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
     "lovable-tagger": "^1.1.8",
     "postcss": "^8.5.5",
     "prettier": "^3.5.3",

@@ -7,5 +7,6 @@ echo "🧪 Running ESLint + Vitest..."
 
 npm run lint
 npm run test -- --passWithNoTests
+npx lint-staged
 
 echo "✅ Pre-commit checks passed!"
