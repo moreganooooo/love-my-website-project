@@ -111,7 +111,6 @@ const Projects = () => {
             </Card>
           ))}
         </div>
-      </div>
     </section>
   );
 };
