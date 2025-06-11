@@ -5,6 +5,13 @@
 
 # Ignore dependencies
 /node_modules
+public
+*.lock
+*.svg
+*.png
+*.jpg
+*.jpeg
+
 
 # Ignore config
 *.config.js
@@ -19,3 +26,17 @@ npm-debug.log
 
 # Ignore test snapshots
 **/__snapshots__/**
+
+"plugins": ["unused-imports"],
+"rules": {
+  "unused-imports/no-unused-imports": "error",
+  "unused-imports/no-unused-vars": [
+    "warn",
+    {
+      "vars": "all",
+      "varsIgnorePattern": "^_",
+      "args": "after-used",
+      "argsIgnorePattern": "^_"
+    }
+  ]
+}

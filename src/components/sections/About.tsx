@@ -1,7 +1,5 @@
 import { SkillCard } from '@/components/shared/SkillCard';
 import { skills } from '@/data/skills';
-import { FadeInSection } from '@/components/shared/FadeInSection';
-import styles from './About.module.css';
 
 console.log('skills array:', skills);
 
