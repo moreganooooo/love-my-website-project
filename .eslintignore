@@ -1,0 +1,21 @@
+# Ignore build output
+/dist
+/.next
+/build
+
+# Ignore dependencies
+/node_modules
+
+# Ignore config
+*.config.js
+*.config.cjs
+*.config.ts
+
+# Ignore lockfiles and logs
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+npm-debug.log
+
+# Ignore test snapshots
+**/__snapshots__/**
