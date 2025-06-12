@@ -1,6 +1,8 @@
 import { SkillCard } from '@/components/shared/SkillCard';
 import { skills } from '@/data/skills';
 
+// 🚨 Removed the console.log statement!
+
 const About = () => {
   return (
     <section
