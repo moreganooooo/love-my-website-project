@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
+  root: '.', // optional, default is current dir
   server: {
     host: 'localhost',
     port: 5173,
@@ -15,10 +16,6 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html'), // ✅ Use object not string!
-      },
-    },
+    // Removed custom input to prevent esbuild crash
   },
 });

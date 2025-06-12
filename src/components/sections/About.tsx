@@ -1,8 +1,6 @@
 import { SkillCard } from '@/components/shared/SkillCard';
 import { skills } from '@/data/skills';
 
-console.log('skills array:', skills);
-
 const About = () => {
   return (
     <section
@@ -14,11 +12,7 @@ const About = () => {
         className="pointer-events-none select-none absolute inset-0 w-full h-full z-0"
         aria-hidden="true"
       >
-        <img
-          src="/5594016.jpg"
-          alt=""
-          className="w-full h-full object-cover opacity-10"
-        />
+        <img src="/5594016.jpg" alt="" className="w-full h-full object-cover opacity-10" />
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -27,11 +21,11 @@ const About = () => {
             About Me
           </h2>
           <p className="text-lg text-slate-700 max-w-3xl mx-auto leading-relaxed">
-            I'm a creative strategist and CRM whisperer with a deep love for systems that make
+            I&apos;m a creative strategist and CRM whisperer with a deep love for systems that make
             stories sing.
             <br />
-            I've spent the last 10+ years blending structure with soul: building lifecycle campaigns
-            in Salesforce,
+            I&apos;ve spent the last 10+ years blending structure with soul: building lifecycle
+            campaigns in Salesforce,
             <br />
             writing content that connects, and designing visual experiences that feel thoughtful
             <br />
@@ -41,12 +35,12 @@ const About = () => {
             My work lives at the intersection of strategy, storytelling, and quietly joyful
             execution.
             <br />
-            If that sounds like your vibe — let's talk.
+            If that sounds like your vibe — let&apos;s talk.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skills.map((skill) => {
+          {skills.map(skill => {
             if (!skill || !skill.title || !skill.description || !skill.icon) return null;
             return (
               <div key={skill.title} className="transition-all duration-1000 ease-out">
