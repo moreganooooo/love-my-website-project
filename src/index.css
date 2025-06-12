@@ -222,7 +222,7 @@
   }
 
   body {
-    background-color: #100438 !important;
+    background-color: #100438;
     color: hsl(var(--foreground));
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 400;
