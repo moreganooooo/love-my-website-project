@@ -1,11 +1,7 @@
-// .eslintrc.js
-
-module.exports = {
+// .eslintrc.js (ESM version)
+export default {
   root: true,
-  env: {
-    browser: true,
-    es2021: true,
-  },
+  env: { browser: true, es2021: true },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
@@ -30,9 +26,5 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
   },
-  settings: {
-    react: {
-      version: 'detect',
-    },
-  },
+  settings: { react: { version: 'detect' } },
 };
