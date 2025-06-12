@@ -21,9 +21,9 @@ export default defineConfig(({ mode }) => ({
     postcss: './postcss.config.mjs',
   },
   build: {
-    outDir: 'dist',
+    outDir: 'dist', // ✅ output directory
     rollupOptions: {
-      input: path.resolve(__dirname, 'index.html'), // ✅ explicitly define input
+      input: path.resolve(__dirname, 'index.html'), // ✅ REQUIRED single entry point!
     },
   },
 }));
