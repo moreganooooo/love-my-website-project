@@ -167,3 +167,4 @@ ensure_file "$SETTINGS_FILE" '{
 echo -e "\n🧠 Sanity check complete. Project structure, Git, tools, lockfiles & config validated."
 ls -al "$SCRIPT_DIR"
 ls -al "$HUSKY_DIR"
+fi
