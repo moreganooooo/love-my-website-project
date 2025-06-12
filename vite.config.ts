@@ -2,28 +2,22 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { componentTagger } from 'lovable-tagger';
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
   server: {
-    host: '::',
-    port: 8080,
+    host: 'localhost',
+    port: 5173,
   },
-  plugins: [react(), mode === 'development' && componentTagger()].filter(Boolean),
+  plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@utils': path.resolve(__dirname, './src/utils'),
-      '@types': path.resolve(__dirname, './types/types'),
     },
-  },
-  css: {
-    postcss: './postcss.config.mjs',
   },
   build: {
-    outDir: 'dist', // ✅ output directory
+    outDir: 'dist',
     rollupOptions: {
-      input: path.resolve(__dirname, 'index.html'), // ✅ REQUIRED single entry point!
+      input: path.resolve(__dirname, 'index.html'),
     },
   },
-}));
+});
