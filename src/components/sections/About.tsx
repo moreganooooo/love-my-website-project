@@ -14,7 +14,11 @@ const About = () => {
         className="pointer-events-none select-none absolute inset-0 w-full h-full z-0"
         aria-hidden="true"
       >
-        <img src="/5594016.jpg" alt="" className="w-full h-full object-cover opacity-10" />
+        <img
+          src="/5594016.jpg"
+          alt=""
+          className="w-full h-full object-cover opacity-10"
+        />
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -42,11 +46,14 @@ const About = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skills.map((skill, index) => (
-            <div key={skill.title} className="transition-all duration-1000 ease-out">
-              <SkillCard skill={skill} />
-            </div>
-          ))}
+          {skills.map((skill) => {
+            if (!skill || !skill.title || !skill.description || !skill.icon) return null;
+            return (
+              <div key={skill.title} className="transition-all duration-1000 ease-out">
+                <SkillCard skill={skill} />
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
