@@ -153,6 +153,7 @@ for entry in "${REQUIRED_IGNORE[@]}"; do
     echo "$entry" >> .gitignore
     echo "🛡️  Added '$entry' to .gitignore"
   fi
+done
 
 # 14. VSCode settings
 SETTINGS_FILE="$VSCODE_DIR/settings.json"
