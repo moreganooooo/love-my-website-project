@@ -17,12 +17,6 @@ const About = () => {
         <img src="/5594016.jpg" alt="" className="w-full h-full object-cover opacity-10" />
       </div>
 
-      {/* Background Blobs */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 right-0 w-64 h-64 bg-gradient-to-l from-orange-200/30 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-0 w-64 h-64 bg-gradient-to-r from-purple-200/30 to-transparent rounded-full blur-3xl"></div>
-      </div>
-
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-orange-600 bg-clip-text text-transparent">
