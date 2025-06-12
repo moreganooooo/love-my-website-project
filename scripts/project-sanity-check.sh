@@ -165,6 +165,9 @@ ensure_file "$SETTINGS_FILE" '{
 
 # 15. Done
 echo -e "\n🧠 Sanity check complete. Project structure, Git, tools, lockfiles & config validated."
+
+echo -e "\n📁 Project Root:"
 ls -al "$SCRIPT_DIR"
+
+echo -e "\n📁 Husky Hooks Directory:"
 ls -al "$HUSKY_DIR"
-fi
