@@ -3,19 +3,18 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
-  root: '.', // optional, default is current dir
-  server: {
-    host: 'localhost',
-    port: 5173,
-  },
   plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    host: 'localhost',
+    port: 5173,
+  },
   build: {
     outDir: 'dist',
-    // Removed custom input to prevent esbuild crash
+    // ⚠️ Do NOT add a "rollupOptions" block unless you are building a multi-page app!
   },
 });
